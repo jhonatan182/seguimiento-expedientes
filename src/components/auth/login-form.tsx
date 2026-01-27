@@ -4,8 +4,7 @@
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
-import { useSearchParams } from "next/navigation";
+import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { useActionState } from "react";
 import { authenticate } from "@/app/(auth)/actions/auth-actions";
 
@@ -14,8 +13,7 @@ export function LoginForm({
   ...props
 }: React.ComponentProps<"form">) {
 
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
+
   const [errorMessage, formAction, isPending] = useActionState(
     authenticate,
     undefined,
@@ -27,17 +25,17 @@ export function LoginForm({
         <div className="flex flex-col items-center gap-1 text-center">
           <h1 className="text-2xl font-bold">Iniciar sesión</h1>
           <p className="text-muted-foreground text-sm text-balance">
-            Ingresa tu email y contraseña para iniciar sesión
+            Ingresa tu nombre de usuario y contraseña para iniciar sesión
           </p>
         </div>
         <Field>
-          <FieldLabel htmlFor="email">Email</FieldLabel>
+          <FieldLabel htmlFor="username">Nombre de usuario</FieldLabel>
           <Input
-            id="email"
-            type="email"
-            placeholder="correo@ejemplo.com"
+            id="username"
+            type="text"
+            placeholder="Ejemplo: jvargas"
             required
-            name="email"
+            name="username"
           />
         </Field>
         <Field>
