@@ -1,5 +1,3 @@
-"use client";
-
 import { IconDotsVertical, IconLogout } from "@tabler/icons-react";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -16,6 +14,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { signOut } from "@/app/auth.config";
 
 export function NavUser({
   user,
@@ -61,7 +60,10 @@ export function NavUser({
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={async () => {
+              'use server';
+              await signOut();
+            }}>
               <IconLogout />
               Cerrar Sesión
             </DropdownMenuItem>
