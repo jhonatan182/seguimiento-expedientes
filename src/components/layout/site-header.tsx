@@ -1,11 +1,10 @@
-import { NavUser } from "./nav-user";
+import { NavUser } from "../navbar/nav-user";
 
 export function SiteHeader() {
   const data = {
     user: {
       name: "Jhonatan Vargas",
       email: "correo@ejemplo.com",
-      avatar: "/avatars/shadcn.jpg",
     },
   };
 

@@ -1,13 +1,7 @@
-import { cn } from "@/lib/utils"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
-} from "@/components/ui/field"
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 
 export function LoginForm({
   className,
@@ -24,33 +18,21 @@ export function LoginForm({
         </div>
         <Field>
           <FieldLabel htmlFor="email">Email</FieldLabel>
-          <Input id="email" type="email" placeholder="correo@ejemplo.com" required />
+          <Input
+            id="email"
+            type="email"
+            placeholder="correo@ejemplo.com"
+            required
+          />
         </Field>
         <Field>
-          <div className="flex items-center">
-            <FieldLabel htmlFor="password">Contraseña</FieldLabel>
-            <Link
-              href="/auth/forgot-password"
-              className="ml-auto text-sm underline-offset-4 hover:underline"
-            >
-              Olvidaste tu contraseña?
-            </Link>
-          </div>
-          <Input id="password" type="password" required />
+          <FieldLabel htmlFor="password">Contraseña</FieldLabel>
+          <Input id="password" type="password" placeholder="*******" />
         </Field>
         <Field>
           <Button type="submit">Iniciar sesión</Button>
         </Field>
-        <Field>
-
-          <FieldDescription className="text-center">
-            No tienes una cuenta?{" "}
-            <Link href="/auth/register" className="underline underline-offset-4">
-              Registrate
-            </Link>
-          </FieldDescription>
-        </Field>
       </FieldGroup>
     </form>
-  )
+  );
 }
