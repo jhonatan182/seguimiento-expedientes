@@ -1,11 +1,19 @@
 import { SiteHeader } from "@/components/layout/site-header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { auth } from "../auth.config";
+import { redirect } from "next/navigation";
 
-export default function MainLayout({
+export default async function MainLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await auth();
+
+  if (!session?.user) {
+    redirect("/login");
+  }
+
   return (
     <SidebarProvider
       style={

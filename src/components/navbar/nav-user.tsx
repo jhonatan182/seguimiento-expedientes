@@ -15,15 +15,15 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { signOut } from "@/app/auth.config";
+import { auth } from "@/app/auth.config";
 
-export function NavUser({
-  user,
-}: {
-  user: {
-    name: string;
-    email: string;
-  };
-}) {
+export async function NavUser() {
+  const session = await auth();
+
+  if (!session?.user) {
+    return null;
+  }
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -34,9 +34,11 @@ export function NavUser({
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg grayscale">
-                <AvatarFallback className="rounded-lg">JV</AvatarFallback>
+                <AvatarFallback className="rounded-lg">
+                  {session.user.name?.charAt(0).toUpperCase()}
+                </AvatarFallback>
               </Avatar>
-              <span className="truncate font-medium">{user.name}</span>
+              <span className="truncate font-medium">{session.user.name}</span>
               <IconDotsVertical className="ml-auto size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
@@ -49,21 +51,27 @@ export function NavUser({
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarFallback className="rounded-lg">JV</AvatarFallback>
+                  <AvatarFallback className="rounded-lg">
+                    {session.user.name?.charAt(0).toUpperCase()}
+                  </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{user.name}</span>
+                  <span className="truncate font-medium">
+                    {session.user.name}
+                  </span>
                   <span className="text-muted-foreground truncate text-xs">
-                    {user.email}
+                    {session.user.email}
                   </span>
                 </div>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={async () => {
-              'use server';
-              await signOut();
-            }}>
+            <DropdownMenuItem
+              onClick={async () => {
+                "use server";
+                await signOut();
+              }}
+            >
               <IconLogout />
               Cerrar Sesión
             </DropdownMenuItem>

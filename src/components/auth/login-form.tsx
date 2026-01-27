@@ -39,7 +39,7 @@ export function LoginForm({
       return;
     }
 
-    toast.error("No se pudo iniciar sesión");
+    toast.error(resp);
   }
 
   return (

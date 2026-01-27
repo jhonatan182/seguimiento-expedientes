@@ -9,8 +9,14 @@ export type NuevoAnalista = InferInsertModel<typeof PamAnalista>;
 export async function seedPamAnalistas() {
   const analistas: NuevoAnalista[] = [
     {
-      nombre: "María González Pérez",
-      usuario: "mgonzalez",
+      nombre: "Kelvin Avila",
+      usuario: "kavila",
+      password: bcrypt.hashSync("password123", 10),
+      modulo: "A",
+    },
+    {
+      nombre: "Jhonatan Vargas",
+      usuario: "jvargas",
       password: bcrypt.hashSync("password123", 10),
       modulo: "A",
     },
