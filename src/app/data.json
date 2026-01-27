@@ -1,0 +1,142 @@
+[
+  {
+    "id": 1,
+    "expediente": "E2026000001",
+    "fechaInicial": "2026-01-26",
+    "fechaMovimiento": "2026-01-26",
+    "estado": "En Tramite"
+  },
+  {
+    "id": 2,
+    "expediente": "E2026000002",
+    "fechaInicial": "2026-01-26",
+    "fechaMovimiento": "2026-01-26",
+    "estado": "En Tramite"
+  },
+  {
+    "id": 3,
+    "expediente": "E2026000003",
+    "fechaInicial": "2026-01-26",
+    "fechaMovimiento": "2026-01-26",
+    "estado": "En Tramite"
+  },
+  {
+    "id": 4,
+    "expediente": "E2026000004",
+    "fechaInicial": "2026-01-26",
+    "fechaMovimiento": "2026-01-26",
+    "estado": "En Tramite"
+  },
+  {
+    "id": 5,
+    "expediente": "E2026000005",
+    "fechaInicial": "2026-01-26",
+    "fechaMovimiento": "2026-01-26",
+    "estado": "En Tramite"
+  },
+  {
+    "id": 6,
+    "expediente": "E2026000006",
+    "fechaInicial": "2026-01-26",
+    "fechaMovimiento": "2026-01-26",
+    "estado": "En Tramite"
+  },
+  {
+    "id": 7,
+    "expediente": "E2026000007",
+    "fechaInicial": "2026-01-26",
+    "fechaMovimiento": "2026-01-26",
+    "estado": "En Tramite"
+  },
+  {
+    "id": 8,
+    "expediente": "E2026000008",
+    "fechaInicial": "2026-01-26",
+    "fechaMovimiento": "2026-01-26",
+    "estado": "En Tramite"
+  },
+  {
+    "id": 9,
+    "expediente": "E2026000009",
+    "fechaInicial": "2026-01-26",
+    "fechaMovimiento": "2026-01-26",
+    "estado": "En Tramite"
+  },
+  {
+    "id": 10,
+    "expediente": "E2026000010",
+    "fechaInicial": "2026-01-26",
+    "fechaMovimiento": "2026-01-26",
+    "estado": "En Tramite"
+  },
+  {
+    "id": 11,
+    "expediente": "E2026000011",
+    "fechaInicial": "2026-01-26",
+    "fechaMovimiento": "2026-01-26",
+    "estado": "En Tramite"
+  },
+  {
+    "id": 12,
+    "expediente": "E2026000012",
+    "fechaInicial": "2026-01-26",
+    "fechaMovimiento": "2026-01-26",
+    "estado": "En Tramite"
+  },
+  {
+    "id": 13,
+    "expediente": "E2026000013",
+    "fechaInicial": "2026-01-26",
+    "fechaMovimiento": "2026-01-26",
+    "estado": "En Tramite"
+  },
+  {
+    "id": 14,
+    "expediente": "E2026000014",
+    "fechaInicial": "2026-01-26",
+    "fechaMovimiento": "2026-01-26",
+    "estado": "En Tramite"
+  },
+  {
+    "id": 15,
+    "expediente": "E2026000015",
+    "fechaInicial": "2026-01-26",
+    "fechaMovimiento": "2026-01-26",
+    "estado": "En Tramite"
+  },
+  {
+    "id": 16,
+    "expediente": "E2026000016",
+    "fechaInicial": "2026-01-26",
+    "fechaMovimiento": "2026-01-26",
+    "estado": "En Tramite"
+  },
+  {
+    "id": 17,
+    "expediente": "E2026000017",
+    "fechaInicial": "2026-01-26",
+    "fechaMovimiento": "2026-01-26",
+    "estado": "En Tramite"
+  },
+  {
+    "id": 18,
+    "expediente": "E2026000018",
+    "fechaInicial": "2026-01-26",
+    "fechaMovimiento": "2026-01-26",
+    "estado": "En Tramite"
+  },
+  {
+    "id": 19,
+    "expediente": "E2026000019",
+    "fechaInicial": "2026-01-26",
+    "fechaMovimiento": "2026-01-26",
+    "estado": "En Tramite"
+  },
+  {
+    "id": 20,
+    "expediente": "E2026000020",
+    "fechaInicial": "2026-01-26",
+    "fechaMovimiento": "2026-01-26",
+    "estado": "En Tramite"
+  }
+]
