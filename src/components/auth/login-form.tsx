@@ -1,26 +1,53 @@
-'use client';
+"use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
 
-import { cn } from "@/lib/utils";
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
+import { authenticate } from "@/app/(auth)/actions/auth-actions";
+import { LoginSchema, type LoginSchemaType } from "@/schemas";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
-import { useActionState } from "react";
-import { authenticate } from "@/app/(auth)/actions/auth-actions";
+import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"form">) {
+  const router = useRouter();
 
+  const form = useForm<LoginSchemaType>({
+    resolver: zodResolver(LoginSchema),
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+  });
 
-  const [errorMessage, formAction, isPending] = useActionState(
-    authenticate,
-    undefined,
-  );
+  async function onSubmit(data: LoginSchemaType) {
+    const resp = await authenticate(data);
+
+    if (resp === "User signed in successfully") {
+      router.replace("/");
+      return;
+    }
+
+    toast.error("No se pudo iniciar sesión");
+  }
 
   return (
-    <form action={formAction} className={cn("flex flex-col gap-6", className)} {...props}>
+    <form
+      onSubmit={form.handleSubmit(onSubmit)}
+      className={cn("flex flex-col gap-6", className)}
+      {...props}
+    >
       <FieldGroup>
         <div className="flex flex-col items-center gap-1 text-center">
           <h1 className="text-2xl font-bold">Iniciar sesión</h1>
@@ -28,22 +55,49 @@ export function LoginForm({
             Ingresa tu nombre de usuario y contraseña para iniciar sesión
           </p>
         </div>
+
+        <Controller
+          name="username"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor={field.name}>Usuario</FieldLabel>
+              <Input
+                {...field}
+                id={field.name}
+                aria-invalid={fieldState.invalid}
+                placeholder="Usuario"
+                autoComplete="off"
+                type="text"
+              />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+
+        <Controller
+          name="password"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor={field.name}>Contraseña</FieldLabel>
+              <Input
+                {...field}
+                id={field.name}
+                aria-invalid={fieldState.invalid}
+                placeholder="********"
+                autoComplete="off"
+                type="password"
+              />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+
         <Field>
-          <FieldLabel htmlFor="username">Nombre de usuario</FieldLabel>
-          <Input
-            id="username"
-            type="text"
-            placeholder="Ejemplo: jvargas"
-            required
-            name="username"
-          />
-        </Field>
-        <Field>
-          <FieldLabel htmlFor="password">Contraseña</FieldLabel>
-          <Input id="password" type="password" placeholder="*******" name="password" />
-        </Field>
-        <Field>
-          <Button type="submit">Iniciar sesión</Button>
+          <Button disabled={form.formState.isSubmitting} type="submit">
+            Iniciar sesión
+          </Button>
         </Field>
       </FieldGroup>
     </form>
