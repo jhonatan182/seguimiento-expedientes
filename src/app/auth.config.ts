@@ -40,6 +40,8 @@ export const authConfig: NextAuthConfig = {
         //Buscar el usuario en la base de datos
         const user = await getUserByUsername(credentials.username as string);
 
+        console.log({ user });
+
         if (!user) {
           return null;
         }
