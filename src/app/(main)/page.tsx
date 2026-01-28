@@ -1,5 +1,5 @@
 import { DataTable } from "@/app/(main)/data-table";
-import { SectionCards } from "@/components/main/section-cards";
+import { CabeceraCards } from "@/components/main/cabecera-cards";
 
 import { getSemana } from "../actions/expedientes-actions";
 
@@ -10,7 +10,7 @@ export default async function Page() {
 
   return (
     <>
-      <SectionCards cabecera={data?.cabeceras[0] || null} />
+      <CabeceraCards cabecera={data?.cabeceras[0] || null} />
 
       <DataTable data={data?.expedientes || []} />
     </>
