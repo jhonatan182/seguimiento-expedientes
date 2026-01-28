@@ -1,7 +1,5 @@
 "use client";
 
-import * as React from "react";
-
 import { useSortable } from "@dnd-kit/sortable";
 import { IconDotsVertical, IconGripVertical } from "@tabler/icons-react";
 import { type ColumnDef } from "@tanstack/react-table";
@@ -24,14 +22,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-export const schema = z.object({
-  id: z.number(),
-  expediente: z.string(),
-  fechaInicial: z.string(),
-  fechaMovimiento: z.string(),
-  estado: z.string(),
-});
+import { Semana } from "@/responses";
+import { PamExpedienteType } from "@/db/schema";
 
 function DragHandle({ id }: { id: number }) {
   const { attributes, listeners } = useSortable({
@@ -52,7 +44,7 @@ function DragHandle({ id }: { id: number }) {
   );
 }
 
-export const columns: ColumnDef<z.infer<typeof schema>>[] = [
+export const columns: ColumnDef<PamExpedienteType>[] = [
   {
     id: "drag",
     header: () => null,
@@ -67,14 +59,14 @@ export const columns: ColumnDef<z.infer<typeof schema>>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "fechaInicial",
-    header: "Fecha Inicial",
+    accessorKey: "fechaIngreso",
+    header: "Fecha Ingreso",
     // cell: ({ row }) => {
     //   // return <TableCellViewer item={row.original} />;
     // },
   },
   {
-    accessorKey: "fechaMovimiento",
+    accessorKey: "fechaUltimaModificacion",
     header: "Fecha Movimiento",
   },
   {

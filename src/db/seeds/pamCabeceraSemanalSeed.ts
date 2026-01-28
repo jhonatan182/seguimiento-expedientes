@@ -9,6 +9,7 @@ export async function seedPamCabeceraSemanal() {
   const cabeceras: NuevaCabeceraSemanal[] = [
     {
       semanaId: 1,
+      analistaId: 1,
       saldoAnterior: 150,
       nuevoIngreso: 25,
       circulacion: 30,
@@ -24,6 +25,7 @@ export async function seedPamCabeceraSemanal() {
     },
     {
       semanaId: 2,
+      analistaId: 1,
       saldoAnterior: 175,
       nuevoIngreso: 30,
       circulacion: 35,
@@ -39,6 +41,7 @@ export async function seedPamCabeceraSemanal() {
     },
     {
       semanaId: 3,
+      analistaId: 1,
       saldoAnterior: 180,
       nuevoIngreso: 28,
       circulacion: 32,
@@ -54,6 +57,7 @@ export async function seedPamCabeceraSemanal() {
     },
     {
       semanaId: 4,
+      analistaId: 2,
       saldoAnterior: 186,
       nuevoIngreso: 32,
       circulacion: 38,
@@ -69,6 +73,7 @@ export async function seedPamCabeceraSemanal() {
     },
     {
       semanaId: 5,
+      analistaId: 1,
       saldoAnterior: 190,
       nuevoIngreso: 27,
       circulacion: 33,
@@ -84,6 +89,7 @@ export async function seedPamCabeceraSemanal() {
     },
     {
       semanaId: 6,
+      analistaId: 3,
       saldoAnterior: 193,
       nuevoIngreso: 35,
       circulacion: 40,
@@ -99,6 +105,7 @@ export async function seedPamCabeceraSemanal() {
     },
     {
       semanaId: 7,
+      analistaId: 4,
       saldoAnterior: 198,
       nuevoIngreso: 29,
       circulacion: 36,
@@ -114,6 +121,7 @@ export async function seedPamCabeceraSemanal() {
     },
     {
       semanaId: 8,
+      analistaId: 1,
       saldoAnterior: 201,
       nuevoIngreso: 33,
       circulacion: 39,
@@ -129,6 +137,7 @@ export async function seedPamCabeceraSemanal() {
     },
     {
       semanaId: 9,
+      analistaId: 2,
       saldoAnterior: 205,
       nuevoIngreso: 31,
       circulacion: 37,
@@ -144,6 +153,7 @@ export async function seedPamCabeceraSemanal() {
     },
     {
       semanaId: 10,
+      analistaId: 3,
       saldoAnterior: 209,
       nuevoIngreso: 36,
       circulacion: 42,
@@ -159,6 +169,7 @@ export async function seedPamCabeceraSemanal() {
     },
     {
       semanaId: 11,
+      analistaId: 4,
       saldoAnterior: 213,
       nuevoIngreso: 28,
       circulacion: 34,
@@ -174,6 +185,7 @@ export async function seedPamCabeceraSemanal() {
     },
     {
       semanaId: 12,
+      analistaId: 1,
       saldoAnterior: 216,
       nuevoIngreso: 34,
       circulacion: 41,
@@ -191,7 +203,9 @@ export async function seedPamCabeceraSemanal() {
 
   try {
     await db.insert(PamCabeceraSemanal).values(cabeceras);
-    console.log(`✅ Se insertaron ${cabeceras.length} cabeceras semanales exitosamente`);
+    console.log(
+      `✅ Se insertaron ${cabeceras.length} cabeceras semanales exitosamente`,
+    );
   } catch (error) {
     console.error("❌ Error al insertar cabeceras semanales:", error);
     throw error;

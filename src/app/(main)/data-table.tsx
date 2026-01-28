@@ -64,18 +64,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
-export const schema = z.object({
-  id: z.number(),
-  expediente: z.string(),
-  fechaInicial: z.string(),
-  fechaMovimiento: z.string(),
-  estado: z.string(),
-});
+import { PamExpedienteType } from "@/db/schema";
 
 // Create a separate component for the drag handle
 
-function DraggableRow({ row }: { row: Row<z.infer<typeof schema>> }) {
+function DraggableRow({ row }: { row: Row<PamExpedienteType> }) {
   const { transform, transition, setNodeRef, isDragging } = useSortable({
     id: row.original.id,
   });
@@ -103,7 +96,7 @@ function DraggableRow({ row }: { row: Row<z.infer<typeof schema>> }) {
 export function DataTable({
   data: initialData,
 }: {
-  data: z.infer<typeof schema>[];
+  data: PamExpedienteType[];
 }) {
   const [data, setData] = React.useState(() => initialData);
   const [rowSelection, setRowSelection] = React.useState({});
@@ -243,7 +236,7 @@ export function DataTable({
                       colSpan={columns.length}
                       className="h-24 text-center"
                     >
-                      No results.
+                      No hay datos disponibles
                     </TableCell>
                   </TableRow>
                 )}

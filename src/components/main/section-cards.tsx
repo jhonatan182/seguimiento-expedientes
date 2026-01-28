@@ -5,15 +5,20 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { PamCabeceraSemanalType } from "@/db/schema";
 
-export function SectionCards() {
+type SectionCardsProps = {
+  cabecera: PamCabeceraSemanalType | null;
+};
+
+export function SectionCards({ cabecera }: SectionCardsProps) {
   return (
     <div className="grid grid-cols-2">
       <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-3">
         <Card className="@container/card">
           <CardHeader className="flex flex-col items-center justify-center text-center gap-2">
             <CardTitle className="text-4xl font-bold tabular-nums @[250px]/card:text-5xl">
-              32
+              {cabecera?.saldoAnterior || 0}
             </CardTitle>
             <CardDescription className="text-sm">
               Saldo Anterior
@@ -23,7 +28,7 @@ export function SectionCards() {
         <Card className="@container/card">
           <CardHeader className="flex flex-col items-center justify-center   text-center gap-2">
             <CardTitle className="text-4xl font-bold tabular-nums @[250px]/card:text-5xl">
-              1,234
+              {cabecera?.nuevoIngreso || 0}
             </CardTitle>
             <CardDescription className="text-sm">Nuevo Ingreso</CardDescription>
           </CardHeader>
@@ -31,7 +36,7 @@ export function SectionCards() {
         <Card className="@container/card">
           <CardHeader className="flex flex-col items-center justify-center text-center gap-2">
             <CardTitle className="text-4xl font-bold tabular-nums @[250px]/card:text-5xl">
-              45,678
+              {cabecera?.circulacion || 0}
             </CardTitle>
             <CardDescription className="text-sm">
               En circulación
@@ -41,7 +46,7 @@ export function SectionCards() {
         <Card className="@container/card">
           <CardHeader className="flex flex-col items-center justify-center text-center gap-2">
             <CardTitle className="text-4xl font-bold tabular-nums @[250px]/card:text-5xl">
-              45,678
+              {cabecera?.requerido || 0}
             </CardTitle>
             <CardDescription className="text-sm">Requerido</CardDescription>
           </CardHeader>
@@ -49,7 +54,7 @@ export function SectionCards() {
         <Card className="@container/card">
           <CardHeader className="flex flex-col items-center justify-center text-center gap-2">
             <CardTitle className="text-4xl font-bold tabular-nums @[250px]/card:text-5xl">
-              32
+              {cabecera?.pendiente || 0}
             </CardTitle>
             <CardDescription className="text-sm">Pendiente</CardDescription>
           </CardHeader>
@@ -57,7 +62,7 @@ export function SectionCards() {
         <Card className="@container/card">
           <CardHeader className="flex flex-col items-center justify-center text-center gap-2">
             <CardTitle className="text-4xl font-bold tabular-nums @[250px]/card:text-5xl">
-              1,234
+              {cabecera?.historicoCirculacion || 0}
             </CardTitle>
             <CardDescription className="text-sm">
               Histórico Circulación
@@ -67,7 +72,7 @@ export function SectionCards() {
         <Card className="@container/card">
           <CardHeader className="flex flex-col items-center justify-center text-center gap-2">
             <CardTitle className="text-4xl font-bold tabular-nums @[250px]/card:text-5xl">
-              10,000
+              Por calcular
             </CardTitle>
             <CardDescription className="text-sm">
               Total expedientes
@@ -80,40 +85,40 @@ export function SectionCards() {
         <Card className="@container/card">
           <CardHeader className="flex flex-col items-start justify-center text-center gap-2">
             <CardTitle className="text-4xl font-bold tabular-nums @[250px]/card:text-5xl">
-              399
+              {cabecera?.resuelto || 0}
             </CardTitle>
             <CardDescription className="text-sm">Resuelto</CardDescription>
           </CardHeader>
           <CardFooter className="flex-col items-start gap-1.5 text-sm">
             <div className="line-clamp-1 flex gap-2 font-medium">
               <p>Con lugar:</p>
-              <span>100</span>
+              <span>{cabecera?.conLugar || 0}</span>
             </div>
             <div className="line-clamp-1 flex gap-2 font-medium">
               <p>Sin lugar:</p>
-              <span>12</span>
+              <span>{cabecera?.sinLugar || 0}</span>
             </div>
             <div className="line-clamp-1 flex gap-2 font-medium">
               <p>Parcial:</p>
-              <span>32</span>
+              <span>{cabecera?.parcial || 0}</span>
             </div>
           </CardFooter>
         </Card>
         <Card className="@container/card">
           <CardHeader>
             <CardTitle className="text-4xl font-bold tabular-nums @[250px]/card:text-5xl">
-              399
+              {cabecera?.dictamen || 0}
             </CardTitle>
             <CardDescription className="text-sm">Dictamen</CardDescription>
           </CardHeader>
           <CardFooter className="flex-col items-start gap-1.5 text-sm">
             <div className="line-clamp-1 flex gap-2 font-medium">
               <p>Circulacion:</p>
-              <span>100</span>
+              <span>{cabecera?.circulacion || 0}</span>
             </div>
             <div className="line-clamp-1 flex gap-2 font-medium">
-              <p>Cualquier cosa:</p>
-              <span>12</span>
+              <p>Resueltos:</p>
+              <span>{cabecera?.resuelto || 0}</span>
             </div>
           </CardFooter>
         </Card>

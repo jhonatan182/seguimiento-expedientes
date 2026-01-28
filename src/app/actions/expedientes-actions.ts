@@ -1,33 +1,35 @@
 "use server";
 
-import { auth } from "../auth.config";
 import { db } from "@/lib/drizzle";
-import { PamExpedientes } from "@/db/schema/PAM_EXPEDIENTES";
 import { eq } from "drizzle-orm";
-import { PamCabeceraSemanal } from "@/db/schema/PAM_CABECERA_SEMANAL";
-import { PamSemanas } from "@/db/schema/PAM_SEMANAS";
 
-export async function getExpedientesDiarios() {
+import { PamExpedientes } from "@/db/schema/PAM_EXPEDIENTES";
+import { PamCabeceraSemanal, PamSemanas } from "@/db/schema";
+import { auth } from "../auth.config";
+import { Semana } from "@/responses";
+
+export async function getSemana(): Promise<Semana | null> {
   const usuario = await auth();
 
   if (!usuario?.user) {
-    return [];
+    return null;
   }
 
   const userId = Number(usuario.user.id);
 
-  //consultar la base de datos en la tabla PAM_EXPEDIENTES e inner join con la tabla PAM_CABECERA_SEMANAL y PAM_SEMANAS
-  const expedientes = await db
-    .select()
-    .from(PamExpedientes)
-    .innerJoin(
-      PamCabeceraSemanal,
-      eq(PamExpedientes.semanaId, PamCabeceraSemanal.semanaId),
-    )
-    .innerJoin(PamSemanas, eq(PamCabeceraSemanal.semanaId, PamSemanas.id))
-    .where(eq(PamExpedientes.analistaId, userId));
+  const semana = await db.query.PamSemanas.findFirst({
+    where: eq(PamSemanas.id, 1),
+    with: {
+      expedientes: {
+        where: eq(PamExpedientes.analistaId, userId),
+      },
+      cabeceras: {
+        where: eq(PamCabeceraSemanal.analistaId, userId),
+      },
+    },
+  });
 
-  console.log(JSON.stringify(expedientes, null, 2));
+  console.log(JSON.stringify(semana, null, 2));
 
-  return expedientes;
+  return semana || null;
 }
