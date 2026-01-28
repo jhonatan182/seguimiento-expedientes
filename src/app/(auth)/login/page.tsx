@@ -1,6 +1,6 @@
-import Image from "next/image"
+import Image from "next/image";
 
-import { LoginForm } from "@/components/auth"
+import { LoginForm } from "@/components/auth";
 
 export default function LoginPage() {
   return (
@@ -23,5 +23,5 @@ export default function LoginPage() {
         />
       </div>
     </div>
-  )
+  );
 }

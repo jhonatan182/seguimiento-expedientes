@@ -21,7 +21,7 @@ export function SectionCards() {
           </CardHeader>
         </Card>
         <Card className="@container/card">
-          <CardHeader className="flex flex-col items-center justify-center text-center gap-2">
+          <CardHeader className="flex flex-col items-center justify-center   text-center gap-2">
             <CardTitle className="text-4xl font-bold tabular-nums @[250px]/card:text-5xl">
               1,234
             </CardTitle>

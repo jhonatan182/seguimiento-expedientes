@@ -9,7 +9,7 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
-import { authenticate } from "@/app/(auth)/actions/auth-actions";
+import { authenticate } from "@/app/actions/auth-actions";
 import { LoginSchema, type LoginSchemaType } from "@/schemas";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

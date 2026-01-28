@@ -1,7 +1,7 @@
 import Credentials from "next-auth/providers/credentials";
 import type { NextAuthConfig } from "next-auth";
 import NextAuth from "next-auth";
-import { getUserByUsername } from "./(auth)/actions/auth-actions";
+import { getUserByUsername } from "./actions/auth-actions";
 import bcrypt from "bcryptjs";
 
 export const authConfig: NextAuthConfig = {
