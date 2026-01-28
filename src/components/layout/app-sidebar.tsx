@@ -1,8 +1,5 @@
-import * as React from "react";
-import { IconDashboard, IconInnerShadowTop } from "@tabler/icons-react";
+import { IconChartBar } from "@tabler/icons-react";
 
-import { NavMain } from "@/components/navbar/nav-main";
-import { NavUser } from "@/components/navbar/nav-user";
 import {
   Sidebar,
   SidebarContent,
@@ -12,21 +9,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-
-const data = {
-  user: {
-    name: "Jhonatan Vargas",
-    email: "correo@ejemplo.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  navMain: [
-    {
-      title: "Dashboard",
-      url: "#",
-      icon: IconDashboard,
-    },
-  ],
-};
+import { NavMain } from "../navbar/nav-main";
+import { NavUser } from "../navbar/nav-user";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -38,18 +22,18 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <h1>
-                <IconInnerShadowTop className="!size-5" />
+              <a href="#">
+                <IconChartBar className="!size-5" />
                 <span className="text-base font-semibold">
-                  Seguimiento Expedientes
+                  Seguimiento de Expedientes
                 </span>
-              </h1>
+              </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain />
       </SidebarContent>
       <SidebarFooter>
         <NavUser />

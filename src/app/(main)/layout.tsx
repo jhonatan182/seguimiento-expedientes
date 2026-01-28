@@ -2,6 +2,7 @@ import { SiteHeader } from "@/components/layout/site-header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { auth } from "../auth.config";
 import { redirect } from "next/navigation";
+import { AppSidebar } from "@/components/layout/app-sidebar";
 
 export default async function MainLayout({
   children,
@@ -23,6 +24,7 @@ export default async function MainLayout({
         } as React.CSSProperties
       }
     >
+      <AppSidebar variant="inset" />
       <SidebarInset>
         <SiteHeader />
         <div className="flex flex-1 flex-col">
