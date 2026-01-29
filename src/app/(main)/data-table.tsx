@@ -1,6 +1,5 @@
 "use client";
 
-import { IconPlus } from "@tabler/icons-react";
 import * as React from "react";
 
 import {
@@ -18,17 +17,8 @@ import {
   type VisibilityState,
 } from "@tanstack/react-table";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Pagination } from "@/components/ui/pagination";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import {
   Table,
   TableBody,
@@ -37,8 +27,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { DialogCustom } from "@/components/ui/custom/dialog-custom";
-import { CreateExpedienteForm } from "@/components/expedientes/create-expediente-form";
 
 type DataTableProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[];

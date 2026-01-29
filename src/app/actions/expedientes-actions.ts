@@ -1,14 +1,14 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { db } from "@/lib/drizzle";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
 import { PamExpedientes } from "@/db/schema/PAM_EXPEDIENTES";
 import { PamCabeceraSemanal, PamSemanas } from "@/db/schema";
 import { auth } from "../auth.config";
 import { Semana } from "@/responses";
-import { ExpedienteSchemaType } from "@/schemas";
-import { refresh, revalidatePath } from "next/cache";
+import { ExpedienteSchemaType, UpdateExpedienteSchemaType } from "@/schemas";
 
 export async function getSemana(): Promise<Semana | null> {
   const usuario = await auth();
@@ -55,6 +55,84 @@ export async function createExpediente(data: ExpedienteSchemaType) {
   });
 
   console.log(JSON.stringify(expediente, null, 2));
+
+  revalidatePath("/");
+}
+
+export async function updateExpediente(
+  expedienteId: number,
+  data: UpdateExpedienteSchemaType,
+) {
+  const usuario = await auth();
+
+  if (!usuario?.user) {
+    return null;
+  }
+
+  const userId = Number(usuario.user.id);
+
+  // actualizar
+  await db
+    .update(PamExpedientes)
+    .set({
+      expediente: data.expediente,
+    })
+    .where(
+      and(
+        eq(PamExpedientes.id, expedienteId),
+        eq(PamExpedientes.analistaId, userId),
+      ),
+    );
+
+  revalidatePath("/");
+}
+
+export async function deleteExpediente(expedienteId: number) {
+  const usuario = await auth();
+
+  if (!usuario?.user) {
+    return null;
+  }
+
+  const userId = Number(usuario.user.id);
+
+  // eliminar
+  await db
+    .delete(PamExpedientes)
+    .where(
+      and(
+        eq(PamExpedientes.id, expedienteId),
+        eq(PamExpedientes.analistaId, userId),
+      ),
+    );
+
+  revalidatePath("/");
+}
+
+export async function toggleExpedienteEstado(
+  expedienteId: number,
+  nuevoEstado: string,
+) {
+  const usuario = await auth();
+
+  if (!usuario?.user) {
+    return null;
+  }
+
+  const userId = Number(usuario.user.id);
+
+  await db
+    .update(PamExpedientes)
+    .set({
+      estado: nuevoEstado,
+      fechaUltimaModificacion: new Date().toISOString().toString(),
+    })
+    .where(
+      and(
+        eq(PamExpedientes.id, expedienteId),
+        eq(PamExpedientes.analistaId, userId),
+      ),
+    );
 
   revalidatePath("/");
 }

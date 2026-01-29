@@ -1,29 +1,19 @@
 "use client";
 
 import { useSortable } from "@dnd-kit/sortable";
-import { IconDotsVertical, IconGripVertical } from "@tabler/icons-react";
+import { IconGripVertical } from "@tabler/icons-react";
 import { type ColumnDef } from "@tanstack/react-table";
-import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Semana } from "@/responses";
 import { PamExpedienteType } from "@/db/schema";
+
+import {
+  DialogExpediente,
+  AlertExpediente,
+  SelectExpedienteEstado,
+} from "@/components/expedientes";
+import { formatDate } from "@/utils/dates";
 
 function DragHandle({ id }: { id: number }) {
   const { attributes, listeners } = useSortable({
@@ -53,68 +43,40 @@ export const columns: ColumnDef<PamExpedienteType>[] = [
   {
     accessorKey: "expediente",
     header: "Expediente",
-    // cell: ({ row }) => {
-    //   // return <TableCellViewer item={row.original} />;
-    // },
+
     enableHiding: false,
   },
   {
     accessorKey: "fechaIngreso",
     header: "Fecha Ingreso",
-    // cell: ({ row }) => {
-    //   // return <TableCellViewer item={row.original} />;
-    // },
+    cell: ({ row }) => {
+      return formatDate(row.original.fechaIngreso);
+    },
   },
   {
     accessorKey: "fechaUltimaModificacion",
     header: "Fecha Movimiento",
+    cell: ({ row }) => {
+      return formatDate(row.original.fechaUltimaModificacion);
+    },
   },
   {
     accessorKey: "estado",
     header: "Estado",
     cell: ({ row }) => {
-      return (
-        <>
-          <Label htmlFor={`${row.original.id}-estado`} className="sr-only">
-            Estado
-          </Label>
-          <Select>
-            <SelectTrigger
-              className="w-38 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate"
-              size="sm"
-              id={`${row.original.id}-estado`}
-            >
-              <SelectValue placeholder="Asignar estado" />
-            </SelectTrigger>
-            <SelectContent align="end">
-              <SelectItem value="En Tramite">En Tramite</SelectItem>
-              <SelectItem value="Finalizado">Finalizado</SelectItem>
-            </SelectContent>
-          </Select>
-        </>
-      );
+      return <SelectExpedienteEstado row={row.original} />;
     },
   },
   {
     id: "actions",
-    cell: () => (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            className="data-[state=open]:bg-muted text-muted-foreground flex size-8"
-            size="icon"
-          >
-            <IconDotsVertical />
-            <span className="sr-only">Open menu</span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-32">
-          <DropdownMenuItem>Editar</DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem variant="destructive">Eliminar</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    ),
+    cell: ({ row }) => {
+      return (
+        <div className="flex items-center gap-2 ">
+          <DialogExpediente expediente={row.original} />
+
+          <AlertExpediente expedienteId={row.original.id} />
+        </div>
+      );
+    },
   },
 ];

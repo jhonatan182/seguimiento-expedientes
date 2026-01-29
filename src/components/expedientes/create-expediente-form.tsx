@@ -17,8 +17,13 @@ import { ESTADOS } from "@/const";
 import { useMemo } from "react";
 import { toast } from "sonner";
 import { createExpediente } from "@/app/actions/expedientes-actions";
+import { Dispatch, SetStateAction } from "react";
 
-export function CreateExpedienteForm() {
+type CreateExpedienteFormProps = {
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+};
+
+export function CreateExpedienteForm({ setIsOpen }: CreateExpedienteFormProps) {
   const form = useForm<ExpedienteSchemaType>({
     resolver: zodResolver(ExpedienteSchema),
     defaultValues: {
@@ -32,6 +37,7 @@ export function CreateExpedienteForm() {
     await createExpediente(data);
 
     toast.success("Expediente creado correctamente");
+    setIsOpen(false);
   }
 
   const estados = useMemo(() => {
