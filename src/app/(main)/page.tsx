@@ -1,9 +1,10 @@
+import { SessionProvider } from "next-auth/react";
+
 import { DialogExpediente } from "@/components/expedientes";
-import { CabeceraCards } from "@/components/main/cabecera-cards";
 import { getSemana } from "../actions/expedientes-actions";
+import { CabeceraCards } from "@/components/cabeceras";
 import { DataTable } from "@/app/(main)/data-table";
 import { columns } from "./columns";
-import { SessionProvider } from "next-auth/react";
 
 export default async function Page() {
   const data = await getSemana();

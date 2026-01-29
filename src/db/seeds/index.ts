@@ -17,8 +17,8 @@ async function main() {
     await seedPamAnalistas();
 
     // Luego las tablas que dependen de las anteriores
-    await seedPamCabeceraSemanal();
-    await seedPamExpedientes();
+    // await seedPamCabeceraSemanal();
+    // await seedPamExpedientes();
 
     console.log("\n✅ Todos los seeds se ejecutaron exitosamente");
   } catch (error) {
