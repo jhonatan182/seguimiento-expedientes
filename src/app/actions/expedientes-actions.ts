@@ -10,19 +10,17 @@ import { auth } from "../auth.config";
 import { Semana } from "@/responses";
 import { ExpedienteSchemaType, UpdateExpedienteSchemaType } from "@/schemas";
 
-export async function getSemana(): Promise<Semana | null> {
+export async function getExpedientes(semanaId: number): Promise<Semana | null> {
   const usuario = await auth();
 
   if (!usuario?.user) {
     return null;
   }
 
-  console.log("consultandos semana");
-
   const userId = Number(usuario.user.id);
 
   const semana = await db.query.PamSemanas.findFirst({
-    where: eq(PamSemanas.id, 1),
+    where: eq(PamSemanas.id, semanaId),
     with: {
       expedientes: {
         where: eq(PamExpedientes.analistaId, userId),
@@ -45,7 +43,7 @@ export async function createExpediente(data: ExpedienteSchemaType) {
 
   const userId = Number(usuario.user.id);
 
-  const expediente = await db.insert(PamExpedientes).values({
+  await db.insert(PamExpedientes).values({
     expediente: data.expediente,
     analistaId: userId,
     semanaId: 1,
@@ -53,8 +51,6 @@ export async function createExpediente(data: ExpedienteSchemaType) {
     estado: data.estado,
     fechaUltimaModificacion: "",
   });
-
-  console.log(JSON.stringify(expediente, null, 2));
 
   revalidatePath("/");
 }

@@ -44,8 +44,6 @@ export function NavMain() {
 
   const { data: session } = useSession();
 
-  console.log({ pathname, session });
-
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Inicio</SidebarGroupLabel>

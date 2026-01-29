@@ -34,8 +34,6 @@ export function LoginForm({
   async function onSubmit(data: LoginSchemaType) {
     const resp = await authenticate(data);
 
-    console.log({ resp });
-
     if (resp === "User signed in successfully") {
       router.replace("/");
       return;
