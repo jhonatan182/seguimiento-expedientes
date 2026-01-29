@@ -3,7 +3,8 @@ CREATE TABLE `PAM_ANALISTA` (
 	`nombre` text NOT NULL,
 	`usuario` text NOT NULL,
 	`password` text NOT NULL,
-	`modulo` text(1)
+	`modulo` text(1) NOT NULL,
+	`isJefe` text(1) NOT NULL
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `PAM_ANALISTA_usuario_unique` ON `PAM_ANALISTA` (`usuario`);--> statement-breakpoint

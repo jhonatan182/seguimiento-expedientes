@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "46a2784e-e2cf-4530-9d4e-44f562c04dd3",
+  "id": "f2baad3e-e8e1-43d7-9907-bda8279c088c",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "PAM_ANALISTA": {
@@ -39,7 +39,14 @@
           "name": "modulo",
           "type": "text(1)",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "isJefe": {
+          "name": "isJefe",
+          "type": "text(1)",
+          "primaryKey": false,
+          "notNull": true,
           "autoincrement": false
         }
       },

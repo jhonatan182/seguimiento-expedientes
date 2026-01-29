@@ -13,10 +13,13 @@ export const authConfig: NextAuthConfig = {
   },
 
   callbacks: {
-    async jwt({ token }) {
-      token.id = token.sub || "";
-      token.username = token.email || "";
-
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id!;
+        token.username = user.username;
+        token.modulo = user.modulo;
+        token.isJefe = user.isJefe;
+      }
       return token;
     },
 
@@ -24,6 +27,8 @@ export const authConfig: NextAuthConfig = {
       if (session && session.user) {
         session.user.id = token.id;
         session.user.username = token.username;
+        session.user.modulo = token.modulo;
+        session.user.isJefe = token.isJefe;
       }
 
       return session;
@@ -39,8 +44,6 @@ export const authConfig: NextAuthConfig = {
       async authorize(credentials) {
         //Buscar el usuario en la base de datos
         const user = await getUserByUsername(credentials.username as string);
-
-        console.log({ user });
 
         if (!user) {
           return null;
@@ -60,11 +63,14 @@ export const authConfig: NextAuthConfig = {
           id: user.id.toString(),
           name: user.nombre,
           email: user.usuario,
+          username: user.usuario,
+          modulo: user.modulo,
+          isJefe: user.isJefe,
         };
       },
     }),
   ],
 };
-export const { auth, signIn, signOut } = NextAuth({
+export const { auth, signIn, signOut, handlers } = NextAuth({
   ...authConfig,
 });

@@ -18,12 +18,15 @@ import { useMemo } from "react";
 import { toast } from "sonner";
 import { createExpediente } from "@/app/actions/expedientes-actions";
 import { Dispatch, SetStateAction } from "react";
+import { useSession } from "next-auth/react";
 
 type CreateExpedienteFormProps = {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 };
 
 export function CreateExpedienteForm({ setIsOpen }: CreateExpedienteFormProps) {
+  const { data: session } = useSession();
+
   const form = useForm<ExpedienteSchemaType>({
     resolver: zodResolver(ExpedienteSchema),
     defaultValues: {
@@ -41,9 +44,11 @@ export function CreateExpedienteForm({ setIsOpen }: CreateExpedienteFormProps) {
   }
 
   const estados = useMemo(() => {
-    const filtrados = ESTADOS.filter((estado) => estado.modulo.includes("E"));
+    const filtrados = ESTADOS.filter((estado) =>
+      estado.modulo.includes(session?.user?.modulo || "D"),
+    );
     return filtrados;
-  }, []);
+  }, [session]);
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)}>

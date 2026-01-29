@@ -13,16 +13,21 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { toggleExpedienteEstado } from "@/app/actions/expedientes-actions";
+import { useSession } from "next-auth/react";
 
 type SelectExpedienteEstadoProps = {
   row: PamExpedienteType;
 };
 
 export function SelectExpedienteEstado({ row }: SelectExpedienteEstadoProps) {
+  const { data: session } = useSession();
+
   const estados = useMemo(() => {
-    const filtrados = ESTADOS.filter((estado) => estado.modulo.includes("E"));
+    const filtrados = ESTADOS.filter((estado) =>
+      estado.modulo.includes(session?.user?.modulo || "D"),
+    );
     return filtrados;
-  }, []);
+  }, [session]);
 
   const handleValueChange = async (value: string) => {
     try {

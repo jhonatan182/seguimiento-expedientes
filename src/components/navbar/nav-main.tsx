@@ -1,4 +1,5 @@
 "use client";
+import { useSession } from "next-auth/react";
 
 import {
   IconFileWord,
@@ -40,31 +41,43 @@ const items = [
 
 export function NavMain() {
   const pathname = usePathname();
-  console.log({ pathname });
+
+  const { data: session } = useSession();
+
+  console.log({ pathname, session });
 
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Inicio</SidebarGroupLabel>
       <SidebarGroupContent className="flex flex-col gap-2">
         <SidebarMenu>
-          {items.map((item) => (
-            <SidebarMenuItem key={item.title}>
-              <Link href={item.path}>
-                <SidebarMenuButton
-                  tooltip={item.title}
-                  className={
-                    "cursor-pointer " +
-                    (pathname === item.path
-                      ? "bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary hover:text-sidebar-primary-foreground"
-                      : "")
-                  }
-                >
-                  {item.icon && <item.icon />}
-                  <span>{item.title}</span>
-                </SidebarMenuButton>
-              </Link>
-            </SidebarMenuItem>
-          ))}
+          {items.map((item) => {
+            if (
+              session?.user.isJefe !== "S" &&
+              item.path === "/resumen-unidad"
+            ) {
+              return null;
+            }
+
+            return (
+              <SidebarMenuItem key={item.title}>
+                <Link href={item.path}>
+                  <SidebarMenuButton
+                    tooltip={item.title}
+                    className={
+                      "cursor-pointer " +
+                      (pathname === item.path
+                        ? "bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary hover:text-sidebar-primary-foreground"
+                        : "")
+                    }
+                  >
+                    {item.icon && <item.icon />}
+                    <span>{item.title}</span>
+                  </SidebarMenuButton>
+                </Link>
+              </SidebarMenuItem>
+            );
+          })}
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>
