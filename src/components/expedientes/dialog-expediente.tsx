@@ -17,9 +17,13 @@ import { useState } from "react";
 
 type DialogExpedienteProps = {
   expediente?: PamExpedienteType;
+  isCurrentWeek?: boolean;
 };
 
-export function DialogExpediente({ expediente }: DialogExpedienteProps) {
+export function DialogExpediente({
+  expediente,
+  isCurrentWeek,
+}: DialogExpedienteProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -27,12 +31,12 @@ export function DialogExpediente({ expediente }: DialogExpedienteProps) {
       <DialogTrigger asChild>
         {expediente?.id ? (
           <PencilIcon className="size-5 cursor-pointer" />
-        ) : (
+        ) : isCurrentWeek ? (
           <Button variant="outline" size="sm">
             <IconPlus />
             <span className="hidden lg:inline">Agregar Expediente</span>
           </Button>
-        )}
+        ) : null}
       </DialogTrigger>
       <DialogContent
         onOpenAutoFocus={(e) => {

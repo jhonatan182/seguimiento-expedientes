@@ -9,7 +9,8 @@ import {
   SelectValue,
 } from "../ui/select";
 import { useRouter } from "next/navigation";
-import { setCookie } from "@/app/actions/cookies-actions";
+import { getCookie, setCookie } from "@/app/actions/cookies-actions";
+import { useEffect } from "react";
 
 type SelectSemanasProps = {
   semanas: PamSemanaType[];
@@ -26,6 +27,19 @@ export function SelectSemanas({
     await setCookie("semanaId", value);
     router.replace(`/?semana=${value}`);
   };
+
+  useEffect(() => {
+    const handleCookie = async () => {
+      const cookie = await getCookie("semanaId");
+      if (cookie && cookie === selectedSemanaId.toString()) {
+        return;
+      }
+
+      await setCookie("semanaId", selectedSemanaId.toString());
+    };
+
+    handleCookie();
+  }, [selectedSemanaId]);
 
   return (
     <div className="px-4 lg:px-6">

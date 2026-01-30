@@ -15,7 +15,21 @@ export async function getSemanas(): Promise<PamSemanaType[]> {
 
   const semanas = await db.query.PamSemanas.findMany();
 
-  //   console.log(JSON.stringify(semanas, null, 2));
-
   return semanas || [];
+}
+
+export async function getSemanasByDescripcion(
+  descripcion: string,
+): Promise<PamSemanaType | undefined> {
+  const usuario = await auth();
+
+  if (!usuario?.user) {
+    redirect("/login");
+  }
+
+  const semana = await db.query.PamSemanas.findFirst({
+    where: (semanas, { eq }) => eq(semanas.descripcion, descripcion),
+  });
+
+  return semana;
 }

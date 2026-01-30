@@ -9,6 +9,7 @@ import { PamCabeceraSemanal, PamSemanas } from "@/db/schema";
 import { auth } from "../auth.config";
 import { Semana } from "@/responses";
 import { ExpedienteSchemaType, UpdateExpedienteSchemaType } from "@/schemas";
+import { cookies } from "next/headers";
 
 export async function getExpedientes(semanaId: number): Promise<Semana | null> {
   const usuario = await auth();
@@ -41,12 +42,16 @@ export async function createExpediente(data: ExpedienteSchemaType) {
     return null;
   }
 
+  const cookieStore = await cookies();
+  const semanaCookieId = cookieStore.get("semanaId")?.value;
+  const semanaId = semanaCookieId ? parseInt(semanaCookieId) : 1;
+
   const userId = Number(usuario.user.id);
 
   await db.insert(PamExpedientes).values({
     expediente: data.expediente,
     analistaId: userId,
-    semanaId: 1,
+    semanaId: semanaId,
     fechaIngreso: new Date().toISOString().toString(),
     estado: data.estado,
     fechaUltimaModificacion: "",

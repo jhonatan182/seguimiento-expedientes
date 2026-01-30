@@ -7,15 +7,15 @@ export type NuevoExpediente = InferInsertModel<typeof PamExpedientes>;
 export async function seedPamExpedientes() {
   // Estados posibles para los expedientes
   const estados = [
-    "Pendiente",
-    "En Circulación",
-    "Resuelto",
-    "Con Lugar",
-    "Sin Lugar",
-    "Parcial",
-    "Caducado",
-    "Dictamen",
-    "Requerido",
+    "CON_LUGAR",
+    "En SIN_LUGAR",
+    "PARCIAL",
+    "CADUCADO",
+    "DICTAMEN_CIRCULACION",
+    "DICTAMEN_CUSTODIA",
+    "DICTAMEN",
+    "REQUERIDO",
+    "PENDIENTE",
   ];
 
   // Generar expedientes distribuidos entre analistas y semanas
@@ -23,7 +23,7 @@ export async function seedPamExpedientes() {
   const expedientes: NuevoExpediente[] = [];
 
   // Generar aproximadamente 5-8 expedientes por semana distribuidos entre analistas
-  for (let semanaId = 1; semanaId <= 12; semanaId++) {
+  for (let semanaId = 1; semanaId <= 5; semanaId++) {
     const expedientesPorSemana = Math.floor(Math.random() * 4) + 5; // Entre 5 y 8 expedientes
 
     for (let i = 0; i < expedientesPorSemana; i++) {

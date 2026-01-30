@@ -8,36 +8,57 @@ import { DataTable } from "@/app/(main)/data-table";
 import { columns } from "./columns";
 import { getSemanas } from "../actions/semanas-actions";
 import { cookies } from "next/headers";
+import { buildWeek } from "@/utils/dates";
 
 type PageProps = {
   searchParams: Promise<{ [semana: string]: string | undefined }>;
 };
 
 export default async function Page({ searchParams }: PageProps) {
-  const cookieStore = await cookies();
-  const { semana } = await searchParams;
+  let { semana } = await searchParams;
 
-  const semanaCookieId = cookieStore.get("semanaId")?.value;
-
-  const data = await getExpedientes(
-    semana ? parseInt(semana) : parseInt(semanaCookieId || "1"),
-  );
+  const semanaDescripcion = buildWeek();
   const semanas = await getSemanas();
+  const isCurrentWeek = semanas.find(
+    (s) => s.descripcion === semanaDescripcion,
+  );
+
+  let semanaActualId: string = "";
+
+  if (isNaN(Number(semana))) {
+    semana = "0";
+  }
+
+  const semanaActual = semanas.find((s) => s.id.toString() === semana);
+
+  if (!semanaActual) {
+    semanaActualId =
+      semanas.find((s) => s.descripcion === semanaDescripcion)?.id.toString() ||
+      "1";
+  } else {
+    const cookieStore = await cookies();
+    const semanaCookieId = cookieStore.get("semanaId")?.value;
+    semanaActualId = semanaCookieId || "1";
+  }
+
+  const data = await getExpedientes(parseInt(semanaActualId));
 
   return (
     <>
       <SelectSemanas
         semanas={semanas}
-        selectedSemanaId={
-          semana ? parseInt(semana) : parseInt(semanaCookieId || "1")
-        }
+        selectedSemanaId={parseInt(semanaActualId)}
       />
 
       <CabeceraCards cabecera={data?.cabeceras[0] || null} />
 
       <SessionProvider>
         <div className="w-full flex justify-end gap-6 px-4 lg:px-6">
-          <DialogExpediente />
+          <DialogExpediente
+            isCurrentWeek={
+              isCurrentWeek?.id === parseInt(semanaActualId) ? true : false
+            }
+          />
         </div>
 
         <DataTable data={data?.expedientes || []} columns={columns} />
