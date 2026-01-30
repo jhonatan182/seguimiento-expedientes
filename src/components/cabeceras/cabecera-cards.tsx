@@ -35,9 +35,11 @@ export function CabeceraCards({ cabecera }: CabeceraCardsProps) {
             descripcion1="Con lugar"
             descripcion2="Sin lugar"
             descripcion3="Parcial"
+            descripcion4="Caducado"
             valorDescripcion1={cabecera?.conLugar || 0}
             valorDescripcion2={cabecera?.sinLugar || 0}
             valorDescripcion3={cabecera?.parcial || 0}
+            valorDescripcion4={cabecera?.caducado || 0}
           />
 
           <Cabecera
@@ -45,7 +47,7 @@ export function CabeceraCards({ cabecera }: CabeceraCardsProps) {
             titulo="Dictamen"
             className="bg-blue-700"
             descripcion1="Circulación"
-            descripcion2="Resueltos"
+            descripcion2="Custodia"
             valorDescripcion1={cabecera?.circulacion || 0}
             valorDescripcion2={cabecera?.resuelto || 0}
           />
