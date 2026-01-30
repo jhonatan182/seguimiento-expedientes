@@ -13,7 +13,9 @@ import { IconPlus } from "@tabler/icons-react";
 import { PencilIcon } from "lucide-react";
 import { UpdateExpedienteForm } from "./update-expediente-form";
 import { CreateExpedienteForm } from "./create-expediente-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { cookies } from "next/headers";
+import { getCookie, setCookie } from "@/app/actions/cookies-actions";
 
 type DialogExpedienteProps = {
   expediente?: PamExpedienteType;
@@ -25,6 +27,19 @@ export function DialogExpediente({
   isCurrentWeek,
 }: DialogExpedienteProps) {
   const [isOpen, setIsOpen] = useState(false);
+
+  //seteaar en una cookie isCurrentWeek para saber si es la semana actual
+  useEffect(() => {
+    const handleCookie = async () => {
+      if (isCurrentWeek === undefined) {
+        return;
+      }
+
+      await setCookie("isCurrentWeek", isCurrentWeek.toString());
+    };
+
+    handleCookie();
+  }, [isCurrentWeek]);
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>

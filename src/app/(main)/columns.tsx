@@ -14,6 +14,7 @@ import {
   SelectExpedienteEstado,
 } from "@/components/expedientes";
 import { formatDate } from "@/utils/dates";
+import { ProtectedComponentByCookie } from "@/components/security";
 
 function DragHandle({ id }: { id: number }) {
   const { attributes, listeners } = useSortable({
@@ -71,11 +72,13 @@ export const columns: ColumnDef<PamExpedienteType>[] = [
     id: "actions",
     cell: ({ row }) => {
       return (
-        <div className="flex items-center gap-2 ">
-          <DialogExpediente expediente={row.original} />
+        <ProtectedComponentByCookie keyCookie="isCurrentWeek">
+          <div className="flex items-center gap-2 ">
+            <DialogExpediente expediente={row.original} />
 
-          <AlertExpediente expedienteId={row.original.id} />
-        </div>
+            <AlertExpediente expedienteId={row.original.id} />
+          </div>
+        </ProtectedComponentByCookie>
       );
     },
   },

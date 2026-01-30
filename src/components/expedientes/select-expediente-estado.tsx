@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useSession } from "next-auth/react";
 import { Label } from "@/components/ui/label";
 import { PamExpedienteType } from "@/db/schema";
 import { ESTADOS } from "@/const";
@@ -13,7 +13,9 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { toggleExpedienteEstado } from "@/app/actions/expedientes-actions";
-import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { getCookie } from "@/app/actions/cookies-actions";
 
 type SelectExpedienteEstadoProps = {
   row: PamExpedienteType;
@@ -21,13 +23,12 @@ type SelectExpedienteEstadoProps = {
 
 export function SelectExpedienteEstado({ row }: SelectExpedienteEstadoProps) {
   const { data: session } = useSession();
+  const searchParams = useSearchParams();
+  const [isCurrentWeek, setIsCurrentWeek] = useState(false);
 
-  const estados = useMemo(() => {
-    const filtrados = ESTADOS.filter((estado) =>
-      estado.modulo.includes(session?.user?.modulo || "D"),
-    );
-    return filtrados;
-  }, [session]);
+  const estados = ESTADOS.filter((estado) =>
+    estado.modulo.includes(session?.user?.modulo || "D"),
+  );
 
   const handleValueChange = async (value: string) => {
     try {
@@ -39,14 +40,25 @@ export function SelectExpedienteEstado({ row }: SelectExpedienteEstadoProps) {
     }
   };
 
+  useEffect(() => {
+    const handleCookie = async () => {
+      const cookie = await getCookie("isCurrentWeek");
+      setIsCurrentWeek(cookie === "true");
+    };
+
+    handleCookie();
+  }, [searchParams]);
+
   return (
     <>
       <Label htmlFor={`${row.id}-estado`} className="sr-only">
         Estado
       </Label>
       <Select
+        key={row.estado + "-estado"}
         defaultValue={row.estado}
         onValueChange={(value) => handleValueChange(value)}
+        disabled={!isCurrentWeek}
       >
         <SelectTrigger
           className="w-38 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate"
