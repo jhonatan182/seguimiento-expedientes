@@ -29,11 +29,18 @@ export function UpdateExpedienteForm({
   });
 
   async function onSubmit(data: UpdateExpedienteSchemaType) {
-    //sleep 2 seconds
-    await updateExpediente(expediente.id, data);
+    try {
+      await updateExpediente(expediente.id, data);
 
-    toast.success("Expediente actualizado correctamente");
-    setIsOpen(false);
+      toast.success("Expediente actualizado correctamente");
+      setIsOpen(false);
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("Error al actualizar el expediente");
+      }
+    }
   }
 
   return (

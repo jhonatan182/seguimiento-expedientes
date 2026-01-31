@@ -36,11 +36,18 @@ export function CreateExpedienteForm({ setIsOpen }: CreateExpedienteFormProps) {
   });
 
   async function onSubmit(data: ExpedienteSchemaType) {
-    //sleep 2 seconds
-    await createExpediente(data);
+    try {
+      await createExpediente(data);
 
-    toast.success("Expediente creado correctamente");
-    setIsOpen(false);
+      toast.success("Expediente creado correctamente");
+      setIsOpen(false);
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("Error al crear el expediente");
+      }
+    }
   }
 
   const estados = useMemo(() => {
