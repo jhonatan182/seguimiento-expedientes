@@ -1,6 +1,3 @@
-import { PendienteToRequerido, PendienteToDictamen } from "../cambioEstado";
+import { PendienteToAny } from "../cambioEstado";
 
-export const stragiesList = [
-  new PendienteToDictamen(),
-  new PendienteToRequerido(),
-];
+export const stragiesList = [new PendienteToAny()];

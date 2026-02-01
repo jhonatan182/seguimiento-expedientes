@@ -1,25 +1,24 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { db } from "@/lib/drizzle";
 import { and, eq } from "drizzle-orm";
+import { db } from "@/lib/drizzle";
 
+import { ExpedienteSchemaType, UpdateExpedienteSchemaType } from "@/schemas";
+import { getCabeceraSemanal } from "./cabecera-semanal-actions";
 import { PamExpedientes } from "@/db/schema/PAM_EXPEDIENTES";
 import { PamCabeceraSemanal, PamSemanas } from "@/db/schema";
-import { auth } from "../auth.config";
+import { getSessionUserWithCookies } from "./auth-actions";
+import { ContextStrategy } from "@/rdn/contextStategy";
+import { validateEstado } from "@/utils/validations";
+import { stragiesList } from "@/rdn/strategies";
+import { mapColumnDb } from "@/utils/mappers";
 import { Semana } from "@/responses";
-import { ExpedienteSchemaType, UpdateExpedienteSchemaType } from "@/schemas";
-import { cookies } from "next/headers";
-import { mapColumnDb, ESTADOS_VALIDOS, EstadoValido } from "@/utils/mappers";
 
 export async function getExpedientes(semanaId: number): Promise<Semana | null> {
-  const usuario = await auth();
+  const { user } = await getSessionUserWithCookies();
 
-  if (!usuario?.user) {
-    return null;
-  }
-
-  const userId = Number(usuario.user.id);
+  const userId = Number(user.id);
 
   const semana = await db.query.PamSemanas.findFirst({
     where: eq(PamSemanas.id, semanaId),
@@ -36,73 +35,97 @@ export async function getExpedientes(semanaId: number): Promise<Semana | null> {
   return semana || null;
 }
 
-export async function createExpediente(data: ExpedienteSchemaType) {
-  const usuario = await auth();
+export async function expedienteExists(
+  expediente: string,
+  userId: number,
+  semanaId: number,
+  excludeId?: number,
+): Promise<boolean> {
+  const conditions = [
+    eq(PamExpedientes.analistaId, userId),
+    eq(PamExpedientes.semanaId, semanaId),
+    eq(PamExpedientes.expediente, expediente.toUpperCase()),
+  ];
 
-  if (!usuario?.user) {
-    return null;
+  if (excludeId) {
+    conditions.push(eq(PamExpedientes.id, excludeId));
   }
 
-  const cookieStore = await cookies();
-  const semanaCookieId = cookieStore.get("semanaId")?.value;
-  const semanaId = semanaCookieId ? parseInt(semanaCookieId) : 1;
+  const existing = await db.query.PamExpedientes.findFirst({
+    where: and(...conditions),
+  });
 
-  const userId = Number(usuario.user.id);
+  return !!existing;
+}
 
-  //buscar si el analista ya creo el mismo expediente en la misma semana
+async function findExpedienteWithPermissions(
+  expedienteId: number,
+  userId: number,
+  semanaId: number,
+) {
   const expediente = await db.query.PamExpedientes.findFirst({
     where: and(
+      eq(PamExpedientes.id, expedienteId),
       eq(PamExpedientes.analistaId, userId),
       eq(PamExpedientes.semanaId, semanaId),
-      eq(PamExpedientes.expediente, data.expediente.toUpperCase()),
     ),
   });
+
+  return expediente;
+}
+
+export async function createExpediente(data: ExpedienteSchemaType) {
+  const { user, cookies } = await getSessionUserWithCookies();
+  const userId = Number(user.id);
+  const semanaId = cookies.semanaId;
+
+  //Validar el estado
+  const estadoValido = validateEstado(data.estado);
+  const columnaDb = mapColumnDb[estadoValido];
+
+  //buscar si el analista ya creo el mismo expediente en la misma semana
+  const expediente = await expedienteExists(data.expediente, userId, semanaId);
 
   if (expediente) {
     throw new Error("El expediente ya existe en la misma semana");
   }
 
-  //Crear expediente
-  await db.insert(PamExpedientes).values({
-    expediente: data.expediente.toUpperCase(),
-    analistaId: userId,
-    semanaId: semanaId,
-    fechaIngreso: new Date().toISOString().toString(),
-    estado: data.estado,
-    fechaUltimaModificacion: "",
-  });
-
-  //verficar si existe cabecera en la semana que se esta creando el expediente
-  const cabecera = await db.query.PamCabeceraSemanal.findFirst({
-    where: and(
-      eq(PamCabeceraSemanal.analistaId, userId),
-      eq(PamCabeceraSemanal.semanaId, semanaId),
-    ),
-  });
-
-  // Validate that the estado is a valid state
-  if (!ESTADOS_VALIDOS.includes(data.estado as EstadoValido)) {
-    throw new Error(`Estado inválido: ${data.estado}`);
-  }
-
-  const estadoValido = data.estado as EstadoValido;
-  const columnaDb = mapColumnDb[estadoValido];
-
-  if (!cabecera) {
-    await db.insert(PamCabeceraSemanal).values({
-      semanaId: semanaId,
+  await db.transaction(async (tx) => {
+    //Crear expediente
+    await tx.insert(PamExpedientes).values({
+      expediente: data.expediente.toUpperCase(),
       analistaId: userId,
-      nuevoIngreso: 1,
-      [columnaDb]: 1,
-    });
-  } else {
-    await db.update(PamCabeceraSemanal).set({
       semanaId: semanaId,
-      analistaId: userId,
-      nuevoIngreso: cabecera.nuevoIngreso + 1,
-      [columnaDb]: cabecera[columnaDb] + 1,
+      fechaIngreso: new Date().toISOString().toString(),
+      estado: estadoValido,
+      fechaUltimaModificacion: "",
     });
-  }
+
+    //verficar si existe cabecera en la semana que se esta creando el expediente
+    const cabecera = await getCabeceraSemanal(userId, semanaId);
+
+    if (!cabecera) {
+      await tx.insert(PamCabeceraSemanal).values({
+        semanaId: semanaId,
+        analistaId: userId,
+        nuevoIngreso: 1,
+        [columnaDb]: 1,
+      });
+    } else {
+      await tx
+        .update(PamCabeceraSemanal)
+        .set({
+          nuevoIngreso: cabecera.nuevoIngreso + 1,
+          [columnaDb]: cabecera[columnaDb] + 1,
+        })
+        .where(
+          and(
+            eq(PamCabeceraSemanal.semanaId, semanaId),
+            eq(PamCabeceraSemanal.analistaId, userId),
+          ),
+        );
+    }
+  });
 
   revalidatePath("/");
 }
@@ -111,25 +134,11 @@ export async function updateExpediente(
   expedienteId: number,
   data: UpdateExpedienteSchemaType,
 ) {
-  const usuario = await auth();
+  const { user, cookies } = await getSessionUserWithCookies();
+  const userId = Number(user.id);
+  const semanaId = cookies.semanaId;
 
-  if (!usuario?.user) {
-    return null;
-  }
-
-  const cookieStore = await cookies();
-  const semanaCookieId = cookieStore.get("semanaId")?.value;
-  const semanaId = semanaCookieId ? parseInt(semanaCookieId) : 1;
-
-  const userId = Number(usuario.user.id);
-
-  const expediente = await db.query.PamExpedientes.findFirst({
-    where: and(
-      eq(PamExpedientes.analistaId, userId),
-      eq(PamExpedientes.semanaId, semanaId),
-      eq(PamExpedientes.expediente, data.expediente.toUpperCase()),
-    ),
-  });
+  const expediente = await expedienteExists(data.expediente, userId, semanaId);
 
   if (expediente) {
     throw new Error("El expediente ya existe en la misma semana");
@@ -152,62 +161,64 @@ export async function updateExpediente(
 }
 
 export async function deleteExpediente(expedienteId: number) {
-  const usuario = await auth();
-
-  if (!usuario?.user) {
-    return null;
-  }
-
-  const cookieStore = await cookies();
-  const semanaCookieId = cookieStore.get("semanaId")?.value;
-  const semanaId = semanaCookieId ? parseInt(semanaCookieId) : 1;
-
-  const userId = Number(usuario.user.id);
+  const { user, cookies } = await getSessionUserWithCookies();
+  const userId = Number(user.id);
+  const semanaId = cookies.semanaId;
 
   //buscar si el analista ya creo el mismo expediente en la misma semana
-  const expediente = await db.query.PamExpedientes.findFirst({
-    where: and(
-      eq(PamExpedientes.analistaId, userId),
-      eq(PamExpedientes.semanaId, semanaId),
-      eq(PamExpedientes.id, expedienteId),
-    ),
-  });
+  const expediente = await findExpedienteWithPermissions(
+    expedienteId,
+    userId,
+    semanaId,
+  );
 
   if (!expediente) {
     throw new Error("El expediente no existe");
   }
 
-  // buscar cabecera
-  const cabecera = await db.query.PamCabeceraSemanal.findFirst({
-    where: and(
-      eq(PamCabeceraSemanal.analistaId, userId),
-      eq(PamCabeceraSemanal.semanaId, semanaId),
-    ),
+  const estadoValido = validateEstado(expediente.estado);
+
+  await db.transaction(async (tx) => {
+    // buscar cabecera
+    const cabecera = await getCabeceraSemanal(userId, semanaId);
+
+    if (!cabecera) {
+      throw new Error("La cabecera no existe");
+    }
+
+    const columnaDb = mapColumnDb[estadoValido];
+    const newNuevoIngreso = cabecera.nuevoIngreso - 1;
+    const newEstadoCount = cabecera[columnaDb] - 1;
+
+    if (newNuevoIngreso < 0 || newEstadoCount < 0) {
+      throw new Error("Los contadores de la cabecera no pueden ser negativos");
+    }
+
+    // actualizar cabecera
+    await tx
+      .update(PamCabeceraSemanal)
+      .set({
+        nuevoIngreso: newNuevoIngreso,
+        [columnaDb]: newEstadoCount,
+      })
+      .where(
+        and(
+          eq(PamCabeceraSemanal.semanaId, semanaId),
+          eq(PamCabeceraSemanal.analistaId, userId),
+        ),
+      );
+
+    // eliminar
+    await tx
+      .delete(PamExpedientes)
+      .where(
+        and(
+          eq(PamExpedientes.id, expedienteId),
+          eq(PamExpedientes.analistaId, userId),
+          eq(PamExpedientes.semanaId, semanaId),
+        ),
+      );
   });
-
-  if (!cabecera) {
-    throw new Error("La cabecera no existe");
-  }
-
-  const estadoValido = expediente.estado as EstadoValido;
-  const columnaDb = mapColumnDb[estadoValido];
-
-  //actualizar con resta la cabecera
-  await db.update(PamCabeceraSemanal).set({
-    nuevoIngreso: cabecera.nuevoIngreso - 1,
-    [columnaDb]: cabecera[columnaDb] - 1,
-  });
-
-  // eliminar
-  await db
-    .delete(PamExpedientes)
-    .where(
-      and(
-        eq(PamExpedientes.id, expedienteId),
-        eq(PamExpedientes.analistaId, userId),
-        eq(PamExpedientes.semanaId, semanaId),
-      ),
-    );
 
   revalidatePath("/");
 }
@@ -216,38 +227,25 @@ export async function toggleExpedienteEstado(
   expedienteId: number,
   nuevoEstado: string,
 ) {
-  const usuario = await auth();
-  const cookieStore = await cookies();
+  const { user, cookies } = await getSessionUserWithCookies();
+  const userId = Number(user.id);
+  const semanaId = cookies.semanaId;
 
-  if (!usuario?.user) {
-    return null;
-  }
+  const estadoValido = validateEstado(nuevoEstado);
 
-  const userId = Number(usuario.user.id);
-  const semanaCookieId = cookieStore.get("semanaId")?.value;
-  const semanaId = semanaCookieId ? parseInt(semanaCookieId) : 1;
-
-  const expediente = await db.query.PamExpedientes.findFirst({
-    where: and(
-      eq(PamExpedientes.analistaId, userId),
-      eq(PamExpedientes.semanaId, semanaId),
-      eq(PamExpedientes.id, expedienteId),
-    ),
-  });
+  const expediente = await findExpedienteWithPermissions(
+    expedienteId,
+    userId,
+    semanaId,
+  );
 
   if (!expediente) {
     throw new Error("El expediente no existe");
   }
 
-  if (!ESTADOS_VALIDOS.includes(nuevoEstado as EstadoValido)) {
-    throw new Error(`Estado inválido: ${nuevoEstado}`);
-  }
+  const estadoAnterior = validateEstado(expediente.estado);
 
-  const estadoValido = nuevoEstado as EstadoValido;
   const columnaDb = mapColumnDb[estadoValido];
-
-  //estado anterior
-  const estadoAnterior = expediente.estado as EstadoValido;
   const columnaDbAnterior = mapColumnDb[estadoAnterior];
 
   //actualizar la cabecera con el nuevo estado y restarle el estado anterior
@@ -262,23 +260,25 @@ export async function toggleExpedienteEstado(
     throw new Error("La cabecera no existe");
   }
 
-  await db.update(PamCabeceraSemanal).set({
-    [columnaDb]: cabecera[columnaDb] + 1,
-    [columnaDbAnterior]: cabecera[columnaDbAnterior] - 1,
-  });
+  const strategy = stragiesList.find((s) =>
+    s.satisfy({ estadoActual: "PENDIENTE", nuevoEstado: "REQUERIDO" }),
+  );
 
-  await db
-    .update(PamExpedientes)
-    .set({
-      estado: nuevoEstado,
-      fechaUltimaModificacion: new Date().toISOString().toString(),
-    })
-    .where(
-      and(
-        eq(PamExpedientes.id, expedienteId),
-        eq(PamExpedientes.analistaId, userId),
-      ),
-    );
+  if (!strategy) {
+    throw new Error("La estrategia no existe");
+  }
+
+  //ejucutar strategy
+  const simona = new ContextStrategy(strategy);
+
+  simona.cambioEstado(
+    cabecera,
+    columnaDb,
+    columnaDbAnterior,
+    nuevoEstado,
+    expedienteId,
+    userId,
+  );
 
   revalidatePath("/");
 }

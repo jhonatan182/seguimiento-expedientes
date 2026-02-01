@@ -1,11 +1,14 @@
 "use server";
 
-import { signIn } from "@/app/auth.config";
+import { auth, signIn } from "@/app/auth.config";
 import { AuthError } from "next-auth";
 import { LoginSchemaType } from "@/schemas";
 import { db } from "@/lib/drizzle";
 import { PamAnalista } from "@/db/schema/PAM_ANALISTA";
 import { eq } from "drizzle-orm";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { getCookie } from "./cookies-actions";
 
 export async function authenticate(data: LoginSchemaType) {
   try {
@@ -38,4 +41,25 @@ export async function getUserByUsername(username: string) {
     .get();
 
   return user;
+}
+
+export async function getSessionUserWithCookies() {
+  const session = await auth();
+
+  if (!session?.user) {
+    return redirect("/login");
+  }
+
+  const semanaIdCookie = await getCookie("semanaId");
+
+  if (!semanaIdCookie) {
+    throw new Error("No se encontró la semana");
+  }
+
+  return {
+    user: session.user,
+    cookies: {
+      semanaId: Number(semanaIdCookie),
+    },
+  };
 }

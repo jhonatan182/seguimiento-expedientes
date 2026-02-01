@@ -57,6 +57,7 @@ export function DialogExpediente({
         onOpenAutoFocus={(e) => {
           e.preventDefault();
         }}
+        aria-describedby=""
       >
         <DialogHeader>
           <DialogTitle>
