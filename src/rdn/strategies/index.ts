@@ -5,9 +5,11 @@ import {
   AnyToDictamen,
   DictamentToAny,
   DictamenToDictamen,
+  DictamenToResuelto,
 } from "../cambioEstado";
 
 export const stragiesList = [
+  new DictamenToResuelto(),
   new DictamenToDictamen(),
   new PendienteToAny(),
   new DictamentToAny(),

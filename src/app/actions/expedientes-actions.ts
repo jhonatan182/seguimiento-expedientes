@@ -241,6 +241,9 @@ export async function deleteExpediente(
       .set({
         nuevoIngreso: newNuevoIngreso,
         [columnaDb]: newEstadoCount,
+        dictamen: incrementarEstadoDictamen(estadoValido)
+          ? cabecera.dictamen - 1
+          : cabecera.dictamen,
       })
       .where(
         and(
