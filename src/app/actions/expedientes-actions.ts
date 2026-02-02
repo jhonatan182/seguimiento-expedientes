@@ -19,11 +19,12 @@ import { DefaultStrategy } from "@/rdn/cambioEstado";
 import { stragiesList } from "@/rdn/strategies";
 import { mapColumnDb } from "@/utils/mappers";
 import { Semana } from "@/responses";
+import { auth } from "../auth.config";
 
 export async function getExpedientes(semanaId: number): Promise<Semana | null> {
-  const { user } = await getSessionUserWithCookies();
+  const session = await auth();
 
-  const userId = Number(user.id);
+  const userId = Number(session?.user?.id);
 
   const semana = await db.query.PamSemanas.findFirst({
     where: eq(PamSemanas.id, semanaId),
