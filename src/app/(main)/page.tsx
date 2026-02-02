@@ -2,7 +2,7 @@ import { SessionProvider } from "next-auth/react";
 import { cookies } from "next/headers";
 
 import { getExpedientes } from "../actions/expedientes-actions";
-import { DialogExpediente } from "@/components/expedientes";
+import { DialogExpediente, NextWeekButton } from "@/components/expedientes";
 import { getSemanas } from "../actions/semanas-actions";
 import { CabeceraCards } from "@/components/cabeceras";
 import { SelectSemanas } from "@/components/semanas";
@@ -49,10 +49,13 @@ export default async function Page({ searchParams }: PageProps) {
 
   return (
     <>
-      <SelectSemanas
-        semanas={semanas}
-        selectedSemanaId={parseInt(semanaActualId)}
-      />
+      <div className="flex items-center gap-1">
+        <SelectSemanas
+          semanas={semanas}
+          selectedSemanaId={parseInt(semanaActualId)}
+        />
+        <NextWeekButton />
+      </div>
 
       <CabeceraCards cabecera={data.cabeceras[0]} />
 

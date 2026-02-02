@@ -1,6 +1,6 @@
 import { and, eq } from "drizzle-orm";
 
-import { ICambioEstado, IEstatadosEstrategy } from "@/interfaces";
+import { IEstatadosEstrategy } from "@/interfaces";
 import { db } from "@/lib/drizzle";
 
 import {

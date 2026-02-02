@@ -1,7 +1,7 @@
 import { and, eq } from "drizzle-orm";
 
 import { ICambioEstado, IEstatadosEstrategy } from "@/interfaces";
-import { DICTAMEN, DICTAMEN_CIRCULACION, DICTAMEN_CUSTODIA } from "@/const";
+import { DICTAMEN_CIRCULACION, DICTAMEN_CUSTODIA } from "@/const";
 import { db } from "@/lib/drizzle";
 import {
   PamCabeceraSemanal,
