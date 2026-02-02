@@ -10,7 +10,12 @@ import { PamExpedientes } from "@/db/schema/PAM_EXPEDIENTES";
 import { PamCabeceraSemanal, PamSemanas } from "@/db/schema";
 import { getSessionUserWithCookies } from "./auth-actions";
 import { ContextStrategy } from "@/rdn/contextStategy";
-import { validateEstado } from "@/utils/validations";
+import {
+  incrementarEstadoDictamen,
+  incrementarEstadoResuelto,
+  validateEstado,
+} from "@/utils/validations";
+import { DefaultStrategy } from "@/rdn/cambioEstado";
 import { stragiesList } from "@/rdn/strategies";
 import { mapColumnDb } from "@/utils/mappers";
 import { Semana } from "@/responses";
@@ -110,6 +115,8 @@ export async function createExpediente(data: ExpedienteSchemaType) {
         analistaId: userId,
         nuevoIngreso: 1,
         [columnaDb]: 1,
+        resuelto: incrementarEstadoResuelto(estadoValido) ? 1 : 0,
+        dictamen: incrementarEstadoDictamen(estadoValido) ? 1 : 0,
       });
     } else {
       await tx
@@ -117,6 +124,12 @@ export async function createExpediente(data: ExpedienteSchemaType) {
         .set({
           nuevoIngreso: cabecera.nuevoIngreso + 1,
           [columnaDb]: cabecera[columnaDb] + 1,
+          resuelto: incrementarEstadoResuelto(estadoValido)
+            ? cabecera.resuelto + 1
+            : cabecera.resuelto,
+          dictamen: incrementarEstadoDictamen(estadoValido)
+            ? cabecera.dictamen + 1
+            : cabecera.dictamen,
         })
         .where(
           and(
@@ -261,24 +274,31 @@ export async function toggleExpedienteEstado(
   }
 
   const strategy = stragiesList.find((s) =>
-    s.satisfy({ estadoActual: "PENDIENTE", nuevoEstado: "REQUERIDO" }),
+    s.satisfy({ estadoActual: expediente.estado, nuevoEstado: nuevoEstado }),
   );
 
   if (!strategy) {
-    throw new Error("La estrategia no existe");
+    new DefaultStrategy().execute(
+      cabecera,
+      columnaDb,
+      columnaDbAnterior,
+      nuevoEstado,
+      expedienteId,
+      userId,
+    );
+  } else {
+    //ejucutar strategy
+    const context = new ContextStrategy(strategy);
+
+    context.cambioEstado(
+      cabecera,
+      columnaDb,
+      columnaDbAnterior,
+      nuevoEstado,
+      expedienteId,
+      userId,
+    );
   }
-
-  //ejucutar strategy
-  const simona = new ContextStrategy(strategy);
-
-  simona.cambioEstado(
-    cabecera,
-    columnaDb,
-    columnaDbAnterior,
-    nuevoEstado,
-    expedienteId,
-    userId,
-  );
 
   revalidatePath("/");
 }

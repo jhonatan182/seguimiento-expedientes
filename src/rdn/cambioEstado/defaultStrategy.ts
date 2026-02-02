@@ -2,31 +2,16 @@ import { and, eq } from "drizzle-orm";
 
 import { ICambioEstado, IEstatadosEstrategy } from "@/interfaces";
 import { db } from "@/lib/drizzle";
-import {
-  CADUCADO,
-  CON_LUGAR,
-  DICTAMEN,
-  DICTAMEN_CIRCULACION,
-  DICTAMEN_CUSTODIA,
-  PARCIAL,
-  PENDIENTE,
-  REQUERIDO,
-  SIN_LUGAR,
-} from "@/const";
+
 import {
   PamCabeceraSemanal,
   PamCabeceraSemanalType,
   PamExpedientes,
 } from "@/db/schema";
 
-export class PendienteToAny implements IEstatadosEstrategy {
-  public satisfy(cambioEstado: ICambioEstado): boolean {
-    return (
-      cambioEstado.estadoActual === PENDIENTE &&
-      [DICTAMEN_CIRCULACION, DICTAMEN_CUSTODIA, DICTAMEN, REQUERIDO].includes(
-        cambioEstado.nuevoEstado,
-      )
-    );
+export class DefaultStrategy implements IEstatadosEstrategy {
+  public satisfy(): boolean {
+    return true;
   }
 
   public async execute(
@@ -37,7 +22,7 @@ export class PendienteToAny implements IEstatadosEstrategy {
     expedienteId: number,
     userId: number,
   ) {
-    console.log("PendienteAny");
+    console.log("DefaultStrategy");
 
     db.transaction(async (tx) => {
       await tx

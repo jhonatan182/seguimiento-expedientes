@@ -16,6 +16,7 @@ import { toggleExpedienteEstado } from "@/app/actions/expedientes-actions";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getCookie } from "@/app/actions/cookies-actions";
+import { disableSelectEstado } from "@/utils/validations";
 
 type SelectExpedienteEstadoProps = {
   row: PamExpedienteType;
@@ -36,6 +37,11 @@ export function SelectExpedienteEstado({ row }: SelectExpedienteEstadoProps) {
 
       toast.success("Estado actualizado correctamente");
     } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+        return;
+      }
+
       toast.error("Error al actualizar el estado");
     }
   };
@@ -58,7 +64,7 @@ export function SelectExpedienteEstado({ row }: SelectExpedienteEstadoProps) {
         key={row.estado + "-estado"}
         defaultValue={row.estado}
         onValueChange={(value) => handleValueChange(value)}
-        disabled={!isCurrentWeek}
+        disabled={!isCurrentWeek || disableSelectEstado(row.estado)}
       >
         <SelectTrigger
           className="w-38 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate"
@@ -67,7 +73,7 @@ export function SelectExpedienteEstado({ row }: SelectExpedienteEstadoProps) {
         >
           <SelectValue placeholder="Asignar estado" />
         </SelectTrigger>
-        <SelectContent align="end">
+        <SelectContent position="popper">
           {estados.map((estado) => (
             <SelectItem key={estado.value} value={estado.value}>
               {estado.label}

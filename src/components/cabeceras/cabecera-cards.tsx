@@ -32,10 +32,10 @@ export function CabeceraCards({ cabecera }: CabeceraCardsProps) {
             valor={cabecera?.resuelto || 0}
             titulo="Resuelto"
             className="bg-blue-700"
-            descripcion1="Con lugar"
-            descripcion2="Sin lugar"
-            descripcion3="Parcial"
-            descripcion4="Caducado"
+            descripcion1="Con lugar: "
+            descripcion2="Sin lugar: "
+            descripcion3="Parcial: "
+            descripcion4="Caducado: "
             valorDescripcion1={cabecera?.conLugar || 0}
             valorDescripcion2={cabecera?.sinLugar || 0}
             valorDescripcion3={cabecera?.parcial || 0}
@@ -46,8 +46,8 @@ export function CabeceraCards({ cabecera }: CabeceraCardsProps) {
             valor={cabecera?.dictamen || 0}
             titulo="Dictamen"
             className="bg-blue-700"
-            descripcion1="Circulación"
-            descripcion2="Custodia"
+            descripcion1="Circulación: "
+            descripcion2="Custodia: "
             valorDescripcion1={cabecera?.circulacion || 0}
             valorDescripcion2={cabecera?.resuelto || 0}
           />

@@ -12,6 +12,10 @@ export async function seedPamSemanas() {
     { descripcion: "Semana 1.3 - Enero 2026" },
     { descripcion: "Semana 1.4 - Enero 2026" },
     { descripcion: "Semana 1.5 - Enero 2026" },
+    { descripcion: "Semana 2.1 - Febrero 2026" },
+    { descripcion: "Semana 2.2 - Febrero 2026" },
+    { descripcion: "Semana 2.3 - Febrero 2026" },
+    { descripcion: "Semana 2.4 - Febrero 2026" },
   ];
 
   try {

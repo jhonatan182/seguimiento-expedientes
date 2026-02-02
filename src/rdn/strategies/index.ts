@@ -1,3 +1,11 @@
-import { PendienteToAny } from "../cambioEstado";
+import {
+  PendienteToAny,
+  DefaultStrategy,
+  AnyToResuelto,
+} from "../cambioEstado";
 
-export const stragiesList = [new PendienteToAny()];
+export const stragiesList = [
+  new AnyToResuelto(),
+  new PendienteToAny(),
+  new DefaultStrategy(),
+];

@@ -2,30 +2,19 @@ import { and, eq } from "drizzle-orm";
 
 import { ICambioEstado, IEstatadosEstrategy } from "@/interfaces";
 import { db } from "@/lib/drizzle";
-import {
-  CADUCADO,
-  CON_LUGAR,
-  DICTAMEN,
-  DICTAMEN_CIRCULACION,
-  DICTAMEN_CUSTODIA,
-  PARCIAL,
-  PENDIENTE,
-  REQUERIDO,
-  SIN_LUGAR,
-} from "@/const";
+import { CADUCADO, CON_LUGAR, PARCIAL, SIN_LUGAR } from "@/const";
 import {
   PamCabeceraSemanal,
   PamCabeceraSemanalType,
   PamExpedientes,
 } from "@/db/schema";
 
-export class PendienteToAny implements IEstatadosEstrategy {
+export class AnyToResuelto implements IEstatadosEstrategy {
   public satisfy(cambioEstado: ICambioEstado): boolean {
-    return (
-      cambioEstado.estadoActual === PENDIENTE &&
-      [DICTAMEN_CIRCULACION, DICTAMEN_CUSTODIA, DICTAMEN, REQUERIDO].includes(
-        cambioEstado.nuevoEstado,
-      )
+    console.log("AnyToResuelto satisfy", cambioEstado);
+
+    return [CON_LUGAR, SIN_LUGAR, PARCIAL, CADUCADO].includes(
+      cambioEstado.nuevoEstado,
     );
   }
 
@@ -37,7 +26,11 @@ export class PendienteToAny implements IEstatadosEstrategy {
     expedienteId: number,
     userId: number,
   ) {
-    console.log("PendienteAny");
+    console.log("AnyToResuelto");
+
+    const { conLugar, sinLugar, parcial, caducado } = cabeceraSemanal;
+    const totalResuelto =
+      conLugar + sinLugar + parcial + caducado + cabeceraSemanal[columnaDb] + 1;
 
     db.transaction(async (tx) => {
       await tx
@@ -45,6 +38,7 @@ export class PendienteToAny implements IEstatadosEstrategy {
         .set({
           [columnaDb]: cabeceraSemanal[columnaDb] + 1,
           [columnaDbAnterior]: cabeceraSemanal[columnaDbAnterior] - 1,
+          resuelto: totalResuelto,
         })
         .where(
           and(
