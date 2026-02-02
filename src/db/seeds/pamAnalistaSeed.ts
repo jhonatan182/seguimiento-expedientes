@@ -12,14 +12,14 @@ export async function seedPamAnalistas() {
       nombre: "Kelvin Avila",
       usuario: "kavila",
       password: bcrypt.hashSync("password123", 10),
-      modulo: "D",
+      modulo: "E",
       isJefe: "S",
     },
     {
       nombre: "Jhonatan Vargas",
       usuario: "jvargas",
       password: bcrypt.hashSync("password123", 10),
-      modulo: "D",
+      modulo: "E",
       isJefe: "S",
     },
     {

@@ -1,5 +1,13 @@
 "use client";
 
+import { IconPlus } from "@tabler/icons-react";
+import { useEffect, useState } from "react";
+import { PencilIcon } from "lucide-react";
+
+import { UpdateExpedienteForm } from "./update-expediente-form";
+import { CreateExpedienteForm } from "./create-expediente-form";
+import { setCookie } from "@/app/actions/cookies-actions";
+import { PamExpedienteType } from "@/db/schema";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -8,14 +16,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { PamExpedienteType } from "@/db/schema";
-import { IconPlus } from "@tabler/icons-react";
-import { PencilIcon } from "lucide-react";
-import { UpdateExpedienteForm } from "./update-expediente-form";
-import { CreateExpedienteForm } from "./create-expediente-form";
-import { useEffect, useState } from "react";
-import { cookies } from "next/headers";
-import { getCookie, setCookie } from "@/app/actions/cookies-actions";
 
 type DialogExpedienteProps = {
   expediente?: PamExpedienteType;

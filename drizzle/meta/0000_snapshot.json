@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "9b9c4c15-93ae-473e-b5a9-af39d6d5d288",
+  "id": "3829739a-e7fe-4cf2-8263-555339f0069b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "PAM_ANALISTA": {
@@ -178,6 +178,22 @@
         },
         "dictamen": {
           "name": "dictamen",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "dictamen_custodia": {
+          "name": "dictamen_custodia",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "dictamen_circulacion": {
+          "name": "dictamen_circulacion",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,

@@ -48,8 +48,8 @@ export function CabeceraCards({ cabecera }: CabeceraCardsProps) {
             className="bg-blue-700"
             descripcion1="Circulación: "
             descripcion2="Custodia: "
-            valorDescripcion1={cabecera?.circulacion || 0}
-            valorDescripcion2={cabecera?.resuelto || 0}
+            valorDescripcion1={cabecera?.dictamenCirculacion || 0}
+            valorDescripcion2={cabecera?.dictamenCustodia || 0}
           />
         </div>
 

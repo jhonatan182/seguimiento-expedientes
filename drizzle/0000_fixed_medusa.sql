@@ -26,6 +26,8 @@ CREATE TABLE `PAM_CABECERA_SEMANAL` (
 	`parcial` integer DEFAULT 0 NOT NULL,
 	`caducado` integer DEFAULT 0 NOT NULL,
 	`dictamen` integer DEFAULT 0 NOT NULL,
+	`dictamen_custodia` integer DEFAULT 0 NOT NULL,
+	`dictamen_circulacion` integer DEFAULT 0 NOT NULL,
 	`requerido` integer DEFAULT 0 NOT NULL,
 	`pendiente` integer DEFAULT 0 NOT NULL,
 	`historico_circulacion` integer DEFAULT 0 NOT NULL,

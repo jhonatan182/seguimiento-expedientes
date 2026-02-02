@@ -22,6 +22,8 @@ export async function seedPamCabeceraSemanal() {
       requerido: 10,
       pendiente: 18,
       historicoCirculacion: 120,
+      dictamenCustodia: 12,
+      dictamenCirculacion: 12,
     },
     {
       semanaId: 2,
@@ -38,6 +40,8 @@ export async function seedPamCabeceraSemanal() {
       requerido: 12,
       pendiente: 20,
       historicoCirculacion: 135,
+      dictamenCustodia: 15,
+      dictamenCirculacion: 15,
     },
     {
       semanaId: 1,
@@ -54,6 +58,8 @@ export async function seedPamCabeceraSemanal() {
       requerido: 11,
       pendiente: 19,
       historicoCirculacion: 140,
+      dictamenCustodia: 13,
+      dictamenCirculacion: 13,
     },
     {
       semanaId: 2,
@@ -70,6 +76,8 @@ export async function seedPamCabeceraSemanal() {
       requerido: 14,
       pendiente: 22,
       historicoCirculacion: 150,
+      dictamenCustodia: 16,
+      dictamenCirculacion: 16,
     },
     {
       semanaId: 3,
@@ -86,6 +94,8 @@ export async function seedPamCabeceraSemanal() {
       requerido: 12,
       pendiente: 21,
       historicoCirculacion: 155,
+      dictamenCustodia: 14,
+      dictamenCirculacion: 14,
     },
   ];
 

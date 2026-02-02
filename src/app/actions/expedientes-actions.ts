@@ -18,7 +18,7 @@ import {
 import { DefaultStrategy } from "@/rdn/cambioEstado";
 import { stragiesList } from "@/rdn/strategies";
 import { mapColumnDb } from "@/utils/mappers";
-import { Semana } from "@/responses";
+import { ActionsResponse, Semana } from "@/responses";
 import { auth } from "../auth.config";
 
 export async function getExpedientes(semanaId: number): Promise<Semana | null> {
@@ -80,7 +80,9 @@ async function findExpedienteWithPermissions(
   return expediente;
 }
 
-export async function createExpediente(data: ExpedienteSchemaType) {
+export async function createExpediente(
+  data: ExpedienteSchemaType,
+): Promise<ActionsResponse> {
   const { user, cookies } = await getSessionUserWithCookies();
   const userId = Number(user.id);
   const semanaId = cookies.semanaId;
@@ -93,7 +95,10 @@ export async function createExpediente(data: ExpedienteSchemaType) {
   const expediente = await expedienteExists(data.expediente, userId, semanaId);
 
   if (expediente) {
-    throw new Error("El expediente ya existe en la misma semana");
+    return {
+      success: false,
+      message: "El expediente ya existe en la misma semana",
+    };
   }
 
   await db.transaction(async (tx) => {
@@ -142,12 +147,16 @@ export async function createExpediente(data: ExpedienteSchemaType) {
   });
 
   revalidatePath("/");
+  return {
+    success: true,
+    message: "Expediente creado exitosamente",
+  };
 }
 
 export async function updateExpediente(
   expedienteId: number,
   data: UpdateExpedienteSchemaType,
-) {
+): Promise<ActionsResponse> {
   const { user, cookies } = await getSessionUserWithCookies();
   const userId = Number(user.id);
   const semanaId = cookies.semanaId;
@@ -155,7 +164,10 @@ export async function updateExpediente(
   const expediente = await expedienteExists(data.expediente, userId, semanaId);
 
   if (expediente) {
-    throw new Error("El expediente ya existe en la misma semana");
+    return {
+      success: false,
+      message: "El expediente ya existe en la misma semana",
+    };
   }
 
   // actualizar
@@ -172,9 +184,15 @@ export async function updateExpediente(
     );
 
   revalidatePath("/");
+  return {
+    success: true,
+    message: "Expediente actualizado exitosamente",
+  };
 }
 
-export async function deleteExpediente(expedienteId: number) {
+export async function deleteExpediente(
+  expedienteId: number,
+): Promise<ActionsResponse> {
   const { user, cookies } = await getSessionUserWithCookies();
   const userId = Number(user.id);
   const semanaId = cookies.semanaId;
@@ -187,7 +205,10 @@ export async function deleteExpediente(expedienteId: number) {
   );
 
   if (!expediente) {
-    throw new Error("El expediente no existe");
+    return {
+      success: false,
+      message: "El expediente no existe",
+    };
   }
 
   const estadoValido = validateEstado(expediente.estado);
@@ -197,7 +218,10 @@ export async function deleteExpediente(expedienteId: number) {
     const cabecera = await getCabeceraSemanal(userId, semanaId);
 
     if (!cabecera) {
-      throw new Error("La cabecera no existe");
+      return {
+        success: false,
+        message: "La cabecera no existe",
+      };
     }
 
     const columnaDb = mapColumnDb[estadoValido];
@@ -205,7 +229,10 @@ export async function deleteExpediente(expedienteId: number) {
     const newEstadoCount = cabecera[columnaDb] - 1;
 
     if (newNuevoIngreso < 0 || newEstadoCount < 0) {
-      throw new Error("Los contadores de la cabecera no pueden ser negativos");
+      return {
+        success: false,
+        message: "Los contadores de la cabecera no pueden ser negativos",
+      };
     }
 
     // actualizar cabecera
@@ -235,12 +262,16 @@ export async function deleteExpediente(expedienteId: number) {
   });
 
   revalidatePath("/");
+  return {
+    success: true,
+    message: "Expediente eliminado exitosamente",
+  };
 }
 
 export async function toggleExpedienteEstado(
   expedienteId: number,
   nuevoEstado: string,
-) {
+): Promise<ActionsResponse> {
   const { user, cookies } = await getSessionUserWithCookies();
   const userId = Number(user.id);
   const semanaId = cookies.semanaId;
@@ -254,7 +285,10 @@ export async function toggleExpedienteEstado(
   );
 
   if (!expediente) {
-    throw new Error("El expediente no existe");
+    return {
+      success: false,
+      message: "El expediente no existe",
+    };
   }
 
   const estadoAnterior = validateEstado(expediente.estado);
@@ -271,7 +305,10 @@ export async function toggleExpedienteEstado(
   });
 
   if (!cabecera) {
-    throw new Error("La cabecera no existe");
+    return {
+      success: false,
+      message: "La cabecera no existe",
+    };
   }
 
   const strategy = stragiesList.find((s) =>
@@ -302,4 +339,8 @@ export async function toggleExpedienteEstado(
   }
 
   revalidatePath("/");
+  return {
+    success: true,
+    message: "Expediente actualizado exitosamente",
+  };
 }

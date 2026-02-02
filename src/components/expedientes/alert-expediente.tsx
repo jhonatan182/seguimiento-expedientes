@@ -1,5 +1,9 @@
 "use client";
 
+import { Trash2 } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
+
 import { deleteExpediente } from "@/app/actions/expedientes-actions";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,10 +17,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { Trash2 } from "lucide-react";
-import { useState } from "react";
-import { toast } from "sonner";
-
 type AlertExpedienteProps = {
   expedienteId: number;
 };
@@ -26,9 +26,14 @@ export function AlertExpediente({ expedienteId }: AlertExpedienteProps) {
 
   const onDelete = async () => {
     try {
-      await deleteExpediente(expedienteId);
+      const response = await deleteExpediente(expedienteId);
 
-      toast.success("Expediente eliminado correctamente");
+      if (!response.success) {
+        toast.error(response.message);
+        return;
+      }
+
+      toast.success(response.message);
       setIsOpen(false);
     } catch (error) {
       toast.error("Error al eliminar el expediente");

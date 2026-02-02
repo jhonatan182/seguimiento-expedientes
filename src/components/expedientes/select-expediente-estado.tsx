@@ -1,8 +1,15 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { Label } from "@/components/ui/label";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+
+import { toggleExpedienteEstado } from "@/app/actions/expedientes-actions";
+import { disableSelectEstado } from "@/utils/validations";
+import { getCookie } from "@/app/actions/cookies-actions";
 import { PamExpedienteType } from "@/db/schema";
+import { Label } from "@/components/ui/label";
 import { ESTADOS } from "@/const";
 import {
   Select,
@@ -11,12 +18,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { toast } from "sonner";
-import { toggleExpedienteEstado } from "@/app/actions/expedientes-actions";
-import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { getCookie } from "@/app/actions/cookies-actions";
-import { disableSelectEstado } from "@/utils/validations";
 
 type SelectExpedienteEstadoProps = {
   row: PamExpedienteType;
@@ -33,15 +34,15 @@ export function SelectExpedienteEstado({ row }: SelectExpedienteEstadoProps) {
 
   const handleValueChange = async (value: string) => {
     try {
-      await toggleExpedienteEstado(row.id, value);
+      const response = await toggleExpedienteEstado(row.id, value);
 
-      toast.success("Estado actualizado correctamente");
-    } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message);
+      if (!response.success) {
+        toast.error(response.message);
         return;
       }
 
+      toast.success(response.message);
+    } catch (error) {
       toast.error("Error al actualizar el estado");
     }
   };

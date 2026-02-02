@@ -1,11 +1,18 @@
 "use client";
 
-import { Controller, useForm } from "react-hook-form";
-import { Field, FieldError, FieldGroup, FieldLabel } from "../ui/field";
-import { Input } from "../ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
+import { Dispatch, SetStateAction } from "react";
+import { useSession } from "next-auth/react";
+import { useMemo } from "react";
+import { toast } from "sonner";
+
+import { Field, FieldError, FieldGroup, FieldLabel } from "../ui/field";
+import { createExpediente } from "@/app/actions/expedientes-actions";
 import { ExpedienteSchema, ExpedienteSchemaType } from "@/schemas";
 import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { ESTADOS } from "@/const";
 import {
   Select,
   SelectContent,
@@ -13,12 +20,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { ESTADOS } from "@/const";
-import { useMemo } from "react";
-import { toast } from "sonner";
-import { createExpediente } from "@/app/actions/expedientes-actions";
-import { Dispatch, SetStateAction } from "react";
-import { useSession } from "next-auth/react";
 
 type CreateExpedienteFormProps = {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -37,16 +38,17 @@ export function CreateExpedienteForm({ setIsOpen }: CreateExpedienteFormProps) {
 
   async function onSubmit(data: ExpedienteSchemaType) {
     try {
-      await createExpediente(data);
+      const response = await createExpediente(data);
 
-      toast.success("Expediente creado correctamente");
+      if (!response.success) {
+        toast.error(response.message);
+        return;
+      }
+
+      toast.success(response.message);
       setIsOpen(false);
     } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message);
-      } else {
-        toast.error("Error al crear el expediente");
-      }
+      toast.error("Error al crear el expediente");
     }
   }
 

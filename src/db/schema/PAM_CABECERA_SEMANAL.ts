@@ -27,6 +27,8 @@ export const PamCabeceraSemanal = sqliteTable("PAM_CABECERA_SEMANAL", {
   parcial: int("parcial").default(0).notNull(),
   caducado: int("caducado").default(0).notNull(),
   dictamen: int("dictamen").default(0).notNull(),
+  dictamenCustodia: int("dictamen_custodia").default(0).notNull(),
+  dictamenCirculacion: int("dictamen_circulacion").default(0).notNull(),
   requerido: int("requerido").default(0).notNull(),
   pendiente: int("pendiente").default(0).notNull(),
   historicoCirculacion: int("historico_circulacion").default(0).notNull(),

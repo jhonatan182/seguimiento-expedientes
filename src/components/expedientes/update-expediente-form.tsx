@@ -1,16 +1,16 @@
 "use client";
 
 import { Controller, useForm } from "react-hook-form";
-import { Field, FieldError, FieldGroup, FieldLabel } from "../ui/field";
-import { Input } from "../ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { UpdateExpedienteSchema, UpdateExpedienteSchemaType } from "@/schemas";
-import { Button } from "../ui/button";
-
+import { Dispatch, SetStateAction } from "react";
 import { toast } from "sonner";
+
+import { UpdateExpedienteSchema, UpdateExpedienteSchemaType } from "@/schemas";
+import { Field, FieldError, FieldGroup, FieldLabel } from "../ui/field";
 import { updateExpediente } from "@/app/actions/expedientes-actions";
 import { PamExpedienteType } from "@/db/schema";
-import { Dispatch, SetStateAction } from "react";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
 
 type UpdateExpedienteFormProps = {
   expediente: PamExpedienteType;
@@ -30,16 +30,17 @@ export function UpdateExpedienteForm({
 
   async function onSubmit(data: UpdateExpedienteSchemaType) {
     try {
-      await updateExpediente(expediente.id, data);
+      const response = await updateExpediente(expediente.id, data);
 
-      toast.success("Expediente actualizado correctamente");
+      if (!response.success) {
+        toast.error(response.message);
+        return;
+      }
+
+      toast.success(response.message);
       setIsOpen(false);
     } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message);
-      } else {
-        toast.error("Error al actualizar el expediente");
-      }
+      toast.error("Error al actualizar el expediente");
     }
   }
 
