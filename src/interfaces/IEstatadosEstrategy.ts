@@ -10,5 +10,5 @@ export interface IEstatadosEstrategy {
     nuevoEstado: string,
     expedienteId: number,
     userId: number,
-  ): void;
+  ): Promise<void>;
 }

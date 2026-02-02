@@ -15,13 +15,13 @@ export const ESTADOS_VALIDOS = [
 export type EstadoValido = (typeof ESTADOS_VALIDOS)[number];
 
 export const mapColumnDb: Record<EstadoValido, keyof PamCabeceraSemanalType> = {
-  CON_LUGAR: "conLugar",
-  SIN_LUGAR: "sinLugar",
-  PARCIAL: "parcial",
   CADUCADO: "caducado",
+  CON_LUGAR: "conLugar",
   DICTAMEN: "dictamen",
-  DICTAMEN_CIRCULACION: "circulacion",
-  DICTAMEN_CUSTODIA: "circulacion",
-  REQUERIDO: "requerido",
+  DICTAMEN_CIRCULACION: "dictamenCirculacion",
+  DICTAMEN_CUSTODIA: "dictamenCustodia",
+  PARCIAL: "parcial",
   PENDIENTE: "pendiente",
+  REQUERIDO: "requerido",
+  SIN_LUGAR: "sinLugar",
 };

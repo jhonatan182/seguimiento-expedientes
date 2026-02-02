@@ -1,14 +1,14 @@
 import { SessionProvider } from "next-auth/react";
+import { cookies } from "next/headers";
 
-import { DialogExpediente } from "@/components/expedientes";
 import { getExpedientes } from "../actions/expedientes-actions";
+import { DialogExpediente } from "@/components/expedientes";
+import { getSemanas } from "../actions/semanas-actions";
 import { CabeceraCards } from "@/components/cabeceras";
 import { SelectSemanas } from "@/components/semanas";
 import { DataTable } from "@/app/(main)/data-table";
-import { columns } from "./columns";
-import { getSemanas } from "../actions/semanas-actions";
-import { cookies } from "next/headers";
 import { buildWeek } from "@/utils/dates";
+import { columns } from "./columns";
 
 type PageProps = {
   searchParams: Promise<{ [semana: string]: string | undefined }>;
@@ -43,6 +43,10 @@ export default async function Page({ searchParams }: PageProps) {
 
   const data = await getExpedientes(parseInt(semanaActualId));
 
+  if (!data) {
+    throw new Error("No se encontro la semana");
+  }
+
   return (
     <>
       <SelectSemanas
@@ -50,7 +54,7 @@ export default async function Page({ searchParams }: PageProps) {
         selectedSemanaId={parseInt(semanaActualId)}
       />
 
-      <CabeceraCards cabecera={data?.cabeceras[0] || null} />
+      <CabeceraCards cabecera={data.cabeceras[0]} />
 
       <SessionProvider>
         <div className="w-full flex justify-end gap-6 px-4 lg:px-6">

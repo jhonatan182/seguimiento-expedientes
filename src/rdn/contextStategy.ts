@@ -8,15 +8,15 @@ export class ContextStrategy {
     this.strategy = strategy;
   }
 
-  public cambioEstado(
+  public async cambioEstado(
     cabeceraSemanal: PamCabeceraSemanalType,
     columnaDb: keyof PamCabeceraSemanalType,
     columnaDbAnterior: keyof PamCabeceraSemanalType,
     nuevoEstado: string,
     expedienteId: number,
     userId: number,
-  ): void {
-    this.strategy.execute(
+  ): Promise<void> {
+    await this.strategy.execute(
       cabeceraSemanal,
       columnaDb,
       columnaDbAnterior,

@@ -316,7 +316,7 @@ export async function toggleExpedienteEstado(
   );
 
   if (!strategy) {
-    new DefaultStrategy().execute(
+    await new DefaultStrategy().execute(
       cabecera,
       columnaDb,
       columnaDbAnterior,
@@ -328,7 +328,7 @@ export async function toggleExpedienteEstado(
     //ejucutar strategy
     const context = new ContextStrategy(strategy);
 
-    context.cambioEstado(
+    await context.cambioEstado(
       cabecera,
       columnaDb,
       columnaDbAnterior,

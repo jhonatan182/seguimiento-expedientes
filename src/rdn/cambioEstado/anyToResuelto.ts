@@ -26,13 +26,13 @@ export class AnyToResuelto implements IEstatadosEstrategy {
     expedienteId: number,
     userId: number,
   ) {
-    console.log("AnyToResuelto");
+    console.log("AnyToResuelto execute");
 
     const { conLugar, sinLugar, parcial, caducado } = cabeceraSemanal;
     const totalResuelto =
       conLugar + sinLugar + parcial + caducado + cabeceraSemanal[columnaDb] + 1;
 
-    db.transaction(async (tx) => {
+    await db.transaction(async (tx) => {
       await tx
         .update(PamCabeceraSemanal)
         .set({

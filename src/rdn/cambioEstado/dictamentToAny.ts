@@ -1,17 +1,21 @@
 import { and, eq } from "drizzle-orm";
 
 import { ICambioEstado, IEstatadosEstrategy } from "@/interfaces";
+import { DICTAMEN, DICTAMEN_CIRCULACION, DICTAMEN_CUSTODIA } from "@/const";
 import { db } from "@/lib/drizzle";
-
 import {
   PamCabeceraSemanal,
   PamCabeceraSemanalType,
   PamExpedientes,
 } from "@/db/schema";
 
-export class DefaultStrategy implements IEstatadosEstrategy {
-  public satisfy(): boolean {
-    return true;
+export class DictamentToAny implements IEstatadosEstrategy {
+  public satisfy(cambioEstado: ICambioEstado): boolean {
+    console.log("DictamentToAny satisfy", cambioEstado);
+
+    return [DICTAMEN_CIRCULACION, DICTAMEN_CUSTODIA, DICTAMEN].includes(
+      cambioEstado.estadoActual,
+    );
   }
 
   public async execute(
@@ -22,7 +26,9 @@ export class DefaultStrategy implements IEstatadosEstrategy {
     expedienteId: number,
     userId: number,
   ) {
-    console.log("DefaultStrategy execute");
+    console.log("DictamentToAny execute");
+
+    const totalDictamen = cabeceraSemanal.dictamen - 1;
 
     await db.transaction(async (tx) => {
       await tx
@@ -30,6 +36,7 @@ export class DefaultStrategy implements IEstatadosEstrategy {
         .set({
           [columnaDb]: cabeceraSemanal[columnaDb] + 1,
           [columnaDbAnterior]: cabeceraSemanal[columnaDbAnterior] - 1,
+          dictamen: totalDictamen,
         })
         .where(
           and(

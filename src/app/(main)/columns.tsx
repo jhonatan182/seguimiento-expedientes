@@ -15,6 +15,7 @@ import {
 } from "@/components/expedientes";
 import { formatDate } from "@/utils/dates";
 import { ProtectedComponentByCookie } from "@/components/security";
+import { disableSelectEstado } from "@/utils/validations";
 
 function DragHandle({ id }: { id: number }) {
   const { attributes, listeners } = useSortable({
@@ -71,6 +72,10 @@ export const columns: ColumnDef<PamExpedienteType>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
+      if (disableSelectEstado(row.original.estado)) {
+        return null;
+      }
+
       return (
         <ProtectedComponentByCookie keyCookie="isCurrentWeek">
           <div className="flex items-center gap-2 ">
