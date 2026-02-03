@@ -1,28 +1,24 @@
 import { and, eq } from "drizzle-orm";
 
-import { IEstatadosEstrategy } from "@/interfaces";
+import { IEstatadosEstrategy, IExecuteData } from "@/interfaces";
+import { PamCabeceraSemanal, PamExpedientes } from "@/db/schema";
 import { db } from "@/lib/drizzle";
-
-import {
-  PamCabeceraSemanal,
-  PamCabeceraSemanalType,
-  PamExpedientes,
-} from "@/db/schema";
 
 export class DefaultStrategy implements IEstatadosEstrategy {
   public satisfy(): boolean {
     return true;
   }
 
-  public async execute(
-    cabeceraSemanal: PamCabeceraSemanalType,
-    columnaDb: keyof PamCabeceraSemanalType,
-    columnaDbAnterior: keyof PamCabeceraSemanalType,
-    nuevoEstado: string,
-    expedienteId: number,
-    userId: number,
-  ) {
+  public async execute(data: IExecuteData) {
     console.log("DefaultStrategy execute");
+
+    const {
+      cabeceraSemanal,
+      columnaDb,
+      columnaDbAnterior,
+      nuevoEstado,
+      expediente,
+    } = data;
 
     await db.transaction(async (tx) => {
       await tx
@@ -34,7 +30,7 @@ export class DefaultStrategy implements IEstatadosEstrategy {
         .where(
           and(
             eq(PamCabeceraSemanal.id, cabeceraSemanal.id),
-            eq(PamCabeceraSemanal.analistaId, userId),
+            eq(PamCabeceraSemanal.analistaId, expediente.analistaId),
             eq(PamCabeceraSemanal.semanaId, cabeceraSemanal.semanaId),
           ),
         );
@@ -47,8 +43,8 @@ export class DefaultStrategy implements IEstatadosEstrategy {
         })
         .where(
           and(
-            eq(PamExpedientes.id, expedienteId),
-            eq(PamExpedientes.analistaId, userId),
+            eq(PamExpedientes.id, expediente.id),
+            eq(PamExpedientes.analistaId, expediente.analistaId),
             eq(PamExpedientes.semanaId, cabeceraSemanal.semanaId),
           ),
         );

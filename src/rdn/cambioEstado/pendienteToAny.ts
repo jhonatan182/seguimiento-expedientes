@@ -1,13 +1,9 @@
 import { and, eq } from "drizzle-orm";
 
-import { ICambioEstado, IEstatadosEstrategy } from "@/interfaces";
-import { db } from "@/lib/drizzle";
+import { ICambioEstado, IEstatadosEstrategy, IExecuteData } from "@/interfaces";
+import { PamCabeceraSemanal, PamExpedientes } from "@/db/schema";
 import { PENDIENTE, REQUERIDO } from "@/const";
-import {
-  PamCabeceraSemanal,
-  PamCabeceraSemanalType,
-  PamExpedientes,
-} from "@/db/schema";
+import { db } from "@/lib/drizzle";
 
 export class PendienteToAny implements IEstatadosEstrategy {
   public satisfy(cambioEstado: ICambioEstado): boolean {
@@ -19,15 +15,16 @@ export class PendienteToAny implements IEstatadosEstrategy {
     );
   }
 
-  public async execute(
-    cabeceraSemanal: PamCabeceraSemanalType,
-    columnaDb: keyof PamCabeceraSemanalType,
-    columnaDbAnterior: keyof PamCabeceraSemanalType,
-    nuevoEstado: string,
-    expedienteId: number,
-    userId: number,
-  ) {
+  public async execute(data: IExecuteData) {
     console.log("PendienteToAny execute");
+
+    const {
+      cabeceraSemanal,
+      columnaDb,
+      columnaDbAnterior,
+      nuevoEstado,
+      expediente,
+    } = data;
 
     await db.transaction(async (tx) => {
       await tx
@@ -39,7 +36,7 @@ export class PendienteToAny implements IEstatadosEstrategy {
         .where(
           and(
             eq(PamCabeceraSemanal.id, cabeceraSemanal.id),
-            eq(PamCabeceraSemanal.analistaId, userId),
+            eq(PamCabeceraSemanal.analistaId, expediente.analistaId),
             eq(PamCabeceraSemanal.semanaId, cabeceraSemanal.semanaId),
           ),
         );
@@ -52,8 +49,8 @@ export class PendienteToAny implements IEstatadosEstrategy {
         })
         .where(
           and(
-            eq(PamExpedientes.id, expedienteId),
-            eq(PamExpedientes.analistaId, userId),
+            eq(PamExpedientes.id, expediente.id),
+            eq(PamExpedientes.analistaId, expediente.analistaId),
             eq(PamExpedientes.semanaId, cabeceraSemanal.semanaId),
           ),
         );

@@ -1,14 +1,7 @@
-import { PamCabeceraSemanalType } from "@/db/schema";
 import { ICambioEstado } from "./ICambioEstado";
+import { IExecuteData } from "./IExecuteData";
 
 export interface IEstatadosEstrategy {
   satisfy(cambioEstado: ICambioEstado): boolean;
-  execute(
-    cabeceraSemanal: PamCabeceraSemanalType,
-    columnaDb: keyof PamCabeceraSemanalType,
-    columnaDbAnterior: keyof PamCabeceraSemanalType,
-    nuevoEstado: string,
-    expedienteId: number,
-    userId: number,
-  ): Promise<void>;
+  execute(data: IExecuteData): Promise<void>;
 }
