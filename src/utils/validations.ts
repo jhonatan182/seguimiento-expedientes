@@ -1,6 +1,7 @@
 import {
   CADUCADO,
   CON_LUGAR,
+  DICTAMEN,
   DICTAMEN_CIRCULACION,
   DICTAMEN_CUSTODIA,
   PARCIAL,
@@ -31,7 +32,7 @@ export function incrementarEstadoResuelto(estado: string): boolean {
 }
 
 export function incrementarEstadoDictamen(estado: string): boolean {
-  const estadosDictamen = [DICTAMEN_CIRCULACION, DICTAMEN_CUSTODIA];
+  const estadosDictamen = [DICTAMEN_CIRCULACION, DICTAMEN_CUSTODIA, DICTAMEN];
 
   return estadosDictamen.includes(estado) ? true : false;
 }

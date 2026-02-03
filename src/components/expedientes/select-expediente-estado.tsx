@@ -18,6 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { DialogConfirmCustom } from "../ui/custom/dialog-confirm-custom";
 
 type SelectExpedienteEstadoProps = {
   row: PamExpedienteType;
@@ -27,6 +28,8 @@ export function SelectExpedienteEstado({ row }: SelectExpedienteEstadoProps) {
   const { data: session } = useSession();
   const searchParams = useSearchParams();
   const [isCurrentWeek, setIsCurrentWeek] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [valueSelect, setValueSelect] = useState(row.estado);
 
   const estados = ESTADOS.filter((estado) =>
     estado.modulo.includes(session?.user?.modulo || "D"),
@@ -47,6 +50,15 @@ export function SelectExpedienteEstado({ row }: SelectExpedienteEstadoProps) {
     }
   };
 
+  const handleOpenDialog = async (value: string) => {
+    if (disableSelectEstado(value)) {
+      setIsOpen(true);
+      return;
+    }
+
+    await handleValueChange(value);
+  };
+
   useEffect(() => {
     const handleCookie = async () => {
       const cookie = await getCookie("isCurrentWeek");
@@ -57,15 +69,32 @@ export function SelectExpedienteEstado({ row }: SelectExpedienteEstadoProps) {
   }, [searchParams]);
 
   return (
-    <>
+    <div>
+      <DialogConfirmCustom
+        title="Confirmar cambio de estado"
+        description="¿Estás seguro de que deseas cambiar el estado de este expediente?"
+        onConfirm={() => {
+          handleValueChange(valueSelect);
+          setIsOpen(false);
+        }}
+        isOpen={isOpen}
+        onCancel={() => {
+          setIsOpen(false);
+          setValueSelect(row.estado);
+        }}
+        // onOpenChange={() => setIsOpen(!isOpen)}
+      />
       <Label htmlFor={`${row.id}-estado`} className="sr-only">
         Estado
       </Label>
       <Select
-        key={row.estado + "-estado"}
-        defaultValue={row.estado}
-        onValueChange={(value) => handleValueChange(value)}
-        disabled={!isCurrentWeek || disableSelectEstado(row.estado)}
+        key={valueSelect + "-estado"}
+        defaultValue={valueSelect}
+        onValueChange={(value) => {
+          setValueSelect(value);
+          handleOpenDialog(value);
+        }}
+        disabled={!isCurrentWeek || disableSelectEstado(valueSelect)}
       >
         <SelectTrigger
           className="w-38 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate"
@@ -82,6 +111,6 @@ export function SelectExpedienteEstado({ row }: SelectExpedienteEstadoProps) {
           ))}
         </SelectContent>
       </Select>
-    </>
+    </div>
   );
 }

@@ -14,7 +14,7 @@ type DialogConfirmCustomProps = {
   description: string;
   onConfirm: () => void;
   isOpen: boolean;
-  onOpenChange: (open: boolean) => void;
+  onOpenChange?: (open: boolean) => void;
   onCancel: () => void;
 };
 
@@ -29,6 +29,7 @@ export function DialogConfirmCustom({
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent
+        showCloseButton={false}
         onOpenAutoFocus={(e) => e.preventDefault()}
         className="sm:max-w-[425px]"
       >

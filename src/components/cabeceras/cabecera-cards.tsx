@@ -1,11 +1,21 @@
 import { PamCabeceraSemanalType } from "@/db/schema";
 import { Cabecera } from "./cabecera";
+import { auth } from "@/app/auth.config";
+import { redirect } from "next/navigation";
 
 type CabeceraCardsProps = {
   cabecera: PamCabeceraSemanalType | null;
 };
 
-export function CabeceraCards({ cabecera }: CabeceraCardsProps) {
+export async function CabeceraCards({ cabecera }: CabeceraCardsProps) {
+  const session = await auth();
+
+  if (!session) {
+    return redirect("/login");
+  }
+
+  const user = session.user;
+
   return (
     <div className="grid grid-cols-2">
       <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 px-4 lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-3">
@@ -27,7 +37,13 @@ export function CabeceraCards({ cabecera }: CabeceraCardsProps) {
           className="bg-black"
         />
 
-        <div className="col-span-1 @5xl/main:col-span-2 grid grid-cols-1 @5xl/main:grid-cols-2 gap-4">
+        <div
+          className={`col-span-1  grid grid-cols-1 gap-4 ${
+            user.modulo === "D"
+              ? "@5xl/main:col-span-1 @5xl/main:grid-cols-1"
+              : "@5xl/main:col-span-2 @5xl/main:grid-cols-2"
+          }`}
+        >
           <Cabecera
             valor={cabecera?.resuelto || 0}
             titulo="Resuelto"
@@ -42,18 +58,30 @@ export function CabeceraCards({ cabecera }: CabeceraCardsProps) {
             valorDescripcion4={cabecera?.caducado || 0}
           />
 
-          <Cabecera
-            valor={cabecera?.dictamen || 0}
-            titulo="Dictamen"
-            className="bg-blue-700"
-            descripcion1="Circulación: "
-            descripcion2="Custodia: "
-            valorDescripcion1={cabecera?.dictamenCirculacion || 0}
-            valorDescripcion2={cabecera?.dictamenCustodia || 0}
-          />
+          {user.modulo === "E" ? (
+            <Cabecera
+              valor={cabecera?.dictamen || 0}
+              titulo="Dictamen"
+              className="bg-blue-700"
+              descripcion1="Circulación: "
+              descripcion2="Custodia: "
+              valorDescripcion1={cabecera?.dictamenCirculacion || 0}
+              valorDescripcion2={cabecera?.dictamenCustodia || 0}
+            />
+          ) : null}
         </div>
 
-        <div className="grid grid-cols-1 gap-4">
+        <div
+          className={`grid  ${user.modulo === "D" ? "col-span-2 grid-cols-2" : "grid-cols-1 col-span-1"} gap-4`}
+        >
+          {user.modulo === "D" ? (
+            <Cabecera
+              valor={cabecera?.dictamen || 0}
+              titulo="Dictamen"
+              className="bg-blue-700"
+            />
+          ) : null}
+
           <Cabecera
             valor={cabecera?.requerido || 0}
             titulo="Requerido"
