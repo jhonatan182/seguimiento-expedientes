@@ -24,13 +24,11 @@ export function NextWeekButton() {
   };
 
   return (
-    <ProtectedComponentByCookie keyCookie="isCurrentWeek">
-      <Button
-        className="bg-blue-700 text-white hover:bg-blue-600 cursor-pointer"
-        onClick={onClick}
-      >
-        Actualizar a la siguiente semana
-      </Button>
-    </ProtectedComponentByCookie>
+    <Button
+      className="bg-blue-700 text-white hover:bg-blue-600 cursor-pointer"
+      onClick={onClick}
+    >
+      Actualizar a la siguiente semana
+    </Button>
   );
 }
