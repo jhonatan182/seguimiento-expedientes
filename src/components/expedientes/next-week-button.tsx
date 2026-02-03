@@ -3,6 +3,7 @@
 import { toast } from "sonner";
 
 import { buildNextCabeceraSemanal } from "@/app/actions/cabecera-semanal-actions";
+import { ProtectedComponentByCookie } from "../security";
 import { Button } from "../ui/button";
 
 export function NextWeekButton() {
@@ -23,11 +24,13 @@ export function NextWeekButton() {
   };
 
   return (
-    <Button
-      className="bg-blue-700 text-white hover:bg-blue-600 cursor-pointer"
-      onClick={onClick}
-    >
-      Actualizar a la siguiente semana
-    </Button>
+    <ProtectedComponentByCookie keyCookie="isCurrentWeek">
+      <Button
+        className="bg-blue-700 text-white hover:bg-blue-600 cursor-pointer"
+        onClick={onClick}
+      >
+        Actualizar a la siguiente semana
+      </Button>
+    </ProtectedComponentByCookie>
   );
 }

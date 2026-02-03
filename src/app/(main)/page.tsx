@@ -56,9 +56,7 @@ export default async function Page({ searchParams }: PageProps) {
           selectedSemanaId={parseInt(semanaActualId)}
         />
 
-        <ProtectedComponentByCookie keyCookie="isCurrentWeek">
-          <NextWeekButton />
-        </ProtectedComponentByCookie>
+        <NextWeekButton />
       </div>
 
       <CabeceraCards cabecera={data.cabeceras[0]} />
