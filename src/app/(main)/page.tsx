@@ -9,6 +9,7 @@ import { SelectSemanas } from "@/components/semanas";
 import { DataTable } from "@/app/(main)/data-table";
 import { buildWeek } from "@/utils/dates";
 import { columns } from "./columns";
+import { ProtectedComponentByCookie } from "@/components/security";
 
 type PageProps = {
   searchParams: Promise<{ [semana: string]: string | undefined }>;
@@ -54,7 +55,10 @@ export default async function Page({ searchParams }: PageProps) {
           semanas={semanas}
           selectedSemanaId={parseInt(semanaActualId)}
         />
-        <NextWeekButton />
+
+        <ProtectedComponentByCookie keyCookie="isCurrentWeek">
+          <NextWeekButton />
+        </ProtectedComponentByCookie>
       </div>
 
       <CabeceraCards cabecera={data.cabeceras[0]} />
