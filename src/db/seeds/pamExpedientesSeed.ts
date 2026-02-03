@@ -62,6 +62,7 @@ export async function seedPamExpedientes() {
           .toISOString()
           .split("T")[0],
         observaciones: observaciones || undefined,
+        isHistorico: "N",
       });
     }
   }

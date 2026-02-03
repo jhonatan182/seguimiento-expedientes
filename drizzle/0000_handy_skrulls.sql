@@ -44,6 +44,7 @@ CREATE TABLE `PAM_EXPEDIENTES` (
 	`estado` text NOT NULL,
 	`fecha_ultima_modificacion` text NOT NULL,
 	`observaciones` text,
+	`is_historico` text(1) DEFAULT 'N' NOT NULL,
 	FOREIGN KEY (`analista_id`) REFERENCES `PAM_ANALISTA`(`id`) ON UPDATE cascade ON DELETE restrict,
 	FOREIGN KEY (`semana_id`) REFERENCES `PAM_SEMANAS`(`id`) ON UPDATE cascade ON DELETE restrict
 );

@@ -23,6 +23,7 @@ export const PamExpedientes = sqliteTable("PAM_EXPEDIENTES", {
   estado: text("estado").notNull(),
   fechaUltimaModificacion: text("fecha_ultima_modificacion").notNull(),
   observaciones: text("observaciones"),
+  isHistorico: text("is_historico", { length: 1 }).default("N").notNull(),
 });
 
 export const PamExpedientesRelations = relations(PamExpedientes, ({ one }) => ({

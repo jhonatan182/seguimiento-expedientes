@@ -16,6 +16,7 @@ import {
 import { formatDate } from "@/utils/dates";
 import { ProtectedComponentByCookie } from "@/components/security";
 import { disableSelectEstado } from "@/utils/validations";
+import { Badge } from "@/components/ui/badge";
 
 function DragHandle({ id }: { id: number }) {
   const { attributes, listeners } = useSortable({
@@ -47,11 +48,28 @@ export const columns: ColumnDef<PamExpedienteType>[] = [
     header: "Expediente",
 
     enableHiding: false,
+    cell: ({ row }) => {
+      return (
+        <div className="flex items-center gap-2">
+          {row.original.expediente}
+          {row.original.isHistorico === "S" && (
+            <Badge
+              variant="secondary"
+              className="bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
+            >
+              Historico
+            </Badge>
+          )}
+        </div>
+      );
+    },
   },
   {
     accessorKey: "fechaIngreso",
     header: "Fecha Ingreso",
     cell: ({ row }) => {
+      console.log(row.original);
+
       return formatDate(row.original.fechaIngreso);
     },
   },

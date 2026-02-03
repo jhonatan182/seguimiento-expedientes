@@ -29,7 +29,11 @@ export function SelectExpedienteEstado({ row }: SelectExpedienteEstadoProps) {
   const searchParams = useSearchParams();
   const [isCurrentWeek, setIsCurrentWeek] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [valueSelect, setValueSelect] = useState(row.estado);
+  const [valueSelect, setValueSelect] = useState<string>("");
+
+  useEffect(() => {
+    setValueSelect(row.estado);
+  }, [row]);
 
   const estados = ESTADOS.filter((estado) =>
     estado.modulo.includes(session?.user?.modulo || "D"),
