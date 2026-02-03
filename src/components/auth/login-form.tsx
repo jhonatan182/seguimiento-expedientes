@@ -16,12 +16,14 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useState } from "react";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"form">) {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<LoginSchemaType>({
     resolver: zodResolver(LoginSchema),
@@ -32,6 +34,7 @@ export function LoginForm({
   });
 
   async function onSubmit(data: LoginSchemaType) {
+    setIsLoading(true);
     const resp = await authenticate(data);
 
     if (resp === "User signed in successfully") {
@@ -40,6 +43,7 @@ export function LoginForm({
     }
 
     toast.error(resp);
+    setIsLoading(false);
   }
 
   return (
@@ -95,7 +99,7 @@ export function LoginForm({
         />
 
         <Field>
-          <Button disabled={form.formState.isSubmitting} type="submit">
+          <Button disabled={isLoading} type="submit">
             Iniciar sesión
           </Button>
         </Field>
