@@ -17,6 +17,7 @@ export function NextWeekButton() {
 
       toast.success(resp.message);
     } catch (error) {
+      console.log(error);
       toast.error("Error al actualizar a la siguiente semana");
     }
   };
