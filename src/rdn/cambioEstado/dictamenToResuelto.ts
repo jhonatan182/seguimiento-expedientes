@@ -42,6 +42,22 @@ export class DictamenToResuelto implements IEstatadosEstrategy {
     } = data;
 
     let nuevoValorHistorico: string;
+    let totalEnCirculacion: number = 0;
+    let totalHistorico: number = 0;
+    let estadoAnteriorValor: number = 0;
+    let totalDictamen: number = 0;
+
+    if (expediente.isHistorico === "S") {
+      totalEnCirculacion = cabeceraSemanal.circulacion + 1;
+      totalHistorico = cabeceraSemanal.historicoCirculacion - 1;
+      estadoAnteriorValor = cabeceraSemanal[columnaDbAnterior];
+    } else {
+      totalEnCirculacion = cabeceraSemanal.circulacion;
+      totalHistorico = cabeceraSemanal.historicoCirculacion;
+      estadoAnteriorValor = cabeceraSemanal[columnaDbAnterior] - 1;
+      totalDictamen = cabeceraSemanal.dictamen - 1;
+    }
+
     if (expediente.isHistorico === "S" || expediente.isHistorico === "E") {
       nuevoValorHistorico = "E";
     } else {
@@ -53,9 +69,11 @@ export class DictamenToResuelto implements IEstatadosEstrategy {
         .update(PamCabeceraSemanal)
         .set({
           [columnaDb]: cabeceraSemanal[columnaDb] + 1,
-          [columnaDbAnterior]: cabeceraSemanal[columnaDbAnterior] - 1,
+          [columnaDbAnterior]: estadoAnteriorValor,
           resuelto: cabeceraSemanal.resuelto + 1,
-          dictamen: cabeceraSemanal.dictamen - 1,
+          dictamen: totalDictamen,
+          circulacion: totalEnCirculacion,
+          historicoCirculacion: totalHistorico,
         })
         .where(
           and(

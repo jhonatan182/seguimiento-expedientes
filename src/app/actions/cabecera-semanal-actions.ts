@@ -76,6 +76,13 @@ export async function buildNextCabeceraSemanal(): Promise<ActionsResponse> {
     ),
   });
 
+  if (expedientesSemanaAnterior.length === 0) {
+    return {
+      message: "No hay expedientes en la semana actual",
+      success: false,
+    };
+  }
+
   //buscar cabecera de la semana siguiente
   const cabeceraSiguiente = await getCabeceraSemanal(userId, semanaId + 1);
 
