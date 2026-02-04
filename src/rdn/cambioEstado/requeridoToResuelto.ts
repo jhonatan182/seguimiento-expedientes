@@ -38,7 +38,8 @@ export class RequeridoToResuelto implements IEstatadosEstrategy {
       totalHistorico = cabeceraSemanal.historicoCirculacion - 1;
       estadoAnteriorValor = cabeceraSemanal[columnaDbAnterior];
     } else {
-      totalDictamen = cabeceraSemanal.dictamen - 1;
+      totalDictamen =
+        cabeceraSemanal.dictamen > 0 ? cabeceraSemanal.dictamen - 1 : 0;
       totalEnCirculacion = cabeceraSemanal.circulacion;
       totalHistorico = cabeceraSemanal.historicoCirculacion;
       estadoAnteriorValor = cabeceraSemanal[columnaDbAnterior] - 1;
@@ -49,8 +50,7 @@ export class RequeridoToResuelto implements IEstatadosEstrategy {
       cabeceraSemanal.sinLugar +
       cabeceraSemanal.parcial +
       cabeceraSemanal.caducado +
-      cabeceraSemanal[columnaDb] +
-      1;
+      (cabeceraSemanal[columnaDb] + 1);
 
     let nuevoValorHistorico: string;
     if (expediente.isHistorico === "S" || expediente.isHistorico === "E") {
