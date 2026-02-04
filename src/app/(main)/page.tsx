@@ -50,7 +50,7 @@ export default async function Page({ searchParams }: PageProps) {
 
   return (
     <>
-      <div className="flex items-center gap-1">
+      <div className="flex flex-col items-center gap-1 md:flex-row">
         <SelectSemanas
           semanas={semanas}
           selectedSemanaId={parseInt(semanaActualId)}

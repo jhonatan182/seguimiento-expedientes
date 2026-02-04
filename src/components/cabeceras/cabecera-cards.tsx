@@ -17,8 +17,8 @@ export async function CabeceraCards({ cabecera }: CabeceraCardsProps) {
   const user = session.user;
 
   return (
-    <div className="grid grid-cols-2">
-      <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 px-4 lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-3">
+    <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 px-4 sm:grid-cols-2 lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-3">
         <Cabecera
           valor={cabecera?.saldoAnterior || 0}
           titulo="Saldo Anterior"
@@ -38,7 +38,7 @@ export async function CabeceraCards({ cabecera }: CabeceraCardsProps) {
         />
 
         <div
-          className={`col-span-1  grid grid-cols-1 gap-4 ${
+          className={`col-span-1 grid grid-cols-1 gap-4 sm:col-span-2 sm:grid-cols-2 lg:col-span-1 lg:grid-cols-1 ${
             user.modulo === "D"
               ? "@5xl/main:col-span-1 @5xl/main:grid-cols-1"
               : "@5xl/main:col-span-2 @5xl/main:grid-cols-2"
@@ -72,7 +72,7 @@ export async function CabeceraCards({ cabecera }: CabeceraCardsProps) {
         </div>
 
         <div
-          className={`grid  ${user.modulo === "D" ? "col-span-2 grid-cols-2" : "grid-cols-1 col-span-1"} gap-4`}
+          className={`grid gap-4 ${user.modulo === "D" ? "col-span-1 grid-cols-1 sm:col-span-2 sm:grid-cols-2 lg:col-span-2 lg:grid-cols-2" : "col-span-1 grid-cols-1"}`}
         >
           {user.modulo === "D" ? (
             <Cabecera
@@ -96,7 +96,7 @@ export async function CabeceraCards({ cabecera }: CabeceraCardsProps) {
         </div>
       </div>
 
-      <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card  gap-4 px-4 *:data-[slot=card]:shadow-xs lg:px-6 ">
+      <div className="gap-4 px-4 lg:px-6">
         <Cabecera
           valor={cabecera?.historicoCirculacion || 0}
           titulo="Histórico Circulación"
