@@ -106,6 +106,17 @@ export async function buildNextCabeceraSemanal(): Promise<ActionsResponse> {
           saldoAnterior: cabecera.pendiente,
           historicoCirculacion: cabecera.dictamen + cabecera.requerido,
           pendiente: cabecera.pendiente,
+          caducado: 0,
+          dictamen: 0,
+          requerido: 0,
+          circulacion: 0,
+          conLugar: 0,
+          dictamenCirculacion: 0,
+          dictamenCustodia: 0,
+          nuevoIngreso: 0,
+          parcial: 0,
+          resuelto: 0,
+          sinLugar: 0,
         })
         .where(
           and(
@@ -124,6 +135,17 @@ export async function buildNextCabeceraSemanal(): Promise<ActionsResponse> {
         saldoAnterior: cabecera.pendiente,
         historicoCirculacion: cabecera.dictamen + cabecera.requerido,
         pendiente: cabecera.pendiente,
+        caducado: 0,
+        dictamen: 0,
+        requerido: 0,
+        circulacion: 0,
+        conLugar: 0,
+        dictamenCirculacion: 0,
+        dictamenCustodia: 0,
+        nuevoIngreso: 0,
+        parcial: 0,
+        resuelto: 0,
+        sinLugar: 0,
       });
     }
   });
@@ -132,6 +154,6 @@ export async function buildNextCabeceraSemanal(): Promise<ActionsResponse> {
 
   return {
     success: true,
-    message: "Cabecera creada exitosamente",
+    message: "Migración exitosa",
   };
 }

@@ -25,10 +25,16 @@ export class AnyToDictamen implements IEstatadosEstrategy {
 
     console.log("AnyToDictamen execute");
 
-    const { dictamenCirculacion, dictamenCustodia } = cabeceraSemanal;
+    const { dictamen } = cabeceraSemanal;
 
-    const totalDictamen =
-      dictamenCirculacion + dictamenCustodia + cabeceraSemanal[columnaDb] + 1;
+    const totalDictamen = dictamen + 1;
+
+    let nuevoValorHistorico: string;
+    if (expediente.isHistorico === "S" || expediente.isHistorico === "E") {
+      nuevoValorHistorico = "E";
+    } else {
+      nuevoValorHistorico = "N";
+    }
 
     await db.transaction(async (tx) => {
       await tx
@@ -51,6 +57,7 @@ export class AnyToDictamen implements IEstatadosEstrategy {
         .set({
           estado: nuevoEstado,
           fechaUltimaModificacion: new Date().toISOString().toString(),
+          isHistorico: nuevoValorHistorico,
         })
         .where(
           and(

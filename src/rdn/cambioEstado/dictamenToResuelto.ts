@@ -41,6 +41,13 @@ export class DictamenToResuelto implements IEstatadosEstrategy {
       expediente,
     } = data;
 
+    let nuevoValorHistorico: string;
+    if (expediente.isHistorico === "S" || expediente.isHistorico === "E") {
+      nuevoValorHistorico = "E";
+    } else {
+      nuevoValorHistorico = "N";
+    }
+
     await db.transaction(async (tx) => {
       await tx
         .update(PamCabeceraSemanal)
@@ -63,6 +70,7 @@ export class DictamenToResuelto implements IEstatadosEstrategy {
         .set({
           estado: nuevoEstado,
           fechaUltimaModificacion: new Date().toISOString().toString(),
+          isHistorico: nuevoValorHistorico,
         })
         .where(
           and(

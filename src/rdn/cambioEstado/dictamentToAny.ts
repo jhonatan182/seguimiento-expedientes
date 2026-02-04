@@ -25,15 +25,38 @@ export class DictamentToAny implements IEstatadosEstrategy {
       expediente,
     } = data;
 
-    const totalDictamen = cabeceraSemanal.dictamen - 1;
+    let totalDictamen: number = 0;
+    let totalEnCirculacion: number = 0;
+    let totalHistorico: number = 0;
+    let estadoAnteriorValor: number = 0;
+
+    if (expediente.isHistorico === "S") {
+      totalEnCirculacion = cabeceraSemanal.circulacion + 1;
+      totalHistorico = cabeceraSemanal.historicoCirculacion - 1;
+      estadoAnteriorValor = cabeceraSemanal[columnaDbAnterior];
+    } else {
+      totalDictamen = cabeceraSemanal.dictamen - 1;
+      totalEnCirculacion = cabeceraSemanal.circulacion;
+      totalHistorico = cabeceraSemanal.historicoCirculacion;
+      estadoAnteriorValor = cabeceraSemanal[columnaDbAnterior] - 1;
+    }
+
+    let nuevoValorHistorico: string;
+    if (expediente.isHistorico === "S" || expediente.isHistorico === "E") {
+      nuevoValorHistorico = "E";
+    } else {
+      nuevoValorHistorico = "N";
+    }
 
     await db.transaction(async (tx) => {
       await tx
         .update(PamCabeceraSemanal)
         .set({
           [columnaDb]: cabeceraSemanal[columnaDb] + 1,
-          [columnaDbAnterior]: cabeceraSemanal[columnaDbAnterior] - 1,
+          [columnaDbAnterior]: estadoAnteriorValor,
           dictamen: totalDictamen,
+          circulacion: totalEnCirculacion,
+          historicoCirculacion: totalHistorico,
         })
         .where(
           and(
@@ -48,6 +71,7 @@ export class DictamentToAny implements IEstatadosEstrategy {
         .set({
           estado: nuevoEstado,
           fechaUltimaModificacion: new Date().toISOString().toString(),
+          isHistorico: nuevoValorHistorico,
         })
         .where(
           and(

@@ -55,7 +55,8 @@ export default async function Page({ searchParams }: PageProps) {
           semanas={semanas}
           selectedSemanaId={parseInt(semanaActualId)}
         />
-        {isCurrentWeek?.id === parseInt(semanaActualId) && <NextWeekButton />}
+        {/* {isCurrentWeek?.id === parseInt(semanaActualId) && <NextWeekButton />} */}
+        <NextWeekButton />
       </div>
 
       <CabeceraCards cabecera={data.cabeceras[0]} />

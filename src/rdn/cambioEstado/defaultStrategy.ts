@@ -20,12 +20,35 @@ export class DefaultStrategy implements IEstatadosEstrategy {
       expediente,
     } = data;
 
+    let estadoAnteriorValor: number = 0;
+    let totalEnCirculacion: number = 0;
+    let totalHistorico: number = 0;
+
+    if (expediente.isHistorico === "S") {
+      estadoAnteriorValor = cabeceraSemanal[columnaDbAnterior];
+      totalEnCirculacion = cabeceraSemanal.circulacion + 1;
+      totalHistorico = cabeceraSemanal.historicoCirculacion - 1;
+    } else {
+      estadoAnteriorValor = cabeceraSemanal[columnaDbAnterior] - 1;
+      totalEnCirculacion = cabeceraSemanal.circulacion;
+      totalHistorico = cabeceraSemanal.historicoCirculacion;
+    }
+
+    let nuevoValorHistorico: string;
+    if (expediente.isHistorico === "S" || expediente.isHistorico === "E") {
+      nuevoValorHistorico = "E";
+    } else {
+      nuevoValorHistorico = "N";
+    }
+
     await db.transaction(async (tx) => {
       await tx
         .update(PamCabeceraSemanal)
         .set({
           [columnaDb]: cabeceraSemanal[columnaDb] + 1,
-          [columnaDbAnterior]: cabeceraSemanal[columnaDbAnterior] - 1,
+          [columnaDbAnterior]: estadoAnteriorValor,
+          circulacion: totalEnCirculacion,
+          historicoCirculacion: totalHistorico,
         })
         .where(
           and(
@@ -40,6 +63,7 @@ export class DefaultStrategy implements IEstatadosEstrategy {
         .set({
           estado: nuevoEstado,
           fechaUltimaModificacion: new Date().toISOString().toString(),
+          isHistorico: nuevoValorHistorico,
         })
         .where(
           and(
