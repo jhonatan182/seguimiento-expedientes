@@ -1,21 +1,29 @@
 import { and, eq } from "drizzle-orm";
 
 import { ICambioEstado, IEstatadosEstrategy, IExecuteData } from "@/interfaces";
-import { CADUCADO, CON_LUGAR, PARCIAL, SIN_LUGAR } from "@/const";
+import {
+  DICTAMEN,
+  DICTAMEN_CIRCULACION,
+  DICTAMEN_CUSTODIA,
+  REQUERIDO,
+} from "@/const";
 import { PamCabeceraSemanal, PamExpedientes } from "@/db/schema";
 import { db } from "@/lib/drizzle";
 
-export class AnyToResuelto implements IEstatadosEstrategy {
+export class RequeridoToDictamen implements IEstatadosEstrategy {
   public satisfy(cambioEstado: ICambioEstado): boolean {
-    console.log("AnyToResuelto satisfy", cambioEstado);
+    console.log("RequeridoToDictamen satisfy", cambioEstado);
 
-    return [CON_LUGAR, SIN_LUGAR, PARCIAL, CADUCADO].includes(
-      cambioEstado.nuevoEstado,
+    return (
+      [REQUERIDO].includes(cambioEstado.estadoActual) &&
+      [DICTAMEN, DICTAMEN_CUSTODIA, DICTAMEN_CIRCULACION].includes(
+        cambioEstado.nuevoEstado,
+      )
     );
   }
 
   public async execute(data: IExecuteData) {
-    console.log("AnyToResuelto execute");
+    console.log("RequeridoToDictamen execute");
 
     const {
       cabeceraSemanal,
@@ -25,17 +33,21 @@ export class AnyToResuelto implements IEstatadosEstrategy {
       expediente,
     } = data;
 
+    let totalEnCirculacion: number = 0;
+    let totalHistorico: number = 0;
     let estadoAnteriorValor: number = 0;
 
     if (expediente.isHistorico === "S") {
+      totalEnCirculacion = cabeceraSemanal.circulacion + 1;
+      totalHistorico = cabeceraSemanal.historicoCirculacion - 1;
       estadoAnteriorValor = cabeceraSemanal[columnaDbAnterior];
     } else {
+      totalEnCirculacion = cabeceraSemanal.circulacion;
+      totalHistorico = cabeceraSemanal.historicoCirculacion;
       estadoAnteriorValor = cabeceraSemanal[columnaDbAnterior] - 1;
     }
 
-    const { conLugar, sinLugar, parcial, caducado } = cabeceraSemanal;
-    const totalResuelto =
-      conLugar + sinLugar + parcial + caducado + cabeceraSemanal[columnaDb] + 1;
+    const totalDictamen = cabeceraSemanal.dictamen + 1;
 
     let nuevoValorHistorico: string;
     if (expediente.isHistorico === "S" || expediente.isHistorico === "E") {
@@ -50,7 +62,9 @@ export class AnyToResuelto implements IEstatadosEstrategy {
         .set({
           [columnaDb]: cabeceraSemanal[columnaDb] + 1,
           [columnaDbAnterior]: estadoAnteriorValor,
-          resuelto: totalResuelto,
+          dictamen: totalDictamen,
+          circulacion: totalEnCirculacion,
+          historicoCirculacion: totalHistorico,
         })
         .where(
           and(

@@ -47,7 +47,7 @@ export function Cabecera({
       </CardHeader>
 
       {descripcion1 && (
-        <CardFooter className="flex-col text-white items-start gap-1.5 text-sm">
+        <CardFooter className="flex-col text-white items-center gap-1.5 text-sm md:items-start">
           <div className="line-clamp-1 flex gap-2 font-medium">
             <p>{descripcion1}</p>
             <span>{valorDescripcion1 || 0}</span>

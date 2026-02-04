@@ -76,6 +76,13 @@ export async function buildNextCabeceraSemanal(): Promise<ActionsResponse> {
     ),
   });
 
+  if (expedientesSemanaAnterior.length === 0) {
+    return {
+      message: "No hay expedientes en la semana actual",
+      success: false,
+    };
+  }
+
   //buscar cabecera de la semana siguiente
   const cabeceraSiguiente = await getCabeceraSemanal(userId, semanaId + 1);
 
@@ -109,6 +116,17 @@ export async function buildNextCabeceraSemanal(): Promise<ActionsResponse> {
             cabecera.requerido +
             cabecera.historicoCirculacion,
           pendiente: cabecera.pendiente,
+          caducado: 0,
+          dictamen: 0,
+          requerido: 0,
+          circulacion: 0,
+          conLugar: 0,
+          dictamenCirculacion: 0,
+          dictamenCustodia: 0,
+          nuevoIngreso: 0,
+          parcial: 0,
+          resuelto: 0,
+          sinLugar: 0,
         })
         .where(
           and(
@@ -130,6 +148,17 @@ export async function buildNextCabeceraSemanal(): Promise<ActionsResponse> {
           cabecera.requerido +
           cabecera.historicoCirculacion,
         pendiente: cabecera.pendiente,
+        caducado: 0,
+        dictamen: 0,
+        requerido: 0,
+        circulacion: 0,
+        conLugar: 0,
+        dictamenCirculacion: 0,
+        dictamenCustodia: 0,
+        nuevoIngreso: 0,
+        parcial: 0,
+        resuelto: 0,
+        sinLugar: 0,
       });
     }
   });
@@ -138,6 +167,6 @@ export async function buildNextCabeceraSemanal(): Promise<ActionsResponse> {
 
   return {
     success: true,
-    message: "Cabecera creada exitosamente",
+    message: "Migración exitosa",
   };
 }

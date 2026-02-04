@@ -1,13 +1,9 @@
 import { and, eq } from "drizzle-orm";
 
-import { ICambioEstado, IEstatadosEstrategy } from "@/interfaces";
+import { ICambioEstado, IEstatadosEstrategy, IExecuteData } from "@/interfaces";
 import { DICTAMEN_CIRCULACION, DICTAMEN_CUSTODIA } from "@/const";
+import { PamCabeceraSemanal, PamExpedientes } from "@/db/schema";
 import { db } from "@/lib/drizzle";
-import {
-  PamCabeceraSemanal,
-  PamCabeceraSemanalType,
-  PamExpedientes,
-} from "@/db/schema";
 
 export class DictamenToDictamen implements IEstatadosEstrategy {
   public satisfy(cambioEstado: ICambioEstado): boolean {
@@ -25,27 +21,60 @@ export class DictamenToDictamen implements IEstatadosEstrategy {
     return false;
   }
 
-  public async execute(
-    cabeceraSemanal: PamCabeceraSemanalType,
-    columnaDb: keyof PamCabeceraSemanalType,
-    columnaDbAnterior: keyof PamCabeceraSemanalType,
-    nuevoEstado: string,
-    expedienteId: number,
-    userId: number,
-  ) {
+  public async execute(data: IExecuteData) {
     console.log("DictamenToDictamen execute");
+
+    const {
+      cabeceraSemanal,
+      columnaDb,
+      columnaDbAnterior,
+      nuevoEstado,
+      expediente,
+    } = data;
+
+    let totalEnCirculacion: number = 0;
+    let totalHistorico: number = 0;
+    let estadoAnteriorValor: number = 0;
+    let comodin: number = 0;
+
+    if (expediente.isHistorico === "S") {
+      totalEnCirculacion = cabeceraSemanal.circulacion + 1;
+      totalHistorico = cabeceraSemanal.historicoCirculacion - 1;
+      estadoAnteriorValor = cabeceraSemanal[columnaDbAnterior];
+      comodin = 1;
+    } else {
+      totalEnCirculacion = cabeceraSemanal.circulacion;
+      totalHistorico = cabeceraSemanal.historicoCirculacion;
+      estadoAnteriorValor = cabeceraSemanal[columnaDbAnterior] - 1;
+      comodin = 0;
+    }
+
+    const totalDictamen =
+      cabeceraSemanal.dictamenCirculacion +
+      cabeceraSemanal.dictamenCustodia +
+      comodin;
+
+    let nuevoValorHistorico: string;
+    if (expediente.isHistorico === "S" || expediente.isHistorico === "E") {
+      nuevoValorHistorico = "E";
+    } else {
+      nuevoValorHistorico = "N";
+    }
 
     await db.transaction(async (tx) => {
       await tx
         .update(PamCabeceraSemanal)
         .set({
           [columnaDb]: cabeceraSemanal[columnaDb] + 1,
-          [columnaDbAnterior]: cabeceraSemanal[columnaDbAnterior] - 1,
+          [columnaDbAnterior]: estadoAnteriorValor,
+          circulacion: totalEnCirculacion,
+          historicoCirculacion: totalHistorico,
+          dictamen: totalDictamen,
         })
         .where(
           and(
             eq(PamCabeceraSemanal.id, cabeceraSemanal.id),
-            eq(PamCabeceraSemanal.analistaId, userId),
+            eq(PamCabeceraSemanal.analistaId, expediente.analistaId),
             eq(PamCabeceraSemanal.semanaId, cabeceraSemanal.semanaId),
           ),
         );
@@ -55,11 +84,12 @@ export class DictamenToDictamen implements IEstatadosEstrategy {
         .set({
           estado: nuevoEstado,
           fechaUltimaModificacion: new Date().toISOString().toString(),
+          isHistorico: nuevoValorHistorico,
         })
         .where(
           and(
-            eq(PamExpedientes.id, expedienteId),
-            eq(PamExpedientes.analistaId, userId),
+            eq(PamExpedientes.id, expediente.id),
+            eq(PamExpedientes.analistaId, expediente.analistaId),
             eq(PamExpedientes.semanaId, cabeceraSemanal.semanaId),
           ),
         );

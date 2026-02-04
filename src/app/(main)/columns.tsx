@@ -52,7 +52,8 @@ export const columns: ColumnDef<PamExpedienteType>[] = [
       return (
         <div className="flex items-center gap-2">
           {row.original.expediente}
-          {row.original.isHistorico === "S" && (
+          {(row.original.isHistorico === "S" ||
+            row.original.isHistorico === "E") && (
             <Badge
               variant="secondary"
               className="bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
@@ -90,18 +91,21 @@ export const columns: ColumnDef<PamExpedienteType>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      if (disableSelectEstado(row.original.estado)) {
+      if (
+        row.original.isHistorico === "S" ||
+        row.original.isHistorico === "E"
+      ) {
         return null;
       }
 
       return (
-        <ProtectedComponentByCookie keyCookie="isCurrentWeek">
-          <div className="flex items-center gap-2 ">
-            <DialogExpediente expediente={row.original} />
+        // <ProtectedComponentByCookie keyCookie="isCurrentWeek">
+        <div className="flex items-center gap-2 ">
+          <DialogExpediente expediente={row.original} />
 
-            <AlertExpediente expedienteId={row.original.id} />
-          </div>
-        </ProtectedComponentByCookie>
+          <AlertExpediente expedienteId={row.original.id} />
+        </div>
+        // </ProtectedComponentByCookie>
       );
     },
   },

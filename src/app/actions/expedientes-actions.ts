@@ -20,6 +20,7 @@ import { stragiesList } from "@/rdn/strategies";
 import { mapColumnDb } from "@/utils/mappers";
 import { ActionsResponse, Semana } from "@/responses";
 import { auth } from "../auth.config";
+import { IExecuteData } from "@/interfaces";
 
 export async function getExpedientes(semanaId: number): Promise<Semana | null> {
   const session = await auth();
@@ -318,27 +319,21 @@ export async function toggleExpedienteEstado(
     s.satisfy({ estadoActual: expediente.estado, nuevoEstado: nuevoEstado }),
   );
 
+  const dataStrategy: IExecuteData = {
+    cabeceraSemanal: cabecera,
+    columnaDb: columnaDb,
+    columnaDbAnterior: columnaDbAnterior,
+    nuevoEstado: nuevoEstado,
+    expediente: expediente,
+  };
+
   if (!strategy) {
-    await new DefaultStrategy().execute(
-      cabecera,
-      columnaDb,
-      columnaDbAnterior,
-      nuevoEstado,
-      expedienteId,
-      userId,
-    );
+    await new DefaultStrategy().execute(dataStrategy);
   } else {
     //ejucutar strategy
     const context = new ContextStrategy(strategy);
 
-    await context.cambioEstado(
-      cabecera,
-      columnaDb,
-      columnaDbAnterior,
-      nuevoEstado,
-      expedienteId,
-      userId,
-    );
+    await context.cambioEstado(dataStrategy);
   }
 
   revalidatePath("/");

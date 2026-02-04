@@ -50,12 +50,13 @@ export default async function Page({ searchParams }: PageProps) {
 
   return (
     <>
-      <div className="flex items-center gap-1">
+      <div className="flex flex-col items-center gap-4 md:flex-row md:gap-1.5">
         <SelectSemanas
           semanas={semanas}
           selectedSemanaId={parseInt(semanaActualId)}
         />
-        {isCurrentWeek?.id === parseInt(semanaActualId) && <NextWeekButton />}
+        {/* {isCurrentWeek?.id === parseInt(semanaActualId) && <NextWeekButton />} */}
+        <NextWeekButton />
       </div>
 
       <CabeceraCards cabecera={data.cabeceras[0]} />

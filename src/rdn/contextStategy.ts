@@ -1,5 +1,4 @@
-import { IEstatadosEstrategy } from "@/interfaces";
-import { PamCabeceraSemanalType } from "@/db/schema";
+import { IEstatadosEstrategy, IExecuteData } from "@/interfaces";
 
 export class ContextStrategy {
   private strategy: IEstatadosEstrategy;
@@ -8,21 +7,7 @@ export class ContextStrategy {
     this.strategy = strategy;
   }
 
-  public async cambioEstado(
-    cabeceraSemanal: PamCabeceraSemanalType,
-    columnaDb: keyof PamCabeceraSemanalType,
-    columnaDbAnterior: keyof PamCabeceraSemanalType,
-    nuevoEstado: string,
-    expedienteId: number,
-    userId: number,
-  ): Promise<void> {
-    await this.strategy.execute(
-      cabeceraSemanal,
-      columnaDb,
-      columnaDbAnterior,
-      nuevoEstado,
-      expedienteId,
-      userId,
-    );
+  public async cambioEstado(data: IExecuteData): Promise<void> {
+    await this.strategy.execute(data);
   }
 }

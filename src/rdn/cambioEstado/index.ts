@@ -5,3 +5,6 @@ export { AnyToDictamen } from "./anyToDictamen";
 export { DictamentToAny } from "./dictamentToAny";
 export { DictamenToDictamen } from "./dictamenToDictamen";
 export { DictamenToResuelto } from "./dictamenToResuelto";
+export { RequeridoToAny } from "./requeridoToAny";
+export { RequeridoToResuelto } from "./requeridoToResuelto";
+export { RequeridoToDictamen } from "./requeridoToDictamen";
