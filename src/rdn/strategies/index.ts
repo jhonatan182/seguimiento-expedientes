@@ -32,12 +32,12 @@ export const stragiesList = [
   new DictamenToResuelto(),
   new DictamenToDictamen(),
 
-  //anteriores
-  new PendienteToAny(),
-  new DictamentToAny(),
-  new RequeridoToAny(),
-  new AnyToResuelto(),
-  new AnyToDictamen(),
-  // DefaultStrategy debe ir al final
-  new DefaultStrategy(),
+  // //anteriores
+  // new PendienteToAny(),
+  // new DictamentToAny(),
+  // new RequeridoToAny(),
+  // new AnyToResuelto(),
+  // new AnyToDictamen(),
+  // // DefaultStrategy debe ir al final
+  // new DefaultStrategy(),
 ];
