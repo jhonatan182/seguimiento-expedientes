@@ -104,7 +104,10 @@ export async function buildNextCabeceraSemanal(): Promise<ActionsResponse> {
         .update(PamCabeceraSemanal)
         .set({
           saldoAnterior: cabecera.pendiente,
-          historicoCirculacion: cabecera.dictamen + cabecera.requerido,
+          historicoCirculacion:
+            cabecera.dictamen +
+            cabecera.requerido +
+            cabecera.historicoCirculacion,
           pendiente: cabecera.pendiente,
         })
         .where(
@@ -122,7 +125,10 @@ export async function buildNextCabeceraSemanal(): Promise<ActionsResponse> {
         semanaId: semanaId + 1,
         analistaId: userId,
         saldoAnterior: cabecera.pendiente,
-        historicoCirculacion: cabecera.dictamen + cabecera.requerido,
+        historicoCirculacion:
+          cabecera.dictamen +
+          cabecera.requerido +
+          cabecera.historicoCirculacion,
         pendiente: cabecera.pendiente,
       });
     }
