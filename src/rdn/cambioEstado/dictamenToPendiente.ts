@@ -5,25 +5,24 @@ import {
   DICTAMEN,
   DICTAMEN_CIRCULACION,
   DICTAMEN_CUSTODIA,
-  REQUERIDO,
+  PENDIENTE,
 } from "@/const";
 import { PamCabeceraSemanal, PamExpedientes } from "@/db/schema";
 import { db } from "@/lib/drizzle";
 
-export class RequeridoToDictamen implements IEstatadosEstrategy {
+export class DictamenToPendiente implements IEstatadosEstrategy {
   public satisfy(cambioEstado: ICambioEstado): boolean {
-    console.log("RequeridoToDictamen satisfy", cambioEstado);
+    console.log("DictamenToPendiente satisfy", cambioEstado);
 
     return (
-      cambioEstado.estadoActual === REQUERIDO &&
-      [DICTAMEN, DICTAMEN_CUSTODIA, DICTAMEN_CIRCULACION].includes(
-        cambioEstado.nuevoEstado,
-      )
+      [DICTAMEN_CIRCULACION, DICTAMEN_CUSTODIA, DICTAMEN].includes(
+        cambioEstado.estadoActual,
+      ) && cambioEstado.nuevoEstado === PENDIENTE
     );
   }
 
   public async execute(data: IExecuteData) {
-    console.log("RequeridoToDictamen execute");
+    console.log("DictamenToPendiente execute");
 
     const {
       cabeceraSemanal,
@@ -33,6 +32,7 @@ export class RequeridoToDictamen implements IEstatadosEstrategy {
       expediente,
     } = data;
 
+    let totalDictamen: number = 0;
     let totalEnCirculacion: number = 0;
     let totalHistorico: number = 0;
     let estadoAnteriorValor: number = 0;
@@ -42,12 +42,11 @@ export class RequeridoToDictamen implements IEstatadosEstrategy {
       totalHistorico = cabeceraSemanal.historicoCirculacion - 1;
       estadoAnteriorValor = cabeceraSemanal[columnaDbAnterior];
     } else {
+      totalDictamen = cabeceraSemanal.dictamen - 1;
       totalEnCirculacion = cabeceraSemanal.circulacion;
       totalHistorico = cabeceraSemanal.historicoCirculacion;
       estadoAnteriorValor = cabeceraSemanal[columnaDbAnterior] - 1;
     }
-
-    const totalDictamen = cabeceraSemanal.dictamen + 1;
 
     let nuevoValorHistorico: string;
     if (expediente.isHistorico === "S" || expediente.isHistorico === "E") {

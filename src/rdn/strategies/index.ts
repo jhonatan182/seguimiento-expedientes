@@ -9,13 +9,30 @@ import {
   RequeridoToAny,
   RequeridoToResuelto,
   RequeridoToDictamen,
+  PendienteToRequerido,
+  PendienteToDictamen,
+  PendienteToResuelto,
+  RequeridoToPendiente,
+  DictamenToPendiente,
+  DictamenToRequerido,
 } from "../cambioEstado";
 
 export const stragiesList = [
-  new DictamenToResuelto(),
-  new DictamenToDictamen(),
+  //reestructuraciones
+  new PendienteToRequerido(),
+  new PendienteToDictamen(),
+  new PendienteToResuelto(),
+
+  new RequeridoToPendiente(),
   new RequeridoToResuelto(),
   new RequeridoToDictamen(),
+
+  new DictamenToPendiente(),
+  new DictamenToRequerido(),
+  new DictamenToResuelto(),
+  new DictamenToDictamen(),
+
+  //anteriores
   new PendienteToAny(),
   new DictamentToAny(),
   new RequeridoToAny(),

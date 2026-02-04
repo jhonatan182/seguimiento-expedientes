@@ -15,7 +15,6 @@ import {
   incrementarEstadoResuelto,
   validateEstado,
 } from "@/utils/validations";
-import { DefaultStrategy } from "@/rdn/cambioEstado";
 import { stragiesList } from "@/rdn/strategies";
 import { mapColumnDb } from "@/utils/mappers";
 import { ActionsResponse, Semana } from "@/responses";
@@ -328,7 +327,10 @@ export async function toggleExpedienteEstado(
   };
 
   if (!strategy) {
-    await new DefaultStrategy().execute(dataStrategy);
+    return {
+      success: false,
+      message: "No se pudo cambiar el estado del expediente",
+    };
   } else {
     //ejucutar strategy
     const context = new ContextStrategy(strategy);
