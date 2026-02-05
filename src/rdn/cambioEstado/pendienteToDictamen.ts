@@ -2,7 +2,12 @@ import { and, eq } from "drizzle-orm";
 
 import { ICambioEstado, IEstatadosEstrategy, IExecuteData } from "@/interfaces";
 import { PamCabeceraSemanal, PamExpedientes } from "@/db/schema";
-import { DICTAMEN, PENDIENTE } from "@/const";
+import {
+  DICTAMEN,
+  DICTAMEN_CIRCULACION,
+  DICTAMEN_CUSTODIA,
+  PENDIENTE,
+} from "@/const";
 import { db } from "@/lib/drizzle";
 
 export class PendienteToDictamen implements IEstatadosEstrategy {
@@ -11,7 +16,9 @@ export class PendienteToDictamen implements IEstatadosEstrategy {
 
     return (
       cambioEstado.estadoActual === PENDIENTE &&
-      cambioEstado.nuevoEstado === DICTAMEN
+      [DICTAMEN, DICTAMEN_CUSTODIA, DICTAMEN_CIRCULACION].includes(
+        cambioEstado.nuevoEstado,
+      )
     );
   }
 

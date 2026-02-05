@@ -1,7 +1,7 @@
 import { and, eq } from "drizzle-orm";
 
 import { ICambioEstado, IEstatadosEstrategy, IExecuteData } from "@/interfaces";
-import { DICTAMEN_CIRCULACION, DICTAMEN_CUSTODIA } from "@/const";
+import { DICTAMEN, DICTAMEN_CIRCULACION, DICTAMEN_CUSTODIA } from "@/const";
 import { PamCabeceraSemanal, PamExpedientes } from "@/db/schema";
 import { db } from "@/lib/drizzle";
 
@@ -11,9 +11,11 @@ export class DictamenToDictamen implements IEstatadosEstrategy {
 
     if (
       (cambioEstado.estadoActual === DICTAMEN_CIRCULACION ||
-        cambioEstado.estadoActual === DICTAMEN_CUSTODIA) &&
+        cambioEstado.estadoActual === DICTAMEN_CUSTODIA ||
+        cambioEstado.estadoActual === DICTAMEN) &&
       (cambioEstado.nuevoEstado === DICTAMEN_CIRCULACION ||
-        cambioEstado.nuevoEstado === DICTAMEN_CUSTODIA)
+        cambioEstado.nuevoEstado === DICTAMEN_CUSTODIA ||
+        cambioEstado.nuevoEstado === DICTAMEN)
     ) {
       return true;
     }
