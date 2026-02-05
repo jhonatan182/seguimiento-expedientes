@@ -17,6 +17,7 @@ import { formatDate } from "@/utils/dates";
 import { ProtectedComponentByCookie } from "@/components/security";
 import { disableSelectEstado } from "@/utils/validations";
 import { Badge } from "@/components/ui/badge";
+import { CADUCADO, CON_LUGAR, PARCIAL, SIN_LUGAR } from "@/const";
 
 function DragHandle({ id }: { id: number }) {
   const { attributes, listeners } = useSortable({
@@ -52,6 +53,15 @@ export const columns: ColumnDef<PamExpedienteType>[] = [
       return (
         <div className="flex items-center gap-2">
           {row.original.expediente}
+
+          {[CON_LUGAR, SIN_LUGAR, CADUCADO, PARCIAL].includes(
+            row.original.estado,
+          ) && (
+            <Badge className="bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300">
+              Resuelto
+            </Badge>
+          )}
+
           {(row.original.isHistorico === "S" ||
             row.original.isHistorico === "E") && (
             <Badge

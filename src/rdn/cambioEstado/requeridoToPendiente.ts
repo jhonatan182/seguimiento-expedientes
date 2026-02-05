@@ -26,6 +26,19 @@ export class RequeridoToPendiente implements IEstatadosEstrategy {
       expediente,
     } = data;
 
+    let totalEnCirculacion: number = 0;
+    let totalHistorico: number = 0;
+    let estadoAnteriorValor: number = 0;
+
+    if (expediente.isHistorico === "S") {
+      totalEnCirculacion = cabeceraSemanal.circulacion + 1;
+      totalHistorico = cabeceraSemanal.historicoCirculacion - 1;
+      estadoAnteriorValor = cabeceraSemanal[columnaDbAnterior];
+    } else {
+      totalEnCirculacion = cabeceraSemanal.circulacion;
+      totalHistorico = cabeceraSemanal.historicoCirculacion;
+      estadoAnteriorValor = cabeceraSemanal[columnaDbAnterior] - 1;
+    }
     let nuevoValorHistorico: string;
     if (expediente.isHistorico === "S" || expediente.isHistorico === "E") {
       nuevoValorHistorico = "E";
@@ -38,7 +51,9 @@ export class RequeridoToPendiente implements IEstatadosEstrategy {
         .update(PamCabeceraSemanal)
         .set({
           [columnaDb]: cabeceraSemanal[columnaDb] + 1,
-          [columnaDbAnterior]: cabeceraSemanal[columnaDbAnterior] - 1,
+          [columnaDbAnterior]: estadoAnteriorValor,
+          circulacion: totalEnCirculacion,
+          historicoCirculacion: totalHistorico,
         })
         .where(
           and(

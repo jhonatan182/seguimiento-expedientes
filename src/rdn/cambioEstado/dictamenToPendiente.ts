@@ -41,6 +41,7 @@ export class DictamenToPendiente implements IEstatadosEstrategy {
       totalEnCirculacion = cabeceraSemanal.circulacion + 1;
       totalHistorico = cabeceraSemanal.historicoCirculacion - 1;
       estadoAnteriorValor = cabeceraSemanal[columnaDbAnterior];
+      totalDictamen = cabeceraSemanal.dictamen;
     } else {
       totalDictamen = cabeceraSemanal.dictamen - 1;
       totalEnCirculacion = cabeceraSemanal.circulacion;

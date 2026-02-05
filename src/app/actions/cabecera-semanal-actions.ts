@@ -15,6 +15,7 @@ import {
   REQUERIDO,
 } from "@/const";
 import { ActionsResponse } from "@/responses";
+import { redirect } from "next/navigation";
 
 export async function getCabeceraSemanal(userId: number, semanaId: number) {
   //verficar si existe cabecera en la semana que se esta creando el expediente
@@ -78,7 +79,7 @@ export async function buildNextCabeceraSemanal(): Promise<ActionsResponse> {
 
   if (expedientesSemanaAnterior.length === 0) {
     return {
-      message: "No hay expedientes en la semana actual",
+      message: "No hay expedientes para migrar",
       success: false,
     };
   }
@@ -163,10 +164,9 @@ export async function buildNextCabeceraSemanal(): Promise<ActionsResponse> {
     }
   });
 
-  revalidatePath("/");
-
+  revalidatePath("/?semana=" + (semanaId + 1));
   return {
     success: true,
-    message: "Migración exitosa",
+    message: "Actualización exitosa",
   };
 }

@@ -28,7 +28,6 @@ export class RequeridoToResuelto implements IEstatadosEstrategy {
       expediente,
     } = data;
 
-    let totalDictamen: number = 0;
     let totalEnCirculacion: number = 0;
     let totalHistorico: number = 0;
     let estadoAnteriorValor: number = 0;
@@ -38,19 +37,12 @@ export class RequeridoToResuelto implements IEstatadosEstrategy {
       totalHistorico = cabeceraSemanal.historicoCirculacion - 1;
       estadoAnteriorValor = cabeceraSemanal[columnaDbAnterior];
     } else {
-      totalDictamen =
-        cabeceraSemanal.dictamen > 0 ? cabeceraSemanal.dictamen - 1 : 0;
       totalEnCirculacion = cabeceraSemanal.circulacion;
       totalHistorico = cabeceraSemanal.historicoCirculacion;
       estadoAnteriorValor = cabeceraSemanal[columnaDbAnterior] - 1;
     }
 
-    const totalResuelto =
-      cabeceraSemanal.conLugar +
-      cabeceraSemanal.sinLugar +
-      cabeceraSemanal.parcial +
-      cabeceraSemanal.caducado +
-      (cabeceraSemanal[columnaDb] + 1);
+    const totalResuelto = cabeceraSemanal.resuelto + 1;
 
     let nuevoValorHistorico: string;
     if (expediente.isHistorico === "S" || expediente.isHistorico === "E") {
@@ -65,7 +57,6 @@ export class RequeridoToResuelto implements IEstatadosEstrategy {
         .set({
           [columnaDb]: cabeceraSemanal[columnaDb] + 1,
           [columnaDbAnterior]: estadoAnteriorValor,
-          dictamen: totalDictamen,
           circulacion: totalEnCirculacion,
           historicoCirculacion: totalHistorico,
           resuelto: totalResuelto,
