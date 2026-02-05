@@ -113,7 +113,7 @@ export async function createExpediente(
       expediente: data.expediente.toUpperCase(),
       analistaId: userId,
       semanaId: semanaId,
-      fechaIngreso: new Date(data.fechaIngreso + "T00:00:00").toISOString(),
+      fechaIngreso: new Date(data.fechaIngreso + "T12:00:00").toISOString(),
       estado: estadoValido,
       fechaUltimaModificacion: "",
     });
