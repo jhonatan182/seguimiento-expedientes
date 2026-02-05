@@ -31,6 +31,7 @@ export async function getExpedientes(semanaId: number): Promise<Semana | null> {
     with: {
       expedientes: {
         where: eq(PamExpedientes.analistaId, userId),
+        orderBy: (expedientes, { desc }) => [desc(expedientes.id)],
       },
       cabeceras: {
         where: eq(PamCabeceraSemanal.analistaId, userId),
