@@ -7,4 +7,5 @@ export const PamAnalista = sqliteTable("PAM_ANALISTA", {
   password: text().notNull(),
   modulo: text({ length: 1 }).notNull(),
   isJefe: text({ length: 1 }).notNull(),
+  oficina: text({ length: 3 }).notNull(),
 });

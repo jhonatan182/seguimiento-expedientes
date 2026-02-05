@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "b94b9d41-64ae-4cd0-835b-5360fd53643c",
+  "id": "97eb0fda-2245-4d13-ba32-148dbfa5f6a1",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "PAM_ANALISTA": {
@@ -45,6 +45,13 @@
         "isJefe": {
           "name": "isJefe",
           "type": "text(1)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "oficina": {
+          "name": "oficina",
+          "type": "text(3)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false

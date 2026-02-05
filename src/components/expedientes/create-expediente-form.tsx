@@ -35,6 +35,7 @@ export function CreateExpedienteForm({ setIsOpen }: CreateExpedienteFormProps) {
     defaultValues: {
       expediente: "",
       estado: "",
+      fechaIngreso: new Date().toISOString().split("T")[0],
     },
   });
 
@@ -90,6 +91,28 @@ export function CreateExpedienteForm({ setIsOpen }: CreateExpedienteFormProps) {
                   placeholder="Ejm: E2026000001"
                   autoComplete="off"
                   type="text"
+                />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+
+          <Controller
+            name="fechaIngreso"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel htmlFor={field.name}>Fecha de Ingreso:</FieldLabel>
+
+                <Input
+                  {...field}
+                  id={field.name}
+                  aria-invalid={fieldState.invalid}
+                  autoComplete="off"
+                  type="date"
+                  max={new Date().toISOString().split("T")[0]}
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />

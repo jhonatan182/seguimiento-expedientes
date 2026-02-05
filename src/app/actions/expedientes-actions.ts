@@ -20,9 +20,14 @@ import { mapColumnDb } from "@/utils/mappers";
 import { ActionsResponse, Semana } from "@/responses";
 import { auth } from "../auth.config";
 import { IExecuteData } from "@/interfaces";
+import { redirect } from "next/navigation";
 
 export async function getExpedientes(semanaId: number): Promise<Semana | null> {
   const session = await auth();
+
+  if (!session?.user?.id) {
+    return redirect("/login");
+  }
 
   const userId = Number(session?.user?.id);
 
@@ -108,7 +113,7 @@ export async function createExpediente(
       expediente: data.expediente.toUpperCase(),
       analistaId: userId,
       semanaId: semanaId,
-      fechaIngreso: new Date().toISOString().toString(),
+      fechaIngreso: new Date(data.fechaIngreso + "T00:00:00").toISOString(),
       estado: estadoValido,
       fechaUltimaModificacion: "",
     });
