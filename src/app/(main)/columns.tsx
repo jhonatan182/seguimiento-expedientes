@@ -62,13 +62,21 @@ export const columns: ColumnDef<PamExpedienteType>[] = [
             </Badge>
           )}
 
-          {(row.original.isHistorico === "S" ||
-            row.original.isHistorico === "E") && (
+          {(row.original.isHistorico === "S" ) && (
             <Badge
               variant="secondary"
               className="bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
             >
               Historico
+            </Badge>
+          )}
+
+          {(row.original.isHistorico === "N" ) && (
+            <Badge
+              variant="secondary"
+             className="bg-purple-50 text-purple-700 dark:bg-purple-950 dark:text-purple-300"
+            >
+              Nuevo
             </Badge>
           )}
         </div>
