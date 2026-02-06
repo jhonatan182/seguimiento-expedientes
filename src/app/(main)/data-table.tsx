@@ -27,6 +27,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Input } from "@/components/ui/input";
 
 type DataTableProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[];
@@ -76,6 +77,18 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="w-full flex-col justify-start gap-6 px-4 lg:px-6">
+   <div className="flex items-center py-4">
+        <Input
+          placeholder="Filtrar expediente..."
+          value={(table.getColumn("expediente")?.getFilterValue() as string) ?? ""}
+          onChange={(event) =>
+            table.getColumn("expediente")?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm"
+        />
+      </div>
+
+
       <Table>
         <TableHeader className="bg-muted sticky top-0 z-10">
           {table.getHeaderGroups().map((headerGroup) => (

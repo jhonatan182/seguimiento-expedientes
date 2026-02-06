@@ -70,7 +70,7 @@ export async function seedPamAnalistas() {
     {
       nombre: "MARIAM GOMEZ",
       usuario: "mgomez",
-      password: bcrypt.hashSync("0801198126295", 10),
+      password: bcrypt.hashSync("0801199418846", 10),
       modulo: "D",
       isJefe: "N",
       oficina: "TGU",
