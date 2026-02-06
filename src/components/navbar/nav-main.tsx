@@ -25,18 +25,18 @@ const items = [
     icon: IconFileWord,
     path: "/",
   },
-  {
-    title: "Resumen Semanal",
-    url: "#",
-    icon: IconListDetails,
-    path: "/resumen-semanal",
-  },
-  {
-    title: "Resumen de Unidad",
-    url: "#",
-    icon: IconInnerShadowTop,
-    path: "/resumen-unidad",
-  },
+  // {
+  //   title: "Resumen Semanal",
+  //   url: "#",
+  //   icon: IconListDetails,
+  //   path: "/resumen-semanal",
+  // },
+  // {
+  //   title: "Resumen de Unidad",
+  //   url: "#",
+  //   icon: IconInnerShadowTop,
+  //   path: "/resumen-unidad",
+  // },
 ];
 
 export function NavMain() {

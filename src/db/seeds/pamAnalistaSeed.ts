@@ -8,14 +8,7 @@ export type NuevoAnalista = InferInsertModel<typeof PamAnalista>;
 
 export async function seedPamAnalistas() {
   const analistas: NuevoAnalista[] = [
-    {
-      nombre: "JOSE LARA",
-      usuario: "jlara",
-      password: bcrypt.hashSync("1623198100766", 10),
-      modulo: "E",
-      isJefe: "N",
-      oficina: "SPS",
-    },
+    //EXONERACIONES - TGU
     {
       nombre: "DAVID ZELAYA",
       usuario: "dzelaya",
@@ -49,11 +42,72 @@ export async function seedPamAnalistas() {
       oficina: "TGU",
     },
     {
+      nombre: "DEBORA RAMOS",
+      usuario: "deramos",
+      password: bcrypt.hashSync("0318199801258", 10),
+      modulo: "E",
+      isJefe: "N",
+      oficina: "TGU",
+    },
+
+    // DISPENSAS - TGU
+    {
+      nombre: "SUAM LI",
+      usuario: "sclopez",
+      password: bcrypt.hashSync("0801199720689", 10),
+      modulo: "D",
+      isJefe: "S",
+      oficina: "TGU",
+    },
+    {
+      nombre: "LILI BADOS",
+      usuario: "lbados",
+      password: bcrypt.hashSync("0801198126295", 10),
+      modulo: "D",
+      isJefe: "N",
+      oficina: "TGU",
+    },
+    {
+      nombre: "MARIAM GOMEZ",
+      usuario: "mgomez",
+      password: bcrypt.hashSync("0801198126295", 10),
+      modulo: "D",
+      isJefe: "N",
+      oficina: "TGU",
+    },
+    {
+      nombre: "MANUEL ORTEGA",
+      usuario: "mortega",
+      password: bcrypt.hashSync("0506197300394", 10),
+      modulo: "D",
+      isJefe: "N",
+      oficina: "TGU",
+    },
+    {
+      nombre: "EVA VALERIANO",
+      usuario: "evaleriano",
+      password: bcrypt.hashSync("0801200211583", 10),
+      modulo: "D",
+      isJefe: "N",
+      oficina: "TGU",
+    },
+
+    // EXONERACIONES - SPS
+    {
+      nombre: "JOSE LARA",
+      usuario: "jlara",
+      password: bcrypt.hashSync("1623198100766", 10),
+      modulo: "E",
+      isJefe: "N",
+      oficina: "SPS",
+    },
+
+    {
       nombre: "ANA FLORES",
       usuario: "aflores",
       password: bcrypt.hashSync("0501199804729", 10),
       modulo: "E",
-      isJefe: "N",
+      isJefe: "S",
       oficina: "SPS",
     },
     {
@@ -72,13 +126,23 @@ export async function seedPamAnalistas() {
       isJefe: "N",
       oficina: "SPS",
     },
+
+    // DISPENSAS - SPS
     {
-      nombre: "DEBORA RAMOS",
-      usuario: "deramos",
-      password: bcrypt.hashSync("0318199801258", 10),
-      modulo: "E",
+      nombre: "SARA PADILLA",
+      usuario: "spadilla",
+      password: bcrypt.hashSync("1809198100099", 10),
+      modulo: "D",
+      isJefe: "S",
+      oficina: "SPS",
+    },
+    {
+      nombre: "ANA LEIVA",
+      usuario: "aleiva",
+      password: bcrypt.hashSync("1801199902477", 10),
+      modulo: "D",
       isJefe: "N",
-      oficina: "TGU",
+      oficina: "SPS",
     },
   ];
 
