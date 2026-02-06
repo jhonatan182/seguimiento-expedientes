@@ -56,7 +56,7 @@ export const columns: ColumnDef<PamExpedienteType>[] = [
 
           {[CON_LUGAR, SIN_LUGAR, CADUCADO, PARCIAL].includes(
             row.original.estado,
-          ) && (
+          )  && (
             <Badge className="bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300">
               Resuelto
             </Badge>
@@ -80,7 +80,7 @@ export const columns: ColumnDef<PamExpedienteType>[] = [
             </Badge>
           )}
 
-          {(row.original.isHistorico === "E" ) && (
+          {/* {(row.original.isHistorico === "E" ) && (
             <Badge
               variant="secondary"
              className="bg-sky-50 text-sky-700 dark:bg-sky-950 dark:text-sky-300"
@@ -88,6 +88,17 @@ export const columns: ColumnDef<PamExpedienteType>[] = [
               Circulación
             </Badge>
           )}
+
+
+               {(row.original.isHistorico === "A" ) && (
+            <Badge
+              variant="secondary"
+             className="bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-300"
+            >
+              Saldo Anterior
+            </Badge>
+          )} */}
+
         </div>
       );
     },
