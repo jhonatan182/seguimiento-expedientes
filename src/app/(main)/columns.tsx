@@ -79,6 +79,15 @@ export const columns: ColumnDef<PamExpedienteType>[] = [
               Nuevo
             </Badge>
           )}
+
+          {(row.original.isHistorico === "E" ) && (
+            <Badge
+              variant="secondary"
+             className="bg-sky-50 text-sky-700 dark:bg-sky-950 dark:text-sky-300"
+            >
+              Circulación
+            </Badge>
+          )}
         </div>
       );
     },
