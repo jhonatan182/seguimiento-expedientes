@@ -1,12 +1,6 @@
 import {
-  PendienteToAny,
-  DefaultStrategy,
-  AnyToResuelto,
-  AnyToDictamen,
-  DictamentToAny,
   DictamenToDictamen,
   DictamenToResuelto,
-  RequeridoToAny,
   RequeridoToResuelto,
   RequeridoToDictamen,
   PendienteToRequerido,
@@ -31,13 +25,4 @@ export const stragiesList = [
   new DictamenToRequerido(),
   new DictamenToResuelto(),
   new DictamenToDictamen(),
-
-  // //anteriores
-  // new PendienteToAny(),
-  // new DictamentToAny(),
-  // new RequeridoToAny(),
-  // new AnyToResuelto(),
-  // new AnyToDictamen(),
-  // // DefaultStrategy debe ir al final
-  // new DefaultStrategy(),
 ];
