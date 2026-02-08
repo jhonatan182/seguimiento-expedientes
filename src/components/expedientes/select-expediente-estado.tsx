@@ -1,7 +1,6 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -10,7 +9,6 @@ import { disableSelectEstado } from "@/utils/validations";
 import { getCookie } from "@/app/actions/cookies-actions";
 import { PamExpedienteType } from "@/db/schema";
 import { Label } from "@/components/ui/label";
-import { ESTADOS } from "@/const";
 import {
   Select,
   SelectContent,
@@ -19,13 +17,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { DialogConfirmCustom } from "../ui/custom/dialog-confirm-custom";
+import { useGetEstadosExpedientes } from "@/hooks";
 
 type SelectExpedienteEstadoProps = {
   row: PamExpedienteType;
 };
 
 export function SelectExpedienteEstado({ row }: SelectExpedienteEstadoProps) {
-  const { data: session } = useSession();
   const searchParams = useSearchParams();
   const [isCurrentWeek, setIsCurrentWeek] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -35,9 +33,7 @@ export function SelectExpedienteEstado({ row }: SelectExpedienteEstadoProps) {
     setValueSelect(row.estado);
   }, [row]);
 
-  const estados = ESTADOS.filter((estado) =>
-    estado.modulo.includes(session?.user?.modulo || "D"),
-  );
+  const estados = useGetEstadosExpedientes();
 
   const handleValueChange = async (value: string) => {
     try {

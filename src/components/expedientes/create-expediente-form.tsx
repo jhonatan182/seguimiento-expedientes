@@ -1,20 +1,19 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm, useWatch } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, SetStateAction } from "react";
-import { useSession } from "next-auth/react";
-import { useMemo } from "react";
 import { toast } from "sonner";
+
 
 import { Field, FieldError, FieldGroup, FieldLabel } from "../ui/field";
 import { createExpediente } from "@/app/actions/expedientes-actions";
 import { ExpedienteSchema, ExpedienteSchemaType } from "@/schemas";
 import { disableSelectEstado } from "@/utils/validations";
 import { AlertCustom } from "../ui/custom/alert-custom";
+import { useGetEstadosExpedientes } from "@/hooks";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { ESTADOS } from "@/const";
 import {
   Select,
   SelectContent,
@@ -28,8 +27,6 @@ type CreateExpedienteFormProps = {
 };
 
 export function CreateExpedienteForm({ setIsOpen }: CreateExpedienteFormProps) {
-  const { data: session } = useSession();
-
   const form = useForm<ExpedienteSchemaType>({
     resolver: zodResolver(ExpedienteSchema),
     defaultValues: {
@@ -43,6 +40,8 @@ export function CreateExpedienteForm({ setIsOpen }: CreateExpedienteFormProps) {
     control: form.control,
     name: "estado",
   });
+
+  const estados = useGetEstadosExpedientes();
 
   async function onSubmit(data: ExpedienteSchemaType) {
     try {
@@ -59,13 +58,6 @@ export function CreateExpedienteForm({ setIsOpen }: CreateExpedienteFormProps) {
       toast.error("Error al crear el expediente");
     }
   }
-
-  const estados = useMemo(() => {
-    const filtrados = ESTADOS.filter((estado) =>
-      estado.modulo.includes(session?.user?.modulo || "D"),
-    );
-    return filtrados;
-  }, [session]);
 
   return (
     <>

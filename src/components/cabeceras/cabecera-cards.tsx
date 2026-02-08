@@ -2,6 +2,7 @@ import { PamCabeceraSemanalType } from "@/db/schema";
 import { Cabecera } from "./cabecera";
 import { auth } from "@/app/auth.config";
 import { redirect } from "next/navigation";
+import { MODULO_EXONERACION, OFICINA_SPS, OFICINA_TGU } from "@/const";
 
 type CabeceraCardsProps = {
   cabecera: PamCabeceraSemanalType | null;
@@ -39,7 +40,8 @@ export async function CabeceraCards({ cabecera }: CabeceraCardsProps) {
 
         <div
           className={`col-span-1 grid grid-cols-1 gap-4 sm:col-span-2 sm:grid-cols-2 lg:col-span-1 lg:grid-cols-1 ${
-            user.modulo === "D"
+            user.modulo === "D" ||
+            (user.modulo === MODULO_EXONERACION && user.oficina === OFICINA_SPS)
               ? "@5xl/main:col-span-1 @5xl/main:grid-cols-1"
               : "@5xl/main:col-span-2 @5xl/main:grid-cols-2"
           }`}
@@ -58,7 +60,8 @@ export async function CabeceraCards({ cabecera }: CabeceraCardsProps) {
             valorDescripcion4={cabecera?.caducado || 0}
           />
 
-          {user.modulo === "E" ? (
+          {user.modulo === MODULO_EXONERACION &&
+          user.oficina === OFICINA_TGU ? (
             <Cabecera
               valor={cabecera?.dictamen || 0}
               titulo="Dictamen"
@@ -72,9 +75,16 @@ export async function CabeceraCards({ cabecera }: CabeceraCardsProps) {
         </div>
 
         <div
-          className={`grid gap-4 ${user.modulo === "D" ? "col-span-1 grid-cols-1 sm:col-span-2 sm:grid-cols-2 lg:col-span-2 lg:grid-cols-2" : "col-span-1 grid-cols-1"}`}
+          className={`grid gap-4 ${
+            user.modulo === "D" ||
+            (user.modulo === MODULO_EXONERACION && user.oficina === OFICINA_SPS)
+              ? "col-span-1 grid-cols-1 sm:col-span-2 sm:grid-cols-2 lg:col-span-2 lg:grid-cols-2"
+              : "col-span-1 grid-cols-1"
+          }`}
         >
-          {user.modulo === "D" ? (
+          {user.modulo === "D" ||
+          (user.modulo === MODULO_EXONERACION &&
+            user.oficina === OFICINA_SPS) ? (
             <Cabecera
               valor={cabecera?.dictamen || 0}
               titulo="Dictamen"

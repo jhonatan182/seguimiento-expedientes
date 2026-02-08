@@ -4,6 +4,7 @@ import { and, eq, inArray } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 import { PamCabeceraSemanal, PamExpedientes } from "@/db/schema";
+import { ActionsResponse } from "@/responses";
 import { getCookie } from "./cookies-actions";
 import { auth } from "../auth.config";
 import { db } from "@/lib/drizzle";
@@ -14,8 +15,6 @@ import {
   PENDIENTE,
   REQUERIDO,
 } from "@/const";
-import { ActionsResponse } from "@/responses";
-import { redirect } from "next/navigation";
 
 export async function getCabeceraSemanal(userId: number, semanaId: number) {
   //verficar si existe cabecera en la semana que se esta creando el expediente

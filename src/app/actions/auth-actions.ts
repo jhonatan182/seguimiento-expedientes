@@ -1,14 +1,14 @@
 "use server";
 
-import { auth, signIn } from "@/app/auth.config";
+import { redirect } from "next/navigation";
 import { AuthError } from "next-auth";
+import { eq } from "drizzle-orm";
+
+import { PamAnalista } from "@/db/schema/PAM_ANALISTA";
+import { auth, signIn } from "@/app/auth.config";
+import { getCookie } from "./cookies-actions";
 import { LoginSchemaType } from "@/schemas";
 import { db } from "@/lib/drizzle";
-import { PamAnalista } from "@/db/schema/PAM_ANALISTA";
-import { eq } from "drizzle-orm";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import { getCookie } from "./cookies-actions";
 
 export async function authenticate(data: LoginSchemaType) {
   try {

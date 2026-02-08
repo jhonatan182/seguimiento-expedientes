@@ -56,13 +56,13 @@ export const columns: ColumnDef<PamExpedienteType>[] = [
 
           {[CON_LUGAR, SIN_LUGAR, CADUCADO, PARCIAL].includes(
             row.original.estado,
-          )  && (
+          ) && (
             <Badge className="bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300">
               Resuelto
             </Badge>
           )}
 
-          {(row.original.isHistorico === "S" ) && (
+          {row.original.isHistorico === "S" && (
             <Badge
               variant="secondary"
               className="bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
@@ -71,10 +71,10 @@ export const columns: ColumnDef<PamExpedienteType>[] = [
             </Badge>
           )}
 
-          {(row.original.isHistorico === "N" ) && (
+          {row.original.isHistorico === "N" && (
             <Badge
               variant="secondary"
-             className="bg-purple-50 text-purple-700 dark:bg-purple-950 dark:text-purple-300"
+              className="bg-purple-50 text-purple-700 dark:bg-purple-950 dark:text-purple-300"
             >
               Nuevo
             </Badge>
@@ -98,7 +98,6 @@ export const columns: ColumnDef<PamExpedienteType>[] = [
               Saldo Anterior
             </Badge>
           )} */}
-
         </div>
       );
     },
@@ -107,8 +106,6 @@ export const columns: ColumnDef<PamExpedienteType>[] = [
     accessorKey: "fechaIngreso",
     header: "Fecha Ingreso",
     cell: ({ row }) => {
-      console.log(row.original);
-
       return formatDate(row.original.fechaIngreso);
     },
   },

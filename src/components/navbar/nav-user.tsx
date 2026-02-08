@@ -33,8 +33,8 @@ export async function NavUser() {
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <Avatar className="h-8 w-8 rounded-lg grayscale">
-                <AvatarFallback className="rounded-lg">
+              <Avatar className="h-8 w-8 rounded-lg">
+                <AvatarFallback className="rounded-lg bg-blue-700 text-white font-bold">
                   {session.user.name?.charAt(0).toUpperCase()}
                 </AvatarFallback>
               </Avatar>

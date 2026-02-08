@@ -1,10 +1,10 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { db } from "@/lib/drizzle";
 
 import { PamSemanaType } from "@/db/schema";
 import { auth } from "../auth.config";
+import { db } from "@/lib/drizzle";
 
 export async function getSemanas(): Promise<PamSemanaType[]> {
   const usuario = await auth();

@@ -1,5 +1,4 @@
 import { IconChartBar } from "@tabler/icons-react";
-import { SessionProvider } from "next-auth/react";
 
 import {
   Sidebar,
@@ -15,7 +14,7 @@ import { NavUser } from "../navbar/nav-user";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar collapsible="offcanvas" {...props}>
+    <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -34,9 +33,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <SessionProvider>
-          <NavMain />
-        </SessionProvider>
+        <NavMain />
       </SidebarContent>
       <SidebarFooter>
         <NavUser />

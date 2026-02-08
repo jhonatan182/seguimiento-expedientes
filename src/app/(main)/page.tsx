@@ -1,15 +1,15 @@
 import { SessionProvider } from "next-auth/react";
 import { cookies } from "next/headers";
 
-import { getExpedientes } from "../actions/expedientes-actions";
 import { DialogExpediente, NextWeekButton } from "@/components/expedientes";
+import { ProtectedComponentByCookie } from "@/components/security";
+import { getExpedientes } from "../actions/expedientes-actions";
 import { getSemanas } from "../actions/semanas-actions";
 import { CabeceraCards } from "@/components/cabeceras";
 import { SelectSemanas } from "@/components/semanas";
 import { DataTable } from "@/app/(main)/data-table";
 import { buildWeek } from "@/utils/dates";
 import { columns } from "./columns";
-import { ProtectedComponentByCookie } from "@/components/security";
 
 type PageProps = {
   searchParams: Promise<{ [semana: string]: string | undefined }>;

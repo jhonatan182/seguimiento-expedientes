@@ -1,3 +1,6 @@
+import { ISelectOption } from "@/interfaces";
+
+//ESTADOS
 export const CADUCADO = "CADUCADO";
 export const CON_LUGAR = "CON_LUGAR";
 export const DICTAMEN = "DICTAMEN";
@@ -8,22 +11,57 @@ export const PENDIENTE = "PENDIENTE";
 export const REQUERIDO = "REQUERIDO";
 export const SIN_LUGAR = "SIN_LUGAR";
 
-export const ESTADOS = [
-  { value: CADUCADO, label: "Caducado", modulo: ["E", "D"] },
-  { value: CON_LUGAR, label: "Con Lugar", modulo: ["E", "D"] },
-  { value: DICTAMEN, label: "Dictamen", modulo: ["D"] },
+//MODULOS
+export const MODULO_EXONERACION = "E";
+export const MODULO_DISPENSA = "D";
+
+//OFICINAS
+export const OFICINA_TGU = "TGU";
+export const OFICINA_SPS = "SPS";
+
+export const defaultEstados: ISelectOption[] = [
+  {
+    value: CADUCADO,
+    label: "Caducado",
+  },
+  {
+    value: CON_LUGAR,
+    label: "Con Lugar",
+  },
+  {
+    value: PARCIAL,
+    label: "Parcial",
+  },
+
+  {
+    value: PENDIENTE,
+    label: "Pendiente",
+  },
+
+  {
+    value: REQUERIDO,
+    label: "Requerido",
+  },
+  {
+    value: SIN_LUGAR,
+    label: "Sin Lugar",
+  },
+];
+
+export const estadosExoneraciones: ISelectOption[] = [
   {
     value: DICTAMEN_CIRCULACION,
     label: "Dictamen Circulación",
-    modulo: ["E"],
   },
   {
     value: DICTAMEN_CUSTODIA,
     label: "Dictamen Custodia",
-    modulo: ["E"],
   },
-  { value: PARCIAL, label: "Parcial", modulo: ["E", "D"] },
-  { value: PENDIENTE, label: "Pendiente", modulo: ["E", "D"] },
-  { value: REQUERIDO, label: "Requerido", modulo: ["E", "D"] },
-  { value: SIN_LUGAR, label: "Sin Lugar", modulo: ["E", "D"] },
+];
+
+export const estadosDispensas: ISelectOption[] = [
+  {
+    value: DICTAMEN,
+    label: "Dictamen",
+  },
 ];

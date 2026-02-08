@@ -1,3 +1,4 @@
+import { type IMenuItem } from "@/interfaces";
 import NextAuth, { type DefaultSession } from "next-auth";
 
 interface IUser {
@@ -5,6 +6,8 @@ interface IUser {
   username: string;
   modulo: string;
   isJefe: string;
+  menuOptions: IMenuItem[];
+  oficina: string;
 }
 
 declare module "next-auth" {
