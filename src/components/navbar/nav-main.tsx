@@ -24,7 +24,7 @@ export async function NavMain() {
       <SidebarGroupLabel>Inicio</SidebarGroupLabel>
       <SidebarGroupContent className="flex flex-col gap-2">
         <SidebarMenu>
-          {menuOptions.map((item) => (
+          {menuOptions?.map((item) => (
             <SidebarMenuItem key={item.title}>
               <NavLinkActive
                 path={item.path}
