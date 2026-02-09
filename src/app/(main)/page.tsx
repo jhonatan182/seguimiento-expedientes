@@ -16,46 +16,45 @@ type PageProps = {
 };
 
 export default async function Page({ searchParams }: PageProps) {
-  let { semana } = await searchParams;
+  const { semana } = await searchParams;
 
-  const semanaDescripcion = buildWeek();
   const semanas = await getSemanas();
+  const semanaDescripcion = buildWeek();
+
+  // Encuentra la semana actual (la de esta semana)
   const isCurrentWeek = semanas.find(
     (s) => s.descripcion === semanaDescripcion,
   );
 
-  let semanaActualId: string = "";
+  // Determina qué semana mostrar
+  let semanaActualId: number;
 
-  if (isNaN(Number(semana))) {
-    semana = "0";
-  }
-
-  const semanaActual = semanas.find((s) => s.id.toString() === semana);
-
-  if (!semanaActual) {
-    semanaActualId =
-      semanas.find((s) => s.descripcion === semanaDescripcion)?.id.toString() ||
-      "1";
+  if (semana && !isNaN(Number(semana))) {
+    // Si viene semana en URL y es válida, úsala
+    const semanaFromUrl = semanas.find((s) => s.id === Number(semana));
+    semanaActualId = semanaFromUrl?.id ?? (isCurrentWeek?.id || 1);
   } else {
+    // Si no, intenta usar la cookie
     const cookieStore = await cookies();
     const semanaCookieId = cookieStore.get("semanaId")?.value;
-    semanaActualId = semanaCookieId || "1";
+    semanaActualId = semanaCookieId
+      ? Number(semanaCookieId)
+      : isCurrentWeek?.id || 1;
   }
 
-  const data = await getExpedientes(parseInt(semanaActualId));
+  const data = await getExpedientes(semanaActualId);
 
   if (!data) {
-    throw new Error("No se encontro la semana");
+    throw new Error("No se encontró la semana");
   }
+
+  const isShowingCurrentWeek = isCurrentWeek?.id === semanaActualId;
 
   return (
     <>
       <div className="flex flex-col items-center gap-4 md:flex-row md:gap-1.5">
-        <SelectSemanas
-          semanas={semanas}
-          selectedSemanaId={parseInt(semanaActualId)}
-        />
-        {/* {isCurrentWeek?.id === parseInt(semanaActualId) && <NextWeekButton />} */}
+        <SelectSemanas semanas={semanas} selectedSemanaId={semanaActualId} />
+        {/* {isShowingCurrentWeek && <NextWeekButton />} */}
         <NextWeekButton />
       </div>
 
@@ -63,11 +62,7 @@ export default async function Page({ searchParams }: PageProps) {
 
       <SessionProvider>
         <div className="w-full flex justify-end gap-6 px-4 lg:px-6">
-          <DialogExpediente
-            isCurrentWeek={
-              isCurrentWeek?.id === parseInt(semanaActualId) ? true : false
-            }
-          />
+          <DialogExpediente isCurrentWeek={isShowingCurrentWeek} />
         </div>
 
         <DataTable data={data?.expedientes || []} columns={columns} />
