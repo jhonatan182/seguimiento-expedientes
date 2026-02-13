@@ -133,14 +133,20 @@ export const columns: ColumnDef<PamExpedienteType>[] = [
         return null;
       }
 
-      return (
-        // <ProtectedComponentByCookie keyCookie="isCurrentWeek">
-        <div className="flex items-center gap-2 ">
-          <DialogExpediente expediente={row.original} />
+      const disabled = disableSelectEstado(row.original.estado);
 
-          <AlertExpediente expedienteId={row.original.id} />
-        </div>
-        // </ProtectedComponentByCookie>
+      if (disabled) {
+        return null;
+      }
+
+      return (
+        <ProtectedComponentByCookie keyCookie="isCurrentWeek">
+          <div className="flex items-center gap-2 ">
+            <DialogExpediente expediente={row.original} />
+
+            <AlertExpediente expedienteId={row.original.id} />
+          </div>
+        </ProtectedComponentByCookie>
       );
     },
   },

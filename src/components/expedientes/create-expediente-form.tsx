@@ -5,7 +5,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, SetStateAction } from "react";
 import { toast } from "sonner";
 
-
 import { Field, FieldError, FieldGroup, FieldLabel } from "../ui/field";
 import { createExpediente } from "@/app/actions/expedientes-actions";
 import { ExpedienteSchema, ExpedienteSchemaType } from "@/schemas";
@@ -32,7 +31,7 @@ export function CreateExpedienteForm({ setIsOpen }: CreateExpedienteFormProps) {
     defaultValues: {
       expediente: "",
       estado: "",
-      fechaIngreso: new Date().toISOString().split("T")[0],
+      // fechaIngreso: new Date().toISOString().split("T")[0],
     },
   });
 
@@ -90,7 +89,7 @@ export function CreateExpedienteForm({ setIsOpen }: CreateExpedienteFormProps) {
               </Field>
             )}
           />
-
+          {/* 
           <Controller
             name="fechaIngreso"
             control={form.control}
@@ -111,7 +110,7 @@ export function CreateExpedienteForm({ setIsOpen }: CreateExpedienteFormProps) {
                 )}
               </Field>
             )}
-          />
+          /> */}
 
           <Controller
             name="estado"
