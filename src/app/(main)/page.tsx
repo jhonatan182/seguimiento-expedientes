@@ -10,6 +10,7 @@ import { SelectSemanas } from "@/components/semanas";
 import { DataTable } from "@/app/(main)/data-table";
 import { buildWeek } from "@/utils/dates";
 import { columns } from "./columns";
+import { Badge } from "@/components/ui/badge";
 
 type PageProps = {
   searchParams: Promise<{ [semana: string]: string | undefined }>;
@@ -52,10 +53,12 @@ export default async function Page({ searchParams }: PageProps) {
 
   return (
     <>
-      <div className="flex flex-col items-center gap-4 md:flex-row md:gap-1.5">
-        <SelectSemanas semanas={semanas} selectedSemanaId={semanaActualId} />
-        {/* {isShowingCurrentWeek && <NextWeekButton />} */}
-        <NextWeekButton />
+      <div className="flex flex-col items-start gap-4 md:flex-row md:gap-1.5">
+        <div className="flex flex-col items-center-safe gap-2">
+          <SelectSemanas semanas={semanas} selectedSemanaId={semanaActualId} />
+          {isShowingCurrentWeek && <Badge variant="green">Semana actual</Badge>}
+        </div>
+        {isShowingCurrentWeek && <NextWeekButton />}
       </div>
 
       <CabeceraCards cabecera={data.cabeceras[0]} />

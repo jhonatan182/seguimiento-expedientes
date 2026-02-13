@@ -94,8 +94,7 @@ export function SelectExpedienteEstado({ row }: SelectExpedienteEstadoProps) {
           setValueSelect(value);
           handleOpenDialog(value);
         }}
-        // disabled={!isCurrentWeek || disableSelectEstado(valueSelect)}
-        disabled={disableSelectEstado(valueSelect)}
+        disabled={!isCurrentWeek || disableSelectEstado(valueSelect)}
       >
         <SelectTrigger
           className="w-38 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate"
