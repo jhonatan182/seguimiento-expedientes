@@ -1,10 +1,14 @@
 import Credentials from "next-auth/providers/credentials";
 import type { NextAuthConfig } from "next-auth";
-import NextAuth from "next-auth";
+import NextAuth, { AuthError } from "next-auth";
 import bcrypt from "bcryptjs";
 
 import { getUserByUsername } from "./actions/auth-actions";
 import { buildMenuByJefe } from "@/utils";
+
+export class InactiveUserError extends AuthError {
+  static type = "InactiveUser";
+}
 
 export const authConfig: NextAuthConfig = {
   pages: {
@@ -54,6 +58,10 @@ export const authConfig: NextAuthConfig = {
 
         if (!user) {
           return null;
+        }
+
+        if (user.isActivo === "N") {
+          throw new InactiveUserError("Inactive user");
         }
 
         //Verificar la contraseña

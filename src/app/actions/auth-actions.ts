@@ -5,7 +5,7 @@ import { AuthError } from "next-auth";
 import { eq } from "drizzle-orm";
 
 import { PamAnalista } from "@/db/schema/PAM_ANALISTA";
-import { auth, signIn } from "@/app/auth.config";
+import { auth, InactiveUserError, signIn } from "@/app/auth.config";
 import { getCookie } from "./cookies-actions";
 import { LoginSchemaType } from "@/schemas";
 import { db } from "@/lib/drizzle";
@@ -20,6 +20,10 @@ export async function authenticate(data: LoginSchemaType) {
 
     return "User signed in successfully";
   } catch (error) {
+    if (error instanceof InactiveUserError) {
+      return "El usuario no está activo.";
+    }
+
     if (error instanceof AuthError) {
       switch (error.type) {
         case "CredentialsSignin":
