@@ -8,6 +8,13 @@
       "when": 1770325997110,
       "tag": "0000_plain_dazzler",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1771367996443,
+      "tag": "0001_low_paper_doll",
+      "breakpoints": true
     }
   ]
 }
