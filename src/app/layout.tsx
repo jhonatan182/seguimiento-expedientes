@@ -17,11 +17,11 @@ export const metadata: Metadata = {
   authors: [
     { name: "Kelvin Jeovanny Avila Zelaya" },
     {
-      name: "Jonathan Fabricio Vargas Morales",
+      name: "Jhonatan Fabricio Vargas Morales",
       url: "https://github.com/jhonatan182",
     },
   ],
-  creator: "Jonathan Fabricio Vargas Morales",
+  creator: "Jhonatan Fabricio Vargas Morales",
 };
 
 export default function RootLayout({
