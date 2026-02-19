@@ -1,11 +1,6 @@
-import {
-  IconFileWord,
-  IconInnerShadowTop,
-  IconListDetails,
-} from "@tabler/icons-react";
 import { IMenuItem } from "@/interfaces";
 
-export function buildMenuByJefe(isJefe: string): IMenuItem[] {
+export function buildMenu(isJefe: string): IMenuItem[] {
   const defaultMenu: IMenuItem[] = [
     {
       title: "Expediente",
