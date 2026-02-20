@@ -25,3 +25,11 @@ export function buildWeek(): string {
     format(today, "MMMM", { locale: es }).slice(1);
   return `Semana ${month}.${week} - ${monthDescription} ${year}`;
 }
+
+export function getCurrentMonthCapitalized(): string {
+  const today = new Date();
+  return (
+    format(today, "MMMM", { locale: es }).charAt(0).toUpperCase() +
+    format(today, "MMMM", { locale: es }).slice(1)
+  );
+}

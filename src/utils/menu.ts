@@ -8,12 +8,12 @@ export function buildMenu(isJefe: string): IMenuItem[] {
       icon: "IconFileWord",
       path: "/",
     },
-    // {
-    //   title: "Resumen Semanal",
-    //   url: "#",
-    //   icon: "IconListDetails",
-    //   path: "/resumen-semanal",
-    // },
+    {
+      title: "Resumen Semanal",
+      url: "#",
+      icon: "IconListDetails",
+      path: "/resumen-semanal",
+    },
   ];
 
   // if (isJefe === "S") {
