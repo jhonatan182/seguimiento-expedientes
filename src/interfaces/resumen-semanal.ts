@@ -1,4 +1,6 @@
 export interface ResumenSemanalRow {
+  backgroundColor: string;
+  textColor: string;
   categoria: string;
   esSubcategoria?: boolean;
   esTotal?: boolean;

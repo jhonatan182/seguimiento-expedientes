@@ -30,44 +30,24 @@ export function TablaResumenSemanal({
   };
 
   const renderRow = (row: ResumenSemanalRow, isSubcategoria = false) => {
-    console.log(row);
-
-    const textColorClass = isSubcategoria ? "text-gray-600" : "text-gray-900";
     const fontWeightClass = isSubcategoria ? "font-normal" : "font-semibold";
-    const bgColorClass = isSubcategoria ? "bg-gray-50" : "bg-white";
-
-    const bgBlackClass = [
-      "SALDO ANTERIOR",
-      "NUEVO INGRESO",
-      "CIRCULACION",
-    ].includes(row.categoria)
-      ? "bg-black"
-      : bgColorClass;
-
-    const textColorWhiteClass =
-      bgBlackClass === "bg-black" ? "text-white" : textColorClass;
 
     return (
-      <tr className={bgBlackClass} key={row.categoria}>
+      <tr className={row.backgroundColor} key={row.categoria}>
         <td
-          className={`px-4 py-2 text-left ${textColorWhiteClass} ${fontWeightClass}`}
+          className={`px-4 py-2 text-left ${row.textColor} ${fontWeightClass}`}
         >
           {isSubcategoria && "　　"}
           {row.categoria}
         </td>
 
         {Array.from({ length: cantidadSemanas }).map((_, index) => (
-          <td
-            key={index}
-            className={`px-4 py-2 text-center ${textColorWhiteClass}`}
-          >
+          <td key={index} className={`px-4 py-2 text-center ${row.textColor}`}>
             {row[`semana${index + 1}`]}
           </td>
         ))}
 
-        <td
-          className={`px-4 py-2 text-center ${textColorWhiteClass} font-bold`}
-        >
+        <td className={`px-4 py-2 text-center ${row.textColor} font-bold`}>
           {row.total}
         </td>
       </tr>
@@ -100,7 +80,7 @@ export function TablaResumenSemanal({
         <div className="overflow-x-auto">
           <table className="w-full border-collapse border border-gray-300">
             <thead>
-              <tr className="bg-blue-700 text-white">
+              <tr className="bg-gray-100 text-gray-900">
                 <th className="border border-gray-300 px-4 py-2 text-left font-semibold capitalize">
                   {mes}
                 </th>

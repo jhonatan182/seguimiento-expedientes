@@ -60,7 +60,9 @@ export async function getResumenMensual(
       semana3: 0,
       semana4: 0,
       semana5: 0,
-      total: cabeceras.reduce((sum, c) => sum + c.saldoAnterior, 0),
+      total: 0,
+      backgroundColor: "bg-black",
+      textColor: "text-white",
     },
     {
       categoria: "NUEVO INGRESO",
@@ -70,6 +72,8 @@ export async function getResumenMensual(
       semana4: 0,
       semana5: 0,
       total: cabeceras.reduce((sum, c) => sum + c.nuevoIngreso, 0),
+      backgroundColor: "bg-black",
+      textColor: "text-white",
     },
     {
       categoria: "CIRCULACION",
@@ -79,6 +83,8 @@ export async function getResumenMensual(
       semana4: 0,
       semana5: 0,
       total: cabeceras.reduce((sum, c) => sum + c.circulacion, 0),
+      backgroundColor: "bg-black",
+      textColor: "text-white",
     },
     {
       categoria: "RESUELTO",
@@ -88,6 +94,8 @@ export async function getResumenMensual(
       semana4: 0,
       semana5: 0,
       total: cabeceras.reduce((sum, c) => sum + c.resuelto, 0),
+      backgroundColor: "bg-blue-700",
+      textColor: "text-white",
     },
     {
       categoria: "CON LUGAR",
@@ -98,6 +106,8 @@ export async function getResumenMensual(
       semana4: 0,
       semana5: 0,
       total: cabeceras.reduce((sum, c) => sum + c.conLugar, 0),
+      backgroundColor: "bg-blue-700",
+      textColor: "text-white",
     },
     {
       categoria: "SIN LUGAR",
@@ -108,6 +118,8 @@ export async function getResumenMensual(
       semana4: 0,
       semana5: 0,
       total: cabeceras.reduce((sum, c) => sum + c.sinLugar, 0),
+      backgroundColor: "bg-blue-700",
+      textColor: "text-white",
     },
     {
       categoria: "PARCIAL",
@@ -118,6 +130,8 @@ export async function getResumenMensual(
       semana4: 0,
       semana5: 0,
       total: cabeceras.reduce((sum, c) => sum + c.parcial, 0),
+      backgroundColor: "bg-blue-700",
+      textColor: "text-white",
     },
     {
       categoria: "CADUCADO",
@@ -128,6 +142,8 @@ export async function getResumenMensual(
       semana4: 0,
       semana5: 0,
       total: cabeceras.reduce((sum, c) => sum + c.caducado, 0),
+      backgroundColor: "bg-blue-700",
+      textColor: "text-white",
     },
     {
       categoria: "DICTAMEN",
@@ -137,6 +153,8 @@ export async function getResumenMensual(
       semana4: 0,
       semana5: 0,
       total: cabeceras.reduce((sum, c) => sum + c.dictamen, 0),
+      backgroundColor: "bg-blue-700",
+      textColor: "text-white",
     },
     {
       categoria: "REQUERIDO",
@@ -146,6 +164,8 @@ export async function getResumenMensual(
       semana4: 0,
       semana5: 0,
       total: cabeceras.reduce((sum, c) => sum + c.requerido, 0),
+      backgroundColor: "bg-blue-700",
+      textColor: "text-white",
     },
     {
       categoria: "PENDIENTE",
@@ -154,7 +174,9 @@ export async function getResumenMensual(
       semana3: 0,
       semana4: 0,
       semana5: 0,
-      total: cabeceras.reduce((sum, c) => sum + c.pendiente, 0),
+      total: 0,
+      backgroundColor: "bg-blue-700",
+      textColor: "text-white",
     },
     {
       categoria: "HISTORICO ACUMULADO",
@@ -163,7 +185,9 @@ export async function getResumenMensual(
       semana3: 0,
       semana4: 0,
       semana5: 0,
-      total: cabeceras.reduce((sum, c) => sum + c.historicoCirculacion, 0),
+      total: 0,
+      backgroundColor: "bg-gray-500",
+      textColor: "text-white",
     },
   ];
 
@@ -178,6 +202,8 @@ export async function getResumenMensual(
         switch (fila.categoria) {
           case "SALDO ANTERIOR":
             fila[weekKey] = cabecera.saldoAnterior;
+            fila.total =
+              weekKey === "semana1" ? cabecera.saldoAnterior : fila.total;
             break;
           case "NUEVO INGRESO":
             fila[weekKey] = cabecera.nuevoIngreso;
@@ -208,9 +234,11 @@ export async function getResumenMensual(
             break;
           case "PENDIENTE":
             fila[weekKey] = cabecera.pendiente;
+            fila.total = cabecera.pendiente;
             break;
           case "HISTORICO ACUMULADO":
             fila[weekKey] = cabecera.historicoCirculacion;
+            fila.total = cabecera.historicoCirculacion;
             break;
         }
       });
