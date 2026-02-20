@@ -51,7 +51,12 @@ export function DialogExpediente({
             <IconPlus />
             <span className="hidden lg:inline">Agregar Expediente</span>
           </Button>
-        ) : null}
+        ) : (
+          <Button variant="outline" size="sm">
+            <IconPlus />
+            <span className="hidden lg:inline">Agregar Expediente</span>
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent
         onOpenAutoFocus={(e) => {

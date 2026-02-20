@@ -30,26 +30,44 @@ export function TablaResumenSemanal({
   };
 
   const renderRow = (row: ResumenSemanalRow, isSubcategoria = false) => {
+    console.log(row);
+
     const textColorClass = isSubcategoria ? "text-gray-600" : "text-gray-900";
     const fontWeightClass = isSubcategoria ? "font-normal" : "font-semibold";
     const bgColorClass = isSubcategoria ? "bg-gray-50" : "bg-white";
 
+    const bgBlackClass = [
+      "SALDO ANTERIOR",
+      "NUEVO INGRESO",
+      "CIRCULACION",
+    ].includes(row.categoria)
+      ? "bg-black"
+      : bgColorClass;
+
+    const textColorWhiteClass =
+      bgBlackClass === "bg-black" ? "text-white" : textColorClass;
+
     return (
-      <tr className={bgColorClass} key={row.categoria}>
+      <tr className={bgBlackClass} key={row.categoria}>
         <td
-          className={`px-4 py-2 text-left ${textColorClass} ${fontWeightClass}`}
+          className={`px-4 py-2 text-left ${textColorWhiteClass} ${fontWeightClass}`}
         >
           {isSubcategoria && "　　"}
           {row.categoria}
         </td>
 
         {Array.from({ length: cantidadSemanas }).map((_, index) => (
-          <td key={index} className={`px-4 py-2 text-center ${textColorClass}`}>
+          <td
+            key={index}
+            className={`px-4 py-2 text-center ${textColorWhiteClass}`}
+          >
             {row[`semana${index + 1}`]}
           </td>
         ))}
 
-        <td className={`px-4 py-2 text-center ${textColorClass} font-bold`}>
+        <td
+          className={`px-4 py-2 text-center ${textColorWhiteClass} font-bold`}
+        >
           {row.total}
         </td>
       </tr>
@@ -82,7 +100,7 @@ export function TablaResumenSemanal({
         <div className="overflow-x-auto">
           <table className="w-full border-collapse border border-gray-300">
             <thead>
-              <tr className="bg-gray-100">
+              <tr className="bg-blue-700 text-white">
                 <th className="border border-gray-300 px-4 py-2 text-left font-semibold capitalize">
                   {mes}
                 </th>
