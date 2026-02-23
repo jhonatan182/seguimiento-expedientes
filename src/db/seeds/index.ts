@@ -3,6 +3,7 @@ import { seedPamSemanas } from "./pamSemanasSeed";
 import { seedPamCabeceraSemanal } from "./pamCabeceraSemanalSeed";
 import { seedPamExpedientes } from "./pamExpedientesSeed";
 import { cleanDatabase } from "./cleanDatabase";
+import { updateAnalistaPassword } from "./updateAnalistaPassword";
 
 async function main() {
   console.log("🌱 Iniciando proceso de seeds...\n");
@@ -15,6 +16,7 @@ async function main() {
     // Primero las tablas sin dependencias
     await seedPamSemanas();
     await seedPamAnalistas();
+    await updateAnalistaPassword();
 
     // Luego las tablas que dependen de las anteriores
     // await seedPamCabeceraSemanal();
