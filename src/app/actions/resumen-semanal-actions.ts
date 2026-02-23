@@ -1,6 +1,7 @@
 "use server";
 
 import { and, eq, sql } from "drizzle-orm";
+import * as XLSX from "xlsx";
 
 import { PamCabeceraSemanal, PamSemanas } from "@/db/schema";
 import { db } from "@/lib/drizzle";
@@ -106,8 +107,8 @@ export async function getResumenMensual(
       semana4: 0,
       semana5: 0,
       total: cabeceras.reduce((sum, c) => sum + c.conLugar, 0),
-      backgroundColor: "bg-blue-700",
-      textColor: "text-white",
+      backgroundColor: "bg-white",
+      textColor: "text-black",
     },
     {
       categoria: "SIN LUGAR",
@@ -118,8 +119,8 @@ export async function getResumenMensual(
       semana4: 0,
       semana5: 0,
       total: cabeceras.reduce((sum, c) => sum + c.sinLugar, 0),
-      backgroundColor: "bg-blue-700",
-      textColor: "text-white",
+      backgroundColor: "bg-white",
+      textColor: "text-black",
     },
     {
       categoria: "PARCIAL",
@@ -130,8 +131,8 @@ export async function getResumenMensual(
       semana4: 0,
       semana5: 0,
       total: cabeceras.reduce((sum, c) => sum + c.parcial, 0),
-      backgroundColor: "bg-blue-700",
-      textColor: "text-white",
+      backgroundColor: "bg-white",
+      textColor: "text-black",
     },
     {
       categoria: "CADUCADO",
@@ -142,8 +143,8 @@ export async function getResumenMensual(
       semana4: 0,
       semana5: 0,
       total: cabeceras.reduce((sum, c) => sum + c.caducado, 0),
-      backgroundColor: "bg-blue-700",
-      textColor: "text-white",
+      backgroundColor: "bg-white",
+      textColor: "text-black",
     },
     {
       categoria: "DICTAMEN",
@@ -248,4 +249,59 @@ export async function getResumenMensual(
   resultados.datos.push(...datos);
   resultados.cantidadSemanas = cantidadSemanas;
   return resultados;
+}
+
+export default async function exportToExcel(
+  data: ResumenSemanalRow[],
+  mes: string,
+  cantidadSemanas: number,
+) {
+  const { user } = await getSessionUserWithCookies();
+  const nombreAnalista = user.name;
+
+  const wb = XLSX.utils.book_new();
+
+  const semanaHeaders = Array.from(
+    { length: cantidadSemanas },
+    (_, i) => `Semana ${i + 1}`,
+  );
+
+  // Fila 1: Analista (arriba del mes)
+  const analistaRow = [
+    `Analista: ${nombreAnalista}`,
+    ...semanaHeaders.map(() => ""),
+    "",
+  ];
+
+  // Fila 2: Headers (mes + semanas + total)
+  const headersRow = [mes, ...semanaHeaders, "TOTAL"];
+
+  // Filas de datos
+  const dataRows = data.map((row) => [
+    row.categoria,
+    ...Array.from({ length: cantidadSemanas }, (_, i) => {
+      const value = row[`semana${i + 1}`];
+      return typeof value === "number" ? value : 0;
+    }),
+    row.total,
+  ]);
+
+  // Combinar todo en orden: analista → headers → datos
+  const finalData = [analistaRow, headersRow, ...dataRows];
+
+  const ws = XLSX.utils.aoa_to_sheet(finalData);
+
+  ws["!cols"] = [
+    { wch: 25 },
+    ...Array.from({ length: cantidadSemanas }, () => ({ wch: 15 })),
+    { wch: 12 },
+  ];
+
+  XLSX.utils.book_append_sheet(wb, ws, `Resumen ${mes}`);
+
+  const fileName = `Resumen_${mes}_${new Date()
+    .toLocaleDateString("es-ES")
+    .replace(/\//g, "-")}_${nombreAnalista?.replace(/\s+/g, "_")}.xlsx`;
+
+  return { wb, fileName };
 }

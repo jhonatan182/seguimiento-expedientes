@@ -13,6 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { MESES } from "@/const";
+import exportToExcel from "@/app/actions/resumen-semanal-actions";
 
 type TablaResumenSemanalProps = {
   data: ResumenSemanalRow[];
@@ -31,54 +32,9 @@ export function TablaResumenSemanal({
     router.replace(`/resumen-semanal?mes=${value}`);
   };
 
-  const exportToExcel = () => {
-    // Crear el libro de trabajo
-    const wb = XLSX.utils.book_new();
-
-    // Preparar los datos para la hoja de Excel
-    const headers = [
-      mes,
-      ...Array.from({ length: cantidadSemanas }, (_, i) => `Semana ${i + 1}`),
-      "TOTAL",
-    ];
-
-    // Convertir los datos de la tabla al formato de Excel
-    const excelData = data.map((row) => {
-      const excelRow: Record<string, number | string> = {
-        [mes]: row.categoria,
-      };
-
-      // Agregar datos de cada semana
-      Array.from({ length: cantidadSemanas }).forEach((_, index) => {
-        const value = row[`semana${index + 1}`];
-        excelRow[`Semana ${index + 1}`] = typeof value === "number" ? value : 0;
-      });
-
-      // Agregar total
-      excelRow["TOTAL"] = row.total;
-
-      return excelRow;
-    });
-
-    // Crear la hoja de trabajo
-    const ws = XLSX.utils.json_to_sheet(excelData, { header: headers });
-
-    // Ajustar el ancho de las columnas
-    const colWidths = [
-      { wch: 25 }, // Mes/Categoría
-      ...Array.from({ length: cantidadSemanas }, () => ({ wch: 15 })), // Semanas
-      { wch: 12 }, // Total
-    ];
-    ws["!cols"] = colWidths;
-
-    // Agregar la hoja al libro
-    XLSX.utils.book_append_sheet(wb, ws, `Resumen ${mes}`);
-
-    // Generar el nombre del archivo
-    const fileName = `Resumen_${mes}_${new Date().toLocaleDateString("es-ES").replace(/\//g, "-")}.xlsx`;
-
-    // Descargar el archivo
-    XLSX.writeFile(wb, fileName);
+  const onExportToExcel = async () => {
+    const result = await exportToExcel(data, mes, cantidadSemanas);
+    XLSX.writeFile(result.wb, result.fileName);
   };
 
   const renderRow = (row: ResumenSemanalRow, isSubcategoria = false) => {
@@ -128,7 +84,7 @@ export function TablaResumenSemanal({
         </div>
 
         <Button
-          onClick={exportToExcel}
+          onClick={onExportToExcel}
           className="bg-green-600 hover:bg-green-700 text-white"
           disabled={data.length === 0}
         >
