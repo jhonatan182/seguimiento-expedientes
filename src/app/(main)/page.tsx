@@ -57,7 +57,7 @@ export default async function Page({ searchParams }: PageProps) {
           <SelectSemanas semanas={semanas} selectedSemanaId={semanaActualId} />
           {isShowingCurrentWeek && <Badge variant="green">Semana actual</Badge>}
         </div>
-        {<NextWeekButton />}
+        {isShowingCurrentWeek && <NextWeekButton />}
       </div>
 
       <CabeceraCards cabecera={data.cabeceras[0]} />
