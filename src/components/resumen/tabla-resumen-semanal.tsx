@@ -41,9 +41,12 @@ export function TablaResumenSemanal({
     const fontWeightClass = isSubcategoria ? "font-normal" : "font-semibold";
 
     return (
-      <tr className={row.backgroundColor} key={row.categoria}>
+      <tr
+        className={` hover:cursor-pointer hover:underline hover:opacity-75 hover:text-black ${row.backgroundColor}`}
+        key={row.categoria}
+      >
         <td
-          className={`px-4 py-2 text-left ${row.textColor} ${fontWeightClass}`}
+          className={`px-4 py-2 text-left ${row.textColor} ${fontWeightClass} `}
         >
           {isSubcategoria && "　　"}
           {row.categoria}
