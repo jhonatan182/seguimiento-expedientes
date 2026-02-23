@@ -9,7 +9,7 @@ export function buildMenu(isJefe: string): IMenuItem[] {
       path: "/",
     },
     {
-      title: "Resumen Semanal (Beta)",
+      title: "Resumen Semanal",
       url: "#",
       icon: "IconListDetails",
       path: "/resumen-semanal",
