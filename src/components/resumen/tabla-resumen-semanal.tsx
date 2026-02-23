@@ -73,7 +73,7 @@ export function TablaResumenSemanal({
             <SelectTrigger id="mes-select" className="w-40">
               <SelectValue placeholder="Seleccionar mes" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent position="popper">
               {MESES.map((mes) => (
                 <SelectItem key={mes} value={mes}>
                   {mes}
