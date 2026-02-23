@@ -1,11 +1,6 @@
-import {
-  IconFileWord,
-  IconInnerShadowTop,
-  IconListDetails,
-} from "@tabler/icons-react";
 import { IMenuItem } from "@/interfaces";
 
-export function buildMenuByJefe(isJefe: string): IMenuItem[] {
+export function buildMenu(isJefe: string): IMenuItem[] {
   const defaultMenu: IMenuItem[] = [
     {
       title: "Expediente",
@@ -13,12 +8,12 @@ export function buildMenuByJefe(isJefe: string): IMenuItem[] {
       icon: "IconFileWord",
       path: "/",
     },
-    // {
-    //   title: "Resumen Semanal",
-    //   url: "#",
-    //   icon: "IconListDetails",
-    //   path: "/resumen-semanal",
-    // },
+    {
+      title: "Resumen Semanal",
+      url: "#",
+      icon: "IconListDetails",
+      path: "/resumen-semanal",
+    },
   ];
 
   // if (isJefe === "S") {

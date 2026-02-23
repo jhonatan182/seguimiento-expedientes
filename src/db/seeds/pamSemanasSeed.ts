@@ -7,15 +7,23 @@ export type NuevaSemana = InferInsertModel<typeof PamSemanas>;
 export async function seedPamSemanas() {
   // Crear semanas para todo el año 2026
   const semanas: NuevaSemana[] = [
+    // Enero
     { descripcion: "Semana 1.1 - Enero 2026" },
     { descripcion: "Semana 1.2 - Enero 2026" },
     { descripcion: "Semana 1.3 - Enero 2026" },
     { descripcion: "Semana 1.4 - Enero 2026" },
     { descripcion: "Semana 1.5 - Enero 2026" },
+    // Febrero
     { descripcion: "Semana 2.1 - Febrero 2026" },
     { descripcion: "Semana 2.2 - Febrero 2026" },
     { descripcion: "Semana 2.3 - Febrero 2026" },
     { descripcion: "Semana 2.4 - Febrero 2026" },
+    // Marzo
+    { descripcion: "Semana 3.1 - Marzo 2026" },
+    { descripcion: "Semana 3.2 - Marzo 2026" },
+    { descripcion: "Semana 3.3 - Marzo 2026" },
+    { descripcion: "Semana 3.4 - Marzo 2026" },
+    { descripcion: "Semana 3.5 - Marzo 2026" },
   ];
 
   try {

@@ -3,20 +3,22 @@ import { seedPamSemanas } from "./pamSemanasSeed";
 import { seedPamCabeceraSemanal } from "./pamCabeceraSemanalSeed";
 import { seedPamExpedientes } from "./pamExpedientesSeed";
 import { cleanDatabase } from "./cleanDatabase";
+import { updateAnalistaPassword } from "./updateAnalistaPassword";
 
 async function main() {
   console.log("🌱 Iniciando proceso de seeds...\n");
 
   try {
     // 1. Limpiar la base de datos primero
-    await cleanDatabase();
+    // await cleanDatabase();
 
-    // 2. Ejecutar los seeds en el orden correcto
-    // Primero las tablas sin dependencias
-    await seedPamSemanas();
-    await seedPamAnalistas();
+    // // 2. Ejecutar los seeds en el orden correcto
+    // // Primero las tablas sin dependencias
+    // await seedPamSemanas();
+    // await seedPamAnalistas();
+    // await updateAnalistaPassword();
 
-    // Luego las tablas que dependen de las anteriores
+    // // Luego las tablas que dependen de las anteriores
     // await seedPamCabeceraSemanal();
     // await seedPamExpedientes();
 

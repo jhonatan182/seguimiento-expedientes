@@ -4,7 +4,7 @@ import NextAuth, { AuthError } from "next-auth";
 import bcrypt from "bcryptjs";
 
 import { getUserByUsername } from "./actions/auth-actions";
-import { buildMenuByJefe } from "@/utils";
+import { buildMenu } from "@/utils";
 
 export class InactiveUserError extends AuthError {
   static type = "InactiveUser";
@@ -74,7 +74,7 @@ export const authConfig: NextAuthConfig = {
           return null;
         }
 
-        const menu = buildMenuByJefe(user.isJefe);
+        const menu = buildMenu(user.isJefe);
 
         return {
           id: user.id.toString(),

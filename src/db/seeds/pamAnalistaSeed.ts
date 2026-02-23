@@ -16,6 +16,7 @@ export async function seedPamAnalistas() {
       modulo: "E",
       isJefe: "N",
       oficina: "TGU",
+      isActivo: "S",
     },
     {
       nombre: "JARRIET AMADOR",
@@ -24,6 +25,7 @@ export async function seedPamAnalistas() {
       modulo: "E",
       isJefe: "N",
       oficina: "TGU",
+      isActivo: "S",
     },
     {
       nombre: "IRIS GONZALEZ",
@@ -32,6 +34,7 @@ export async function seedPamAnalistas() {
       modulo: "E",
       isJefe: "S",
       oficina: "TGU",
+      isActivo: "S",
     },
     {
       nombre: "NANCY ACEITUNO",
@@ -40,6 +43,7 @@ export async function seedPamAnalistas() {
       modulo: "E",
       isJefe: "N",
       oficina: "TGU",
+      isActivo: "S",
     },
     {
       nombre: "DEBORA RAMOS",
@@ -48,6 +52,16 @@ export async function seedPamAnalistas() {
       modulo: "E",
       isJefe: "N",
       oficina: "TGU",
+      isActivo: "N",
+    },
+    {
+      nombre: "Anyi Martinez".toUpperCase(),
+      usuario: "anmartinez",
+      password: bcrypt.hashSync("0801199820049", 10),
+      modulo: "E",
+      isJefe: "N",
+      oficina: "TGU",
+      isActivo: "S",
     },
 
     // DISPENSAS - TGU
@@ -58,6 +72,7 @@ export async function seedPamAnalistas() {
       modulo: "D",
       isJefe: "S",
       oficina: "TGU",
+      isActivo: "S",
     },
     {
       nombre: "LILI BADOS",
@@ -66,6 +81,7 @@ export async function seedPamAnalistas() {
       modulo: "D",
       isJefe: "N",
       oficina: "TGU",
+      isActivo: "S",
     },
     {
       nombre: "MARIAM GOMEZ",
@@ -74,6 +90,7 @@ export async function seedPamAnalistas() {
       modulo: "D",
       isJefe: "N",
       oficina: "TGU",
+      isActivo: "S",
     },
     {
       nombre: "MANUEL ORTEGA",
@@ -82,6 +99,7 @@ export async function seedPamAnalistas() {
       modulo: "D",
       isJefe: "N",
       oficina: "TGU",
+      isActivo: "S",
     },
     {
       nombre: "EVA VALERIANO",
@@ -100,6 +118,7 @@ export async function seedPamAnalistas() {
       modulo: "E",
       isJefe: "N",
       oficina: "SPS",
+      isActivo: "S",
     },
 
     {
@@ -109,6 +128,7 @@ export async function seedPamAnalistas() {
       modulo: "E",
       isJefe: "S",
       oficina: "SPS",
+      isActivo: "S",
     },
     {
       nombre: "JOSUE PINEDA",
@@ -117,6 +137,7 @@ export async function seedPamAnalistas() {
       modulo: "E",
       isJefe: "N",
       oficina: "SPS",
+      isActivo: "S",
     },
     {
       nombre: "KAREN MILLA",
@@ -125,6 +146,7 @@ export async function seedPamAnalistas() {
       modulo: "E",
       isJefe: "N",
       oficina: "SPS",
+      isActivo: "S",
     },
 
     // DISPENSAS - SPS
@@ -135,6 +157,7 @@ export async function seedPamAnalistas() {
       modulo: "D",
       isJefe: "S",
       oficina: "SPS",
+      isActivo: "S",
     },
     {
       nombre: "ANA LEIVA",
@@ -143,6 +166,7 @@ export async function seedPamAnalistas() {
       modulo: "D",
       isJefe: "N",
       oficina: "SPS",
+      isActivo: "S",
     },
   ];
 

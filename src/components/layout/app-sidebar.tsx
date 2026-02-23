@@ -1,4 +1,5 @@
 import { IconChartBar } from "@tabler/icons-react";
+import Link from "next/link";
 
 import {
   Sidebar,
@@ -22,12 +23,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <a href="#">
+              <Link href="/">
                 <IconChartBar className="!size-5" />
                 <span className="text-base font-semibold">
                   Seguimiento de Expedientes
                 </span>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
