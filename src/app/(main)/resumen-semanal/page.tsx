@@ -13,8 +13,6 @@ export default async function ResumenSemanalPage({ searchParams }: PageProps) {
 
   return (
     <div className="px-4 lg:px-6">
-      <h1 className="text-2xl font-bold mb-6">Resumen Semanal</h1>
-
       <TablaResumenSemanal
         data={data.datos}
         cantidadSemanas={data.cantidadSemanas}
