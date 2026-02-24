@@ -28,6 +28,15 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useGetEstadosExpedientes } from "@/hooks";
+import { Button } from "@/components/ui/button";
 
 type DataTableProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[];
@@ -49,6 +58,9 @@ export function DataTable<TData, TValue>({
     pageIndex: 0,
     pageSize: 10,
   });
+  const [estadoFilter, setEstadoFilter] = React.useState<string>("");
+
+  const estados = useGetEstadosExpedientes();
 
   const table = useReactTable({
     data,
@@ -77,7 +89,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="w-full flex-col justify-start gap-6 px-4 lg:px-6">
-      <div className="flex items-center py-4">
+      <div className="flex items-center py-4 gap-5">
         <Input
           placeholder="Filtrar expediente..."
           value={
@@ -88,6 +100,41 @@ export function DataTable<TData, TValue>({
           }
           className="max-w-sm"
         />
+        <Select
+          value={estadoFilter}
+          onValueChange={(value) => {
+            setEstadoFilter(value);
+            table
+              .getColumn("estado")
+              ?.setFilterValue(value === "all" ? "" : value);
+          }}
+        >
+          <SelectTrigger
+            className="w-48 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate"
+            size="default"
+          >
+            <SelectValue placeholder="Filtrar por estado" />
+          </SelectTrigger>
+          <SelectContent position="popper">
+            <SelectItem value="all">Todos</SelectItem>
+            {estados.map((estado) => (
+              <SelectItem key={estado.value} value={estado.value}>
+                {estado.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        <Button
+          onClick={() => {
+            setEstadoFilter("");
+            table.resetColumnFilters();
+            table.resetSorting();
+            table.resetPagination();
+          }}
+        >
+          Limpiar filtros
+        </Button>
       </div>
 
       <Table>
