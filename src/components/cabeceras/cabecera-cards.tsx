@@ -2,7 +2,12 @@ import { PamCabeceraSemanalType } from "@/db/schema";
 import { Cabecera } from "./cabecera";
 import { auth } from "@/app/auth.config";
 import { redirect } from "next/navigation";
-import { MODULO_EXONERACION, OFICINA_SPS, OFICINA_TGU } from "@/const";
+import {
+  MODULO_EXONERACION,
+  MODULO_REGISTRO,
+  OFICINA_SPS,
+  OFICINA_TGU,
+} from "@/const";
 
 type CabeceraCardsProps = {
   cabecera: PamCabeceraSemanalType | null;
@@ -41,24 +46,37 @@ export async function CabeceraCards({ cabecera }: CabeceraCardsProps) {
         <div
           className={`col-span-1 grid grid-cols-1 gap-4 sm:col-span-2 sm:grid-cols-2 lg:col-span-1 lg:grid-cols-1 ${
             user.modulo === "D" ||
+            user.modulo === MODULO_REGISTRO ||
             (user.modulo === MODULO_EXONERACION && user.oficina === OFICINA_SPS)
               ? "@5xl/main:col-span-1 @5xl/main:grid-cols-1"
               : "@5xl/main:col-span-2 @5xl/main:grid-cols-2"
           }`}
         >
-          <Cabecera
-            valor={cabecera?.resuelto || 0}
-            titulo="Resuelto"
-            className="bg-blue-700"
-            descripcion1="Con lugar: "
-            descripcion2="Sin lugar: "
-            descripcion3="Parcial: "
-            descripcion4="Caducado: "
-            valorDescripcion1={cabecera?.conLugar || 0}
-            valorDescripcion2={cabecera?.sinLugar || 0}
-            valorDescripcion3={cabecera?.parcial || 0}
-            valorDescripcion4={cabecera?.caducado || 0}
-          />
+          {user.modulo === MODULO_REGISTRO ? (
+            <Cabecera
+              valor={cabecera?.resuelto || 0}
+              titulo="Resuelto"
+              className="bg-blue-700"
+              descripcion1="Con lugar: "
+              descripcion2="Sin lugar: "
+              valorDescripcion1={cabecera?.conLugar || 0}
+              valorDescripcion2={cabecera?.sinLugar || 0}
+            />
+          ) : (
+            <Cabecera
+              valor={cabecera?.resuelto || 0}
+              titulo="Resuelto"
+              className="bg-blue-700"
+              descripcion1="Con lugar: "
+              descripcion2="Sin lugar: "
+              descripcion3="Parcial: "
+              descripcion4="Caducado: "
+              valorDescripcion1={cabecera?.conLugar || 0}
+              valorDescripcion2={cabecera?.sinLugar || 0}
+              valorDescripcion3={cabecera?.parcial || 0}
+              valorDescripcion4={cabecera?.caducado || 0}
+            />
+          )}
 
           {user.modulo === MODULO_EXONERACION &&
           user.oficina === OFICINA_TGU ? (
@@ -77,6 +95,7 @@ export async function CabeceraCards({ cabecera }: CabeceraCardsProps) {
         <div
           className={`grid gap-4 ${
             user.modulo === "D" ||
+            user.modulo === MODULO_REGISTRO ||
             (user.modulo === MODULO_EXONERACION && user.oficina === OFICINA_SPS)
               ? "col-span-1 grid-cols-1 sm:col-span-2 sm:grid-cols-2 lg:col-span-2 lg:grid-cols-2"
               : "col-span-1 grid-cols-1"
@@ -85,6 +104,14 @@ export async function CabeceraCards({ cabecera }: CabeceraCardsProps) {
           {user.modulo === "D" ||
           (user.modulo === MODULO_EXONERACION &&
             user.oficina === OFICINA_SPS) ? (
+            <Cabecera
+              valor={cabecera?.dictamen || 0}
+              titulo="Dictamen"
+              className="bg-blue-700"
+            />
+          ) : null}
+
+          {user.modulo === MODULO_REGISTRO ? (
             <Cabecera
               valor={cabecera?.dictamen || 0}
               titulo="Dictamen"
