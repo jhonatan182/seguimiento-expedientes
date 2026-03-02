@@ -15,7 +15,7 @@ import { NavUser } from "../navbar/nav-user";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar collapsible="icon" {...props} data-tour="sidebar">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>

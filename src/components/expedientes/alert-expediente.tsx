@@ -43,7 +43,10 @@ export function AlertExpediente({ expedienteId }: AlertExpedienteProps) {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Trash2 className="size-5 cursor-pointer" />
+        <Trash2
+          className="size-5 cursor-pointer"
+          data-tour="eliminar-expediente"
+        />
       </DialogTrigger>
       <DialogContent
         onOpenAutoFocus={(e) => e.preventDefault()}

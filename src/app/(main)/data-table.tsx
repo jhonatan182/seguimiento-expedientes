@@ -88,7 +88,10 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="w-full flex-col justify-start gap-6 px-4 lg:px-6">
+    <div
+      className="w-full flex-col justify-start gap-6 px-4 lg:px-6"
+      data-tour="tabla-expedientes"
+    >
       <div className="flex items-center py-4 gap-5">
         <Input
           placeholder="Filtrar expediente..."

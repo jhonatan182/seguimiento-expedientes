@@ -34,6 +34,7 @@ export function NextWeekButton() {
       className="bg-blue-700 text-white hover:bg-blue-600 cursor-pointer"
       onClick={onClick}
       disabled={loading}
+      data-tour="actualizar-semana"
     >
       {loading ? "Actualizando..." : "Actualizar a la siguiente semana"}
     </Button>

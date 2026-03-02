@@ -42,7 +42,7 @@ export function SelectSemanas({
   }, [selectedSemanaId]);
 
   return (
-    <div className="px-4 lg:px-6">
+    <div className="px-4 lg:px-6" data-tour="semana-selector">
       <Select
         onValueChange={handleChange}
         defaultValue={selectedSemanaId.toString()}
