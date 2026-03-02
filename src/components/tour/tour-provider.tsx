@@ -18,8 +18,8 @@ export function TourProvider() {
 
   return (
     <>
-      <TourGuide 
-        isRunning={isTourRunning} 
+      <TourGuide
+        isRunning={isTourRunning}
         onStart={() => console.log("Tour started")}
         onEnd={endTour}
       />
@@ -27,7 +27,7 @@ export function TourProvider() {
         onClick={startTour}
         variant="outline"
         size="sm"
-        className="fixed bottom-4 right-4 z-50 bg-white shadow-lg hover:bg-gray-50"
+        className="fixed top-4 right-4 z-50 bg-white cursor-pointer shadow-lg hover:bg-gray-50"
         data-tour="tour-button"
       >
         <HelpCircle className="h-4 w-4 mr-2" />

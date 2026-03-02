@@ -30,7 +30,16 @@ export function TourGuide({
           popover: {
             title: "Menú de Navegación",
             description:
-              "Aquí puedes acceder a las diferentes secciones de la aplicación. Puedes colapsarlo para más espacio.",
+              "Aquí puedes acceder a las diferentes secciones de la aplicación.",
+            side: "right",
+            align: "start",
+          },
+        },
+        {
+          element: '[data-tour="toggle-sidebar"]',
+          popover: {
+            title: "Botón de Colapso",
+            description: "Colapsa el menú lateral para más espacio.",
             side: "right",
             align: "start",
           },
@@ -50,7 +59,7 @@ export function TourGuide({
           popover: {
             title: "Actualizar Semana",
             description:
-              "Crea automáticamente la siguiente semana con todos los datos necesarios.",
+              "Crea automáticamente la siguiente semana con todos los datos necesarios. Recuerda hacerlo cada viernes.",
             side: "bottom",
             align: "center",
           },
