@@ -14,6 +14,7 @@ export const SIN_LUGAR = "SIN_LUGAR";
 //MODULOS
 export const MODULO_EXONERACION = "E";
 export const MODULO_DISPENSA = "D";
+export const MODULO_REGISTRO = "R";
 
 //OFICINAS
 export const OFICINA_TGU = "TGU";
@@ -60,6 +61,30 @@ export const estadosExoneraciones: ISelectOption[] = [
 ];
 
 export const estadosDispensas: ISelectOption[] = [
+  {
+    value: DICTAMEN,
+    label: "Dictamen",
+  },
+];
+
+export const estadosRegistro: ISelectOption[] = [
+  {
+    value: CON_LUGAR,
+    label: "Con Lugar",
+  },
+
+  {
+    value: PENDIENTE,
+    label: "Pendiente",
+  },
+  {
+    value: REQUERIDO,
+    label: "Requerido",
+  },
+  {
+    value: SIN_LUGAR,
+    label: "Sin Lugar",
+  },
   {
     value: DICTAMEN,
     label: "Dictamen",

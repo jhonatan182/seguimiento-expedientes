@@ -2,8 +2,10 @@ import {
   defaultEstados,
   estadosDispensas,
   estadosExoneraciones,
+  estadosRegistro,
   MODULO_DISPENSA,
   MODULO_EXONERACION,
+  MODULO_REGISTRO,
   OFICINA_SPS,
   OFICINA_TGU,
 } from "@/const";
@@ -15,6 +17,10 @@ export function buildSelectOptionsByModuleAndOffice(
 ): ISelectOption[] {
   if (!modulo || !oficina) {
     return [];
+  }
+
+  if (modulo === MODULO_REGISTRO) {
+    return [...estadosRegistro];
   }
 
   //retornar opciones por defecto + especificas para exoneracion en TGU
