@@ -47,7 +47,7 @@ export async function CabeceraCards({ cabecera }: CabeceraCardsProps) {
         />
 
         <div
-          className={`col-span-1 grid grid-cols-1 gap-4 sm:col-span-2 sm:grid-cols-2 lg:col-span-1 lg:grid-cols-1 ${
+          className={`col-span-1 grid grid-cols-1 gap-4 lg:col-span-1 lg:grid-cols-1 ${
             user.modulo === "D" ||
             user.modulo === MODULO_REGISTRO ||
             (user.modulo === MODULO_EXONERACION && user.oficina === OFICINA_SPS)
