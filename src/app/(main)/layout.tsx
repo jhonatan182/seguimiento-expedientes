@@ -3,6 +3,8 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { auth } from "../auth.config";
 import { redirect } from "next/navigation";
 import { AppSidebar } from "@/components/layout/app-sidebar";
+import { TourProvider } from "@/components/tour/tour-provider";
+import { AutoTourProvider } from "@/components/tour/auto-tour-provider";
 
 export default async function MainLayout({
   children,
@@ -34,6 +36,8 @@ export default async function MainLayout({
             </div>
           </div>
         </div>
+        <TourProvider />
+        <AutoTourProvider />
       </SidebarInset>
     </SidebarProvider>
   );

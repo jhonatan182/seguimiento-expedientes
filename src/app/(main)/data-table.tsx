@@ -88,8 +88,11 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="w-full flex-col justify-start gap-6 px-4 lg:px-6">
-      <div className="flex items-center py-4 gap-5">
+    <div
+      className="w-full flex-col justify-start gap-6 px-4 lg:px-6"
+      data-tour="tabla-expedientes"
+    >
+      <div className="flex flex-col items-center py-4 gap-5 lg:flex-row lg:items-start lg:gap-5">
         <Input
           placeholder="Filtrar expediente..."
           value={
@@ -98,7 +101,8 @@ export function DataTable<TData, TValue>({
           onChange={(event) =>
             table.getColumn("expediente")?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className="w-full lg:max-w-sm"
+          id="expediente"
         />
         <Select
           value={estadoFilter}
@@ -108,9 +112,10 @@ export function DataTable<TData, TValue>({
               .getColumn("estado")
               ?.setFilterValue(value === "all" ? "" : value);
           }}
+          name="estado"
         >
           <SelectTrigger
-            className="w-48 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate"
+            className="w-full **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate lg:max-w-sm"
             size="default"
           >
             <SelectValue placeholder="Filtrar por estado" />
@@ -132,6 +137,7 @@ export function DataTable<TData, TValue>({
             table.resetSorting();
             table.resetPagination();
           }}
+          className="w-full lg:max-w-sm"
         >
           Limpiar filtros
         </Button>

@@ -69,7 +69,7 @@ export function SelectExpedienteEstado({ row }: SelectExpedienteEstadoProps) {
   }, [searchParams]);
 
   return (
-    <div>
+    <div data-tour="cambiar-estado">
       <DialogConfirmCustom
         title="Confirmar cambio de estado"
         description="¿Estás seguro de que deseas cambiar el estado de este expediente?"

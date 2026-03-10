@@ -10,6 +10,7 @@ import {
   ResumenSemanalRow,
 } from "@/interfaces/resumen-semanal";
 import { getSessionUserWithCookies } from "./auth-actions";
+import { MODULO_REGISTRO } from "@/const";
 
 export async function getResumenMensual(
   mes: string,
@@ -53,7 +54,7 @@ export async function getResumenMensual(
   const cantidadSemanas = semanasPorMes.length;
 
   // Crear las filas del resumen
-  const datos: ResumenSemanalRow[] = [
+  let datos: ResumenSemanalRow[] = [
     {
       categoria: "SALDO ANTERIOR",
       semana1: 0,
@@ -64,6 +65,7 @@ export async function getResumenMensual(
       total: 0,
       backgroundColor: "bg-black",
       textColor: "text-white",
+      hidden: false,
     },
     {
       categoria: "NUEVO INGRESO",
@@ -75,6 +77,7 @@ export async function getResumenMensual(
       total: cabeceras.reduce((sum, c) => sum + c.nuevoIngreso, 0),
       backgroundColor: "bg-black",
       textColor: "text-white",
+      hidden: false,
     },
     {
       categoria: "CIRCULACION",
@@ -86,6 +89,7 @@ export async function getResumenMensual(
       total: cabeceras.reduce((sum, c) => sum + c.circulacion, 0),
       backgroundColor: "bg-black",
       textColor: "text-white",
+      hidden: false,
     },
     {
       categoria: "RESUELTO",
@@ -97,6 +101,7 @@ export async function getResumenMensual(
       total: cabeceras.reduce((sum, c) => sum + c.resuelto, 0),
       backgroundColor: "bg-blue-700",
       textColor: "text-white",
+      hidden: false,
     },
     {
       categoria: "CON LUGAR",
@@ -109,6 +114,7 @@ export async function getResumenMensual(
       total: cabeceras.reduce((sum, c) => sum + c.conLugar, 0),
       backgroundColor: "bg-white",
       textColor: "text-black",
+      hidden: false,
     },
     {
       categoria: "SIN LUGAR",
@@ -121,6 +127,7 @@ export async function getResumenMensual(
       total: cabeceras.reduce((sum, c) => sum + c.sinLugar, 0),
       backgroundColor: "bg-white",
       textColor: "text-black",
+      hidden: false,
     },
     {
       categoria: "PARCIAL",
@@ -133,6 +140,7 @@ export async function getResumenMensual(
       total: cabeceras.reduce((sum, c) => sum + c.parcial, 0),
       backgroundColor: "bg-white",
       textColor: "text-black",
+      hidden: user.modulo === MODULO_REGISTRO,
     },
     {
       categoria: "CADUCADO",
@@ -145,6 +153,7 @@ export async function getResumenMensual(
       total: cabeceras.reduce((sum, c) => sum + c.caducado, 0),
       backgroundColor: "bg-white",
       textColor: "text-black",
+      hidden: user.modulo === MODULO_REGISTRO,
     },
     {
       categoria: "DICTAMEN",
@@ -156,6 +165,7 @@ export async function getResumenMensual(
       total: cabeceras.reduce((sum, c) => sum + c.dictamen, 0),
       backgroundColor: "bg-blue-700",
       textColor: "text-white",
+      hidden: false,
     },
     {
       categoria: "REQUERIDO",
@@ -167,6 +177,7 @@ export async function getResumenMensual(
       total: cabeceras.reduce((sum, c) => sum + c.requerido, 0),
       backgroundColor: "bg-blue-700",
       textColor: "text-white",
+      hidden: false,
     },
     {
       categoria: "PENDIENTE",
@@ -178,6 +189,7 @@ export async function getResumenMensual(
       total: 0,
       backgroundColor: "bg-blue-700",
       textColor: "text-white",
+      hidden: false,
     },
     {
       categoria: "HISTORICO ACUMULADO",
@@ -189,8 +201,12 @@ export async function getResumenMensual(
       total: 0,
       backgroundColor: "bg-gray-500",
       textColor: "text-white",
+      hidden: false,
     },
   ];
+
+  //ocultar filas que esten ocultas
+  datos = datos.filter((fila) => !fila.hidden);
 
   // Distribuir los valores por semana
   cabeceras.forEach((cabecera, index) => {

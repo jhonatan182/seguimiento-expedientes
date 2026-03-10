@@ -168,6 +168,17 @@ export async function seedPamAnalistas() {
       oficina: "SPS",
       isActivo: "S",
     },
+
+    // REGISTRO - TGU
+    {
+      nombre: "IVANNY CERRATO",
+      usuario: "imcerrato",
+      password: bcrypt.hashSync("0201199501082", 10),
+      modulo: "R",
+      isJefe: "S",
+      oficina: "TGU",
+      isActivo: "S",
+    },
   ];
 
   try {

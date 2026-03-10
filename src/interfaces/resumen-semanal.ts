@@ -4,6 +4,7 @@ export interface ResumenSemanalRow {
   categoria: string;
   esSubcategoria?: boolean;
   esTotal?: boolean;
+  hidden: boolean;
   semana1: number;
   semana2: number;
   semana3: number;

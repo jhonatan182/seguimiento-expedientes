@@ -45,13 +45,21 @@ export function DialogExpediente({
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         {expediente?.id ? (
-          <PencilIcon className="size-5 cursor-pointer" />
+          <PencilIcon
+            className="size-5 cursor-pointer"
+            data-tour="editar-expediente"
+          />
         ) : isCurrentWeek ? (
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" data-tour="crear-expediente">
             <IconPlus />
             <span className="hidden lg:inline">Agregar Expediente</span>
           </Button>
-        ) : null}
+        ) : (
+          <Button variant="outline" size="sm" data-tour="crear-expediente">
+            <IconPlus />
+            <span className="hidden lg:inline">Agregar Expediente</span>
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent
         onOpenAutoFocus={(e) => {
