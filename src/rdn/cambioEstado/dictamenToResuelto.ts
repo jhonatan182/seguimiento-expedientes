@@ -53,6 +53,7 @@ export class DictamenToResuelto implements IEstatadosEstrategy {
       totalEnCirculacion = cabeceraSemanal.circulacion + 1;
       totalHistorico = cabeceraSemanal.historicoCirculacion - 1;
       estadoAnteriorValor = cabeceraSemanal[columnaDbAnterior];
+      totalDictamen = cabeceraSemanal.dictamen;
     } else {
       totalEnCirculacion = cabeceraSemanal.circulacion;
       totalHistorico = cabeceraSemanal.historicoCirculacion;
