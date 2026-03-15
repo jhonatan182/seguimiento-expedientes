@@ -1,36 +1,208 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Seguimiento de Expedientes - SEFIN
 
-## Getting Started
+Sistema de seguimiento de expedientes desarrollado con Next.js 16, TypeScript y Turso DB para la gestión eficiente de expedientes en la Secretaría de Finanzas (SEFIN).
 
-First, run the development server:
+## 🚀 Stack Tecnológico
+
+### Frontend
+
+- **Next.js 16.1.4** - Framework de React con App Router
+- **React 19.2.3** - Librería de UI
+- **TypeScript 5** - Tipado estático
+- **Tailwind CSS 4** - Framework de CSS
+- **shadcn/ui** - Componentes de UI reutilizables
+
+### Backend & Base de Datos
+
+- **Drizzle ORM** - ORM para base de datos
+- **Turso (LibSQL)** - Base de datos SQLite serverless
+- **NextAuth 5** - Autenticación y sesión
+
+### Librerías Principales
+
+- **React Hook Form + Zod** - Formularios y validación
+- **TanStack Table** - Tablas interactivas
+- **dnd-kit** - Drag and drop
+- **Recharts** - Gráficos y visualizaciones
+- **Sonner** - Notificaciones
+- **Lucide React** - Iconos
+
+## 📋 Requisitos Previos
+
+- Node.js 18+
+- Bun (recomendado para desarrollo)
+- Cuenta en Turso para base de datos
+
+## 🛠️ Instalación y Configuración
+
+### 1. Clonar el repositorio
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/jhonatan182/seguimiento-expedientes.git
+cd seguimiento-expedientes
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Instalar dependencias
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+bun install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 3. Configurar variables de entorno
 
-## Learn More
+```bash
+cp .env.example .env
+```
 
-To learn more about Next.js, take a look at the following resources:
+Configurar las siguientes variables en `.env`:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```env
+TURSO_DATABASE_URL=turso://...
+TURSO_AUTH_TOKEN=...
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 4. Configurar base de datos
 
-## Deploy on Vercel
+Ejecutar las migraciones de Drizzle:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+bunx drizzle-kit generate
+bunx drizzle-kit migrate
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 5. Poblar la base de datos (opcional)
+
+```bash
+bun run seed
+```
+
+## 🏁 Scripts Disponibles
+
+```bash
+# Iniciar servidor de desarrollo
+bun run dev
+
+
+# Construir para producción
+bun run build
+
+
+# Iniciar servidor de producción
+bun run start
+
+# Linter
+bun run lint
+
+# Poblar base de datos con datos de prueba
+bun run seed
+```
+
+## 🏗️ Arquitectura
+
+### Patrones de Diseño
+
+- **Feature-First Architecture**: Código organizado por funcionalidades
+- **Strategy Pattern**: Para manejo de cambios de estado de expedientes
+- **Component-Driven Development**: Componentes reutilizables y tipados
+
+### Flujo de Datos
+
+1. **Componentes** → **Actions** → **Database**
+2. **Server Actions** para mutaciones de datos
+3. **React Query** para manejo de estado del cliente
+4. **Drizzle ORM** para operaciones de base de datos
+
+## 🔧 Cómo Agregar Nuevas Funcionalidades
+
+### 1. Crear nueva feature
+
+```bash
+mkdir src/features/nueva-feature
+cd src/features/nueva-feature
+```
+
+### 2. Estructura recomendada para una feature:
+
+```
+nueva-feature/
+├── components/          # Componentes específicos de la feature
+├── hooks/              # Hooks personalizados
+├── types/              # Tipos específicos
+├── utils/              # Utilidades de la feature
+└── [feature-name]/     # Páginas de la feature (en app/)
+```
+
+### 3. Agregar nueva ruta en app/
+
+Crear carpeta en `src/app/(main)/` o `src/app/(auth)/` según corresponda.
+
+### 4. Para componentes UI compartidos
+
+Agregar en `src/features/shared/components/ui/` usando shadcn/ui:
+
+```bash
+bunx shadcn@latest add button
+```
+
+## 🗄️ Esquema de Base de Datos
+
+### Tablas Principales
+
+- **PAM_ANALISTA**: Información de analistas
+- **PAM_SEMANAS**: Configuración de semanas laborales
+- **PAM_CABECERA_SEMANAL**: Cabeceras de control semanal
+- **PAM_EXPEDIENTES**: Expedientes y su estado
+
+### Migraciones
+
+Las migraciones se generan automáticamente con Drizzle:
+
+```bash
+bunx drizzle-kit generate
+bunx drizzle-kit migrate
+```
+
+## 🔐 Autenticación
+
+El sistema utiliza NextAuth 5 con configuración personalizada. Los archivos de autenticación se encuentran en:
+
+- `src/app/auth.config.ts`
+- `src/features/auth/`
+
+## 📊 Estados y Transiciones
+
+El sistema implementa un patrón Strategy para manejar las transiciones de estado de los expedientes:
+
+- **PENDIENTE** → **REQUERIDO**
+- **REQUERIDO** → **COMPLETADO**
+- etc.
+
+Las estrategias se encuentran en `src/rdn/strategies/`.
+
+## 🎨 Guía de Estilo
+
+- **Tailwind CSS** para estilos
+- **shadcn/ui** para componentes base
+- **Lucide React** para iconos
+- **CSS Variables** para temas personalizados
+
+## 📝 Desarrollo
+
+### Code Style
+
+- TypeScript estricto
+- ESLint para linting
+- Componentes funcionales con hooks
+- Server Actions para mutaciones
+
+## 🤝 Contribuir
+
+1. Fork del proyecto
+2. Crear feature branch: `git checkout -b feature/nueva-funcionalidad`
+3. Commit: `git commit -m 'Agregar nueva funcionalidad'`
+4. Push: `git push origin feature/nueva-funcionalidad`
+5. Pull Request
+
+---
+
+**Desarrollado para la Secretaría Finanzas (SEFIN)**
