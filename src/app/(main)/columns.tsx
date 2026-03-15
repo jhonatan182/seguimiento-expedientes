@@ -4,7 +4,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { IconGripVertical } from "@tabler/icons-react";
 import { type ColumnDef } from "@tanstack/react-table";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/features/shared/components/ui/button";
 
 import { PamExpedienteType } from "@/db/schema";
 
@@ -12,11 +12,11 @@ import {
   DialogExpediente,
   AlertExpediente,
   SelectExpedienteEstado,
-} from "@/components/expedientes";
-import { formatDate } from "@/utils/dates";
-import { ProtectedComponentByCookie } from "@/components/security";
-import { disableSelectEstado } from "@/utils/validations";
-import { Badge } from "@/components/ui/badge";
+} from "@/features/expedientes/components";
+import { formatDate } from "@/features/shared/utils/dates";
+import { ProtectedComponentByCookie } from "@/features/shared/components/security";
+import { disableSelectEstado } from "@/features/shared/utils/validations";
+import { Badge } from "@/features/shared/components/ui/badge";
 import { CADUCADO, CON_LUGAR, PARCIAL, SIN_LUGAR } from "@/const";
 
 function DragHandle({ id }: { id: number }) {

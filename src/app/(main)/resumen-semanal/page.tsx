@@ -1,6 +1,6 @@
-import { TablaResumenSemanal } from "@/components/resumen/tabla-resumen-semanal";
-import { getResumenMensual } from "@/app/actions/resumen-semanal-actions";
-import { getCurrentMonthCapitalized } from "@/utils";
+import { TablaResumenSemanal } from "@/features/resumen-semanal/components/tabla-resumen-semanal";
+import { getResumenMensual } from "@/features/resumen-semanal/actions/resumen-semanal-actions";
+import { getCurrentMonthCapitalized } from "@/features/shared/utils";
 
 type PageProps = {
   searchParams: Promise<{ [mes: string]: string | undefined }>;
