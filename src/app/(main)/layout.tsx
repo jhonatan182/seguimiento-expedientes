@@ -1,10 +1,13 @@
-import { SiteHeader } from "@/components/layout/site-header";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import {
+  SidebarInset,
+  SidebarProvider,
+} from "@/features/shared/components/ui/sidebar";
 import { auth } from "../auth.config";
 import { redirect } from "next/navigation";
-import { AppSidebar } from "@/components/layout/app-sidebar";
-import { TourProvider } from "@/components/tour/tour-provider";
-import { AutoTourProvider } from "@/components/tour/auto-tour-provider";
+import { TourProvider } from "@/features/shared/components/tour/tour-provider";
+import { AutoTourProvider } from "@/features/shared/components/tour/auto-tour-provider";
+import { AppSidebar } from "@/features/shared/components/sidebar/app-sidebar";
+import { SiteHeader } from "@/features/shared/components/header/site-header";
 
 export default async function MainLayout({
   children,

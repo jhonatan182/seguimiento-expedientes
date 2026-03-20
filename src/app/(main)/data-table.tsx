@@ -17,7 +17,7 @@ import {
   type VisibilityState,
 } from "@tanstack/react-table";
 
-import { Pagination } from "@/components/ui/pagination";
+import { Pagination } from "@/features/shared/components/ui/pagination";
 
 import {
   Table,
@@ -26,17 +26,17 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Input } from "@/components/ui/input";
+} from "@/features/shared/components/ui/table";
+import { Input } from "@/features/shared/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { useGetEstadosExpedientes } from "@/hooks";
-import { Button } from "@/components/ui/button";
+} from "@/features/shared/components/ui/select";
+import { useGetEstadosExpedientes } from "@/features/shared/hooks";
+import { Button } from "@/features/shared/components/ui/button";
 
 type DataTableProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[];

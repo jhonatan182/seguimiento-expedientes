@@ -1,14 +1,17 @@
 import { SessionProvider } from "next-auth/react";
 import { cookies } from "next/headers";
 
-import { DialogExpediente, NextWeekButton } from "@/components/expedientes";
-import { getExpedientes } from "../actions/expedientes-actions";
-import { getSemanas } from "../actions/semanas-actions";
-import { CabeceraCards } from "@/components/cabeceras";
-import { SelectSemanas } from "@/components/semanas";
+import {
+  DialogExpediente,
+  NextWeekButton,
+} from "@/features/expedientes/components";
+import { getExpedientes } from "../../features/expedientes/actions/expedientes-actions";
+import { getSemanas } from "../../features/semanas/actions/semanas-actions";
+import { CabeceraCards } from "@/features/cabeceras/components";
+import { SelectSemanas } from "@/features/semanas/components";
 import { DataTable } from "@/app/(main)/data-table";
-import { Badge } from "@/components/ui/badge";
-import { buildWeek } from "@/utils/dates";
+import { Badge } from "@/features/shared/components/ui/badge";
+import { buildWeek } from "@/features/shared/utils/dates";
 import { columns } from "./columns";
 
 type PageProps = {

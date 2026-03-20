@@ -1,0 +1,164 @@
+"use client";
+
+import { Controller, useForm, useWatch } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Dispatch, SetStateAction } from "react";
+import { toast } from "sonner";
+
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "../../shared/components/ui/field";
+import { createExpediente } from "@/features/expedientes/actions/expedientes-actions";
+import { disableSelectEstado } from "@/features/shared/utils/validations";
+import { AlertCustom } from "../../shared/components/ui/custom/alert-custom";
+import { useGetEstadosExpedientes } from "@/features/shared/hooks";
+import { Button } from "../../shared/components/ui/button";
+import { Input } from "../../shared/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../shared/components/ui/select";
+import {
+  ExpedienteSchema,
+  ExpedienteSchemaType,
+} from "../schemas/expediente-schema";
+
+type CreateExpedienteFormProps = {
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+};
+
+export function CreateExpedienteForm({ setIsOpen }: CreateExpedienteFormProps) {
+  const form = useForm<ExpedienteSchemaType>({
+    resolver: zodResolver(ExpedienteSchema),
+    defaultValues: {
+      expediente: "",
+      estado: "",
+      // fechaIngreso: new Date().toISOString().split("T")[0],
+    },
+  });
+
+  const estadoValue = useWatch({
+    control: form.control,
+    name: "estado",
+  });
+
+  const estados = useGetEstadosExpedientes();
+
+  async function onSubmit(data: ExpedienteSchemaType) {
+    try {
+      const response = await createExpediente(data);
+
+      if (!response.success) {
+        toast.error(response.message);
+        return;
+      }
+
+      toast.success(response.message);
+      setIsOpen(false);
+    } catch (error) {
+      toast.error("Error al crear el expediente");
+    }
+  }
+
+  return (
+    <>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <FieldGroup>
+          {disableSelectEstado(estadoValue) && (
+            <AlertCustom
+              title="Advertencia"
+              description="El estado seleccionado luego no se podrá modificar"
+              variant="destructive"
+            />
+          )}
+          <Controller
+            name="expediente"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel htmlFor={field.name}>Expediente:</FieldLabel>
+                <Input
+                  {...field}
+                  id={field.name}
+                  aria-invalid={fieldState.invalid}
+                  placeholder="Ejm: E2026000001"
+                  autoComplete="off"
+                  type="text"
+                />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+          {/* 
+          <Controller
+            name="fechaIngreso"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel htmlFor={field.name}>Fecha de Ingreso:</FieldLabel>
+
+                <Input
+                  {...field}
+                  id={field.name}
+                  aria-invalid={fieldState.invalid}
+                  autoComplete="off"
+                  type="date"
+                  max={new Date().toISOString().split("T")[0]}
+                />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          /> */}
+
+          <Controller
+            name="estado"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel htmlFor="form-rhf-complex-billingPeriod">
+                  Estado:
+                </FieldLabel>
+                <Select
+                  name={field.name}
+                  value={field.value}
+                  onValueChange={field.onChange}
+                >
+                  <SelectTrigger aria-invalid={fieldState.invalid}>
+                    <SelectValue placeholder="Seleccionar estado" />
+                  </SelectTrigger>
+                  <SelectContent aria-describedby={"select-estado-description"}>
+                    {estados.map((estado) => (
+                      <SelectItem key={estado.value} value={estado.value}>
+                        {estado.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+
+          <Field>
+            <Button disabled={form.formState.isSubmitting} type="submit">
+              Crear expediente
+            </Button>
+          </Field>
+        </FieldGroup>
+      </form>
+    </>
+  );
+}
