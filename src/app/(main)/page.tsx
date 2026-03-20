@@ -12,7 +12,8 @@ import { SelectSemanas } from "@/features/semanas/components";
 import { DataTable } from "@/app/(main)/data-table";
 import { Badge } from "@/features/shared/components/ui/badge";
 import { buildWeek } from "@/features/shared/utils/dates";
-import { columns } from "./columns";
+import { optimizedColumns } from "./columns-optimized";
+import { PermissionsProvider } from "@/features/shared/components/security/permissions-provider";
 
 type PageProps = {
   searchParams: Promise<{ [semana: string]: string | undefined }>;
@@ -66,11 +67,13 @@ export default async function Page({ searchParams }: PageProps) {
       <CabeceraCards cabecera={data.cabeceras[0]} />
 
       <SessionProvider>
-        <div className="w-full flex justify-end gap-6 px-4 lg:px-6">
-          <DialogExpediente isCurrentWeek={isShowingCurrentWeek} />
-        </div>
+        <PermissionsProvider>
+          <div className="w-full flex justify-end gap-6 px-4 lg:px-6">
+            <DialogExpediente isCurrentWeek={isShowingCurrentWeek} />
+          </div>
 
-        <DataTable data={data?.expedientes || []} columns={columns} />
+          <DataTable data={data?.expedientes || []} columns={optimizedColumns} />
+        </PermissionsProvider>
       </SessionProvider>
     </>
   );
