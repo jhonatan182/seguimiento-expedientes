@@ -59,7 +59,7 @@ export async function expedienteExists(
 ): Promise<boolean> {
   const conditions = [
     eq(PamExpedientes.analistaId, userId),
-    eq(PamExpedientes.semanaId, semanaId),
+    // eq(PamExpedientes.semanaId, semanaId),
     eq(PamExpedientes.expediente, expediente.toUpperCase()),
   ];
 
@@ -101,13 +101,13 @@ export async function createExpediente(
   const estadoValido = validateEstado(data.estado);
   const columnaDb = mapColumnDb[estadoValido];
 
-  //buscar si el analista ya creo el mismo expediente en la misma semana
+  //buscar si el analista ya creo el mismo expediente
   const expediente = await expedienteExists(data.expediente, userId, semanaId);
 
   if (expediente) {
     return {
       success: false,
-      message: "El expediente ya existe en la misma semana",
+      message: "Ya has agregado este expediente anteriormente",
     };
   }
 
@@ -177,7 +177,7 @@ export async function updateExpediente(
   if (expediente) {
     return {
       success: false,
-      message: "El expediente ya existe en la misma semana",
+      message: "Ya has agregado este expediente anteriormente",
     };
   }
 
