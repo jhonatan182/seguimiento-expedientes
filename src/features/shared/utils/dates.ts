@@ -38,7 +38,7 @@ export function enableNextWeekButtonByDay(): boolean {
  
   //obtener el dia de semana
   const today = new Date();
-  const day = today.getDay() + 1;
+  const day = today.getDay();
   
 
   //retornar true si el dia es lunes
