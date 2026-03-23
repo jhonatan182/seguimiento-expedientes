@@ -33,3 +33,15 @@ export function getCurrentMonthCapitalized(): string {
     format(today, "MMMM", { locale: es }).slice(1)
   );
 }
+
+export function enableNextWeekButtonByDay(): boolean {
+ 
+  //obtener el dia de semana
+  const today = new Date();
+  const day = today.getDay();
+  
+
+  //retornar true si el dia es lunes
+  return day === 1; 
+}
+
