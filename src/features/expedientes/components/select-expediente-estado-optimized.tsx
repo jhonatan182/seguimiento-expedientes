@@ -29,6 +29,11 @@ function SelectExpedienteEstadoComponent({ row }: SelectExpedienteEstadoProps) {
 
   const estados = useGetEstadosExpedientes();
 
+  // Actualizar estado local si el estado de la fila cambia externamente
+  if (valueSelect !== row.estado && !isOpen) {
+    setValueSelect(row.estado);
+  }
+
   const handleValueChange = async (value: string) => {
     try {
       const response = await toggleExpedienteEstado(row.id, value);
@@ -39,7 +44,7 @@ function SelectExpedienteEstadoComponent({ row }: SelectExpedienteEstadoProps) {
       }
 
       toast.success(response.message);
-    } catch (error) {
+    } catch {
       toast.error("Error al actualizar el estado");
     }
   };
