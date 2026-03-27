@@ -105,3 +105,6 @@ export const MESES = [
   "Noviembre",
   "Diciembre",
 ];
+
+
+export const CHUNK_SIZE = Math.floor(999 / 9);

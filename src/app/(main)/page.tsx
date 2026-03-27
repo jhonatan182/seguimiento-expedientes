@@ -62,6 +62,7 @@ export default async function Page({ searchParams }: PageProps) {
           {isShowingCurrentWeek && <Badge variant="green">Semana actual</Badge>}
         </div>
         {isShowingCurrentWeek || enableNextWeekButtonByDay() ? <NextWeekButton /> : null}
+
         
       </div>
 

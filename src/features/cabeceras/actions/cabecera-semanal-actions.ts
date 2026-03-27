@@ -114,6 +114,8 @@ export async function buildNextCabeceraSemanal(): Promise<ActionsResponse> {
           historicoCirculacion:
             cabecera.dictamen +
             cabecera.requerido +
+            cabecera.dictamenCirculacion +
+            cabecera.dictamenCustodia +
             cabecera.historicoCirculacion,
           pendiente: cabecera.pendiente,
           caducado: 0,
@@ -144,9 +146,11 @@ export async function buildNextCabeceraSemanal(): Promise<ActionsResponse> {
         analistaId: userId,
         saldoAnterior: cabecera.pendiente,
         historicoCirculacion:
-          cabecera.dictamen +
-          cabecera.requerido +
-          cabecera.historicoCirculacion,
+            cabecera.dictamen +
+            cabecera.requerido +
+            cabecera.dictamenCirculacion +
+            cabecera.dictamenCustodia +
+            cabecera.historicoCirculacion,
         pendiente: cabecera.pendiente,
         caducado: 0,
         dictamen: 0,
