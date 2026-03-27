@@ -12,13 +12,13 @@ async function main() {
     // 1. Limpiar la base de datos primero
     // await cleanDatabase();
 
-    // // 2. Ejecutar los seeds en el orden correcto
-    // // Primero las tablas sin dependencias
+    // // // 2. Ejecutar los seeds en el orden correcto
+    // // // Primero las tablas sin dependencias
     // await seedPamSemanas();
     // await seedPamAnalistas();
     // await updateAnalistaPassword();
 
-    // // Luego las tablas que dependen de las anteriores
+    // // // Luego las tablas que dependen de las anteriores
     // await seedPamCabeceraSemanal();
     // await seedPamExpedientes();
 
