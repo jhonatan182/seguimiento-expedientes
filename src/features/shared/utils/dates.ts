@@ -8,9 +8,22 @@ export function formatDate(date: string): string {
 
   return format(new Date(date), "PPP", { locale: es });
 }
+
 export function getWeekOfMonth(date: string): number {
-  const d = getDate(new Date(date));
-  const week = Math.ceil(d / 7);
+  const d = new Date(date);
+  
+  // Día del mes (1-31)
+  const dayOfMonth = getDate(d);
+  
+  // Día de la semana del primer día del mes (0=Dom, 1=Lun, ..., 6=Sáb)
+  const firstDayOfMonth = new Date(d.getFullYear(), d.getMonth(), 1);
+  const firstWeekday = firstDayOfMonth.getDay(); // 0=Dom
+
+  // Ajuste: si la semana empieza el lunes, convertir domingo (0) a 7
+  const startOffset = firstWeekday === 0 ? 6 : firstWeekday - 1;
+
+  const week = Math.ceil((dayOfMonth + startOffset) / 7);
+
   return week;
 }
 

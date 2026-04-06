@@ -23,7 +23,7 @@ export default async function Page({ searchParams }: PageProps) {
   const { semana } = await searchParams;
 
   const semanas = await getSemanas();
-  const semanaDescripcion = buildWeek();
+  const semanaDescripcion = buildWeek();  
 
   // Encuentra la semana actual (la de esta semana)
   const isCurrentWeek = semanas.find(
@@ -61,7 +61,8 @@ export default async function Page({ searchParams }: PageProps) {
           <SelectSemanas semanas={semanas} selectedSemanaId={semanaActualId} />
           {isShowingCurrentWeek && <Badge variant="green">Semana actual</Badge>}
         </div>
-        {isShowingCurrentWeek || enableNextWeekButtonByDay() ? <NextWeekButton /> : null}
+        <NextWeekButton />
+        {/* {isShowingCurrentWeek || enableNextWeekButtonByDay() ? <NextWeekButton /> : null} */}
 
         
       </div>
