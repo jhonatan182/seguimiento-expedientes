@@ -11,7 +11,10 @@ import { CabeceraCards } from "@/features/cabeceras/components";
 import { SelectSemanas } from "@/features/semanas/components";
 import { DataTable } from "@/app/(main)/data-table";
 import { Badge } from "@/features/shared/components/ui/badge";
-import { buildWeek, enableNextWeekButtonByDay } from "@/features/shared/utils/dates";
+import {
+  buildWeek,
+  enableNextWeekButtonByDay,
+} from "@/features/shared/utils/dates";
 import { optimizedColumns } from "./columns-optimized";
 import { PermissionsProvider } from "@/features/shared/components/security/permissions-provider";
 
@@ -23,7 +26,7 @@ export default async function Page({ searchParams }: PageProps) {
   const { semana } = await searchParams;
 
   const semanas = await getSemanas();
-  const semanaDescripcion = buildWeek();  
+  const semanaDescripcion = buildWeek();
 
   // Encuentra la semana actual (la de esta semana)
   const isCurrentWeek = semanas.find(
@@ -61,10 +64,9 @@ export default async function Page({ searchParams }: PageProps) {
           <SelectSemanas semanas={semanas} selectedSemanaId={semanaActualId} />
           {isShowingCurrentWeek && <Badge variant="green">Semana actual</Badge>}
         </div>
-        <NextWeekButton />
-        {/* {isShowingCurrentWeek || enableNextWeekButtonByDay() ? <NextWeekButton /> : null} */}
-
-        
+        {isShowingCurrentWeek || enableNextWeekButtonByDay() ? (
+          <NextWeekButton />
+        ) : null}
       </div>
 
       <CabeceraCards cabecera={data.cabeceras[0]} />
@@ -75,7 +77,10 @@ export default async function Page({ searchParams }: PageProps) {
             <DialogExpediente isCurrentWeek={isShowingCurrentWeek} />
           </div>
 
-          <DataTable data={data?.expedientes || []} columns={optimizedColumns} />
+          <DataTable
+            data={data?.expedientes || []}
+            columns={optimizedColumns}
+          />
         </PermissionsProvider>
       </SessionProvider>
     </>
