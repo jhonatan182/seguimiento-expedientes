@@ -14,7 +14,7 @@ async function main() {
 
     // // // 2. Ejecutar los seeds en el orden correcto
     // // // Primero las tablas sin dependencias
-    // await seedPamSemanas();
+    await seedPamSemanas();
     // await seedPamAnalistas();
     // await updateAnalistaPassword();
 
