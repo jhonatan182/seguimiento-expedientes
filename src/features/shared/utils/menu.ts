@@ -16,14 +16,22 @@ export function buildMenu(isJefe: string): IMenuItem[] {
     },
   ];
 
-  // if (isJefe === "S") {
-  //   defaultMenu.push({
-  //     title: "Resumen de Unidad",
-  //     url: "#",
-  //     icon: "IconInnerShadowTop",
-  //     path: "/resumen-unidad",
-  //   });
-  // }
+  if (isJefe === "S") {
+
+    defaultMenu.push({
+      title: "Reasignar Expedientes",
+      url: "#",
+      icon: "IconTransfer",
+      path: "/reasignar-expedientes",
+    });
+
+    // defaultMenu.push({
+    //   title: "Resumen de Unidad",
+    //   url: "#",
+    //   icon: "IconInnerShadowTop",
+    //   path: "/resumen-unidad",
+    // });
+  }
 
   return defaultMenu;
 }
