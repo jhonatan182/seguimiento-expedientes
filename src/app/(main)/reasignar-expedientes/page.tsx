@@ -8,6 +8,6 @@ export default async function ReasignarExpedientesPage() {
 
 
 
-  return <ReasignarExpedientesDataTable columns={[]} data={[]} />;
+  return <ReasignarExpedientesDataTable columns={columns} data={[]} />;
   // return <div>Reasignar Expedientes {JSON.stringify(reasignaciones[0], null, 2)}</div>;
 }
