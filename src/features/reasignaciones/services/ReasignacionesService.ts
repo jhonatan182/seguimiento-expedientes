@@ -12,6 +12,11 @@ class ReasignacionesService {
 
     return this.repository.getReasignaciones(user.modulo, user.oficina);
   }
+
+  async reasignarExpediente(expedienteId: number, nuevoAnalistaId: number) {
+
+    return await this.repository.reasignar(expedienteId, nuevoAnalistaId);
+  }
 }
 
 export const reasignacionesService = new ReasignacionesService(

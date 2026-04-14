@@ -21,6 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/components/ui/select";
+import { reasignarExpedienteAction } from "@/features/reasignaciones/actions/reasignaciones-actions";
 
 export const columns: ColumnDef<IReasignacionExpediente>[] = [
   {
@@ -62,7 +63,15 @@ export const columns: ColumnDef<IReasignacionExpediente>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex items-center gap-2">
-          <Select>
+          <Select
+          key={row.original.analistaActual.id}
+            onValueChange={async (value) => {
+              const nuevoAnalistaId = Number(value);
+              const expedienteId = row.original.id;
+
+              await reasignarExpedienteAction(expedienteId, nuevoAnalistaId);
+            }}
+          >
             <SelectTrigger className="cursor-pointer">
               <SelectValue placeholder="Seleccionar analista" />
             </SelectTrigger>
