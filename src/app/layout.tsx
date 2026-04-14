@@ -2,7 +2,7 @@ import { Poppins } from "next/font/google";
 import type { Metadata } from "next";
 
 import { Toaster } from "@/shared/components/ui/sonner";
-import "./globals.css";
+
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
