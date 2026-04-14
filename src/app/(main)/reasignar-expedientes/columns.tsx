@@ -1,6 +1,5 @@
 "use client";
 
-import { useSortable } from "@dnd-kit/sortable";
 import { IconGripVertical } from "@tabler/icons-react";
 import { type ColumnDef } from "@tanstack/react-table";
 
@@ -20,30 +19,20 @@ import { Badge } from "@/shared/components/ui/badge";
 import { CADUCADO, CON_LUGAR, PARCIAL, SIN_LUGAR } from "@/const";
 import { IReasignacionExpediente } from "@/features/reasignaciones/interfaces/IReasignacionExpediente";
 
-function DragHandle({ id }: { id: number }) {
-  const { attributes, listeners } = useSortable({
-    id,
-  });
-
-  return (
-    <Button
-      {...attributes}
-      {...listeners}
-      variant="ghost"
-      size="icon"
-      className="text-muted-foreground size-7 hover:bg-transparent"
-    >
-      <IconGripVertical className="text-muted-foreground size-3" />
-      <span className="sr-only">Drag to reorder</span>
-    </Button>
-  );
-}
-
 export const columns: ColumnDef<IReasignacionExpediente>[] = [
   {
     id: "drag",
     header: () => null,
-    cell: ({ row }) => <DragHandle id={row.original.id} />,
+    cell: () => (
+      <Button
+        variant="ghost"
+        size="icon"
+        className="text-muted-foreground size-7 hover:bg-transparent"
+      >
+        <IconGripVertical className="text-muted-foreground size-3" />
+        <span className="sr-only">Drag to reorder</span>
+      </Button>
+    ),
   },
   {
     accessorKey: "expediente",
@@ -59,33 +48,32 @@ export const columns: ColumnDef<IReasignacionExpediente>[] = [
   {
     accessorKey: "analistaActual.nombre",
     header: "Analista Actual",
-
   },
-//   {
-//     id: "actions",
-//     cell: ({ row }) => {
-//       if (
-//         row.original.isHistorico === "S" ||
-//         row.original.isHistorico === "E"
-//       ) {
-//         return null;
-//       }
+  //   {
+  //     id: "actions",
+  //     cell: ({ row }) => {
+  //       if (
+  //         row.original.isHistorico === "S" ||
+  //         row.original.isHistorico === "E"
+  //       ) {
+  //         return null;
+  //       }
 
-//       const disabled = disableSelectEstado(row.original.estado);
+  //       const disabled = disableSelectEstado(row.original.estado);
 
-//       if (disabled) {
-//         return null;
-//       }
+  //       if (disabled) {
+  //         return null;
+  //       }
 
-//       return (
-//         <ProtectedComponentByCookie keyCookie="isCurrentWeek">
-//           <div className="flex items-center gap-2 ">
-//             <DialogExpediente expediente={row.original} />
+  //       return (
+  //         <ProtectedComponentByCookie keyCookie="isCurrentWeek">
+  //           <div className="flex items-center gap-2 ">
+  //             <DialogExpediente expediente={row.original} />
 
-//             <AlertExpediente expedienteId={row.original.id} />
-//           </div>
-//         </ProtectedComponentByCookie>
-//       );
-//     },
-//   },
+  //             <AlertExpediente expedienteId={row.original.id} />
+  //           </div>
+  //         </ProtectedComponentByCookie>
+  //       );
+  //     },
+  //   },
 ];

@@ -1,6 +1,6 @@
 "use client";
 
-import { useSortable } from "@dnd-kit/sortable";
+
 import { IconGripVertical } from "@tabler/icons-react";
 import { type ColumnDef } from "@tanstack/react-table";
 
@@ -19,15 +19,13 @@ import { disableSelectEstado } from "@/shared/utils/validations";
 import { Badge } from "@/shared/components/ui/badge";
 import { CADUCADO, CON_LUGAR, PARCIAL, SIN_LUGAR } from "@/const";
 
-function DragHandle({ id }: { id: number }) {
-  const { attributes, listeners } = useSortable({
-    id,
-  });
 
-  return (
+export const columns: ColumnDef<PamExpedienteType>[] = [
+  {
+    id: "drag",
+    header: () => null,
+    cell: () => (
     <Button
-      {...attributes}
-      {...listeners}
       variant="ghost"
       size="icon"
       className="text-muted-foreground size-7 hover:bg-transparent"
@@ -35,14 +33,7 @@ function DragHandle({ id }: { id: number }) {
       <IconGripVertical className="text-muted-foreground size-3" />
       <span className="sr-only">Drag to reorder</span>
     </Button>
-  );
-}
-
-export const columns: ColumnDef<PamExpedienteType>[] = [
-  {
-    id: "drag",
-    header: () => null,
-    cell: ({ row }) => <DragHandle id={row.original.id} />,
+  ),
   },
   {
     accessorKey: "expediente",

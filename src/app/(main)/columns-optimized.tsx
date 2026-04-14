@@ -1,6 +1,6 @@
 "use client";
 
-import { useSortable } from "@dnd-kit/sortable";
+
 import { IconGripVertical } from "@tabler/icons-react";
 import { type ColumnDef } from "@tanstack/react-table";
 
@@ -13,30 +13,22 @@ import { CADUCADO, CON_LUGAR, PARCIAL, SIN_LUGAR } from "@/const";
 import { SelectExpedienteEstadoOptimized } from "@/features/expedientes/components/select-expediente-estado-optimized";
 import { TableActionsOptimized } from "@/features/expedientes/components/table-actions-optimized";
 
-function DragHandle({ id }: { id: number }) {
-  const { attributes, listeners } = useSortable({
-    id,
-  });
 
-  return (
-    <Button
-      {...attributes}
-      {...listeners}
-      variant="ghost"
-      size="icon"
-      className="text-muted-foreground size-7 hover:bg-transparent"
-    >
-      <IconGripVertical className="text-muted-foreground size-3" />
-      <span className="sr-only">Drag to reorder</span>
-    </Button>
-  );
-}
 
 export const optimizedColumns: ColumnDef<PamExpedienteType>[] = [
   {
     id: "drag",
     header: () => null,
-    cell: ({ row }) => <DragHandle id={row.original.id} />,
+    cell: () => (
+      <Button
+        variant="ghost"
+        size="icon"
+        className="text-muted-foreground size-7 hover:bg-transparent"
+      >
+        <IconGripVertical className="text-muted-foreground size-3" />
+        <span className="sr-only">Drag to reorder</span>
+      </Button>
+    ),
   },
   {
     accessorKey: "expediente",
