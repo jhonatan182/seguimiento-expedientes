@@ -10,11 +10,11 @@ import {
   FieldError,
   FieldGroup,
   FieldLabel,
-} from "../../shared/components/ui/field";
+} from "../../../shared/components/ui/field";
 import { updateExpediente } from "@/features/expedientes/actions/expedientes-actions";
 import { PamExpedienteType } from "@/db/schema";
-import { Input } from "../../shared/components/ui/input";
-import { Button } from "../../shared/components/ui/button";
+import { Input } from "../../../shared/components/ui/input";
+import { Button } from "../../../shared/components/ui/button";
 import {
   UpdateExpedienteSchema,
   UpdateExpedienteSchemaType,

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { TourGuide } from "@/features/shared/components/tour/tour-guide";
+import { TourGuide } from "@/shared/components/tour/tour-guide";
 
 export function AutoTourProvider() {
   const [shouldShowTour, setShouldShowTour] = useState(false);

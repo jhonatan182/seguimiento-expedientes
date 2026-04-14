@@ -10,13 +10,13 @@ import { getSemanas } from "../../features/semanas/actions/semanas-actions";
 import { CabeceraCards } from "@/features/cabeceras/components";
 import { SelectSemanas } from "@/features/semanas/components";
 import { DataTable } from "@/app/(main)/data-table";
-import { Badge } from "@/features/shared/components/ui/badge";
+import { Badge } from "@/shared/components/ui/badge";
 import {
   buildWeek,
   enableNextWeekButtonByDay,
-} from "@/features/shared/utils/dates";
+} from "@/shared/utils/dates";
 import { optimizedColumns } from "./columns-optimized";
-import { PermissionsProvider } from "@/features/shared/components/security/permissions-provider";
+import { PermissionsProvider } from "@/shared/components/security/permissions-provider";
 
 type PageProps = {
   searchParams: Promise<{ [semana: string]: string | undefined }>;

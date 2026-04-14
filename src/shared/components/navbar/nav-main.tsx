@@ -6,7 +6,7 @@ import {
   SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuItem,
-} from "@/features/shared/components/ui/sidebar";
+} from "@/shared/components/ui/sidebar";
 import { auth } from "@/app/auth.config";
 import { NavLinkActive } from "./nav-link-active";
 

@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useSession } from "next-auth/react";
 
-import { buildSelectOptionsByModuleAndOffice } from "@/features/shared/utils";
+import { buildSelectOptionsByModuleAndOffice } from "@/shared/utils";
 
 export function useGetEstadosExpedientes() {
   const { data: session } = useSession();

@@ -5,7 +5,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { deleteExpediente } from "@/features/expedientes/actions/expedientes-actions";
-import { Button } from "@/features/shared/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import {
   Dialog,
   DialogClose,
@@ -15,7 +15,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/features/shared/components/ui/dialog";
+} from "@/shared/components/ui/dialog";
 
 type AlertExpedienteProps = {
   expedienteId: number;

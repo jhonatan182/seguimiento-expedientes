@@ -3,8 +3,8 @@
 import { toast } from "sonner";
 
 import { buildNextCabeceraSemanal } from "@/features/cabeceras/actions/cabecera-semanal-actions";
-import { ProtectedComponentByCookie } from "../../shared/components/security";
-import { Button } from "../../shared/components/ui/button";
+import { ProtectedComponentByCookie } from "../../../shared/components/security";
+import { Button } from "../../../shared/components/ui/button";
 import { useState } from "react";
 
 export function NextWeekButton() {

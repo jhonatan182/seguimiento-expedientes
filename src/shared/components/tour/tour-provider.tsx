@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { TourGuide } from "@/features/shared/components/tour/tour-guide";
-import { Button } from "@/features/shared/components/ui/button";
+import { TourGuide } from "@/shared/components/tour/tour-guide";
+import { Button } from "@/shared/components/ui/button";
 import { HelpCircle } from "lucide-react";
 
 export function TourProvider() {

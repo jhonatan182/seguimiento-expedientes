@@ -1,6 +1,6 @@
 "use client";
 
-import { getCookie } from "@/features/shared/actions/cookies-actions";
+import { getCookie } from "@/shared/actions/cookies-actions";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 

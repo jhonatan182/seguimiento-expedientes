@@ -4,19 +4,19 @@ import { memo, useState } from "react";
 import { toast } from "sonner";
 
 import { toggleExpedienteEstado } from "@/features/expedientes/actions/expedientes-actions";
-import { disableSelectEstado } from "@/features/shared/utils/validations";
+import { disableSelectEstado } from "@/shared/utils/validations";
 import { PamExpedienteType } from "@/db/schema";
-import { Label } from "@/features/shared/components/ui/label";
+import { Label } from "@/shared/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/features/shared/components/ui/select";
-import { DialogConfirmCustom } from "../../shared/components/ui/custom/dialog-confirm-custom";
+} from "@/shared/components/ui/select";
+import { DialogConfirmCustom } from "../../../shared/components/ui/custom/dialog-confirm-custom";
 import { useGetEstadosExpedientes } from "@/features/expedientes/hooks/use-get-estados-expedientes";
-import { usePermissions } from "@/features/shared/components/security/permissions-provider";
+import { usePermissions } from "@/shared/components/security/permissions-provider";
 
 type SelectExpedienteEstadoProps = {
   row: PamExpedienteType;

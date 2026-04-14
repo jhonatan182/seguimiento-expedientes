@@ -7,12 +7,12 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../../shared/components/ui/select";
+} from "../../../shared/components/ui/select";
 import { useRouter } from "next/navigation";
 import {
   getCookie,
   setCookie,
-} from "@/features/shared/actions/cookies-actions";
+} from "@/shared/actions/cookies-actions";
 import { useEffect } from "react";
 
 type SelectSemanasProps = {

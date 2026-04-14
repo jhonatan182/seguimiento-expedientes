@@ -2,8 +2,8 @@
 
 import { memo } from "react";
 import { PamExpedienteType } from "@/db/schema";
-import { disableSelectEstado } from "@/features/shared/utils/validations";
-import { usePermissions } from "@/features/shared/components/security/permissions-provider";
+import { disableSelectEstado } from "@/shared/utils/validations";
+import { usePermissions } from "@/shared/components/security/permissions-provider";
 import { DialogExpediente } from "./dialog-expediente";
 import { AlertExpediente } from "./alert-expediente";
 

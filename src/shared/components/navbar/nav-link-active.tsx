@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 
 import { SidebarMenuButton } from "../ui/sidebar";
-import { iconMap } from "@/features/shared/utils/icon-map";
+import { iconMap } from "@/shared/utils/icon-map";
 
 type NavLinkActiveProps = {
   path: string;

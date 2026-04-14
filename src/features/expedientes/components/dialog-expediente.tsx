@@ -6,16 +6,16 @@ import { PencilIcon } from "lucide-react";
 
 import { UpdateExpedienteForm } from "./update-expediente-form";
 import { CreateExpedienteForm } from "./create-expediente-form";
-import { setCookie } from "@/features/shared/actions/cookies-actions";
+import { setCookie } from "@/shared/actions/cookies-actions";
 import { PamExpedienteType } from "@/db/schema";
-import { Button } from "@/features/shared/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/features/shared/components/ui/dialog";
+} from "@/shared/components/ui/dialog";
 
 type DialogExpedienteProps = {
   expediente?: PamExpedienteType;

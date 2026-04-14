@@ -5,19 +5,19 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { toggleExpedienteEstado } from "@/features/expedientes/actions/expedientes-actions";
-import { disableSelectEstado } from "@/features/shared/utils/validations";
-import { getCookie } from "@/features/shared/actions/cookies-actions";
+import { disableSelectEstado } from "@/shared/utils/validations";
+import { getCookie } from "@/shared/actions/cookies-actions";
 import { PamExpedienteType } from "@/db/schema";
-import { Label } from "@/features/shared/components/ui/label";
+import { Label } from "@/shared/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/features/shared/components/ui/select";
-import { DialogConfirmCustom } from "../../shared/components/ui/custom/dialog-confirm-custom";
-import { useGetEstadosExpedientes } from "@/features/shared/hooks";
+} from "@/shared/components/ui/select";
+import { DialogConfirmCustom } from "../../../shared/components/ui/custom/dialog-confirm-custom";
+import { useGetEstadosExpedientes } from "@/shared/hooks";
 
 type SelectExpedienteEstadoProps = {
   row: PamExpedienteType;

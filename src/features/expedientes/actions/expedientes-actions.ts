@@ -10,7 +10,7 @@ import { PamCabeceraSemanal, PamSemanas } from "@/db/schema";
 import { getSessionUserWithCookies } from "../../auth/actions/auth-actions";
 import { ContextStrategy } from "@/rdn/contextStategy";
 import { stragiesList } from "@/rdn/strategies";
-import { mapColumnDb } from "@/features/shared/utils/mappers";
+import { mapColumnDb } from "@/shared/utils/mappers";
 import { IExecuteData } from "@/interfaces";
 import { auth } from "../../../app/auth.config";
 import { db } from "@/lib/drizzle";
@@ -18,13 +18,13 @@ import {
   incrementarEstadoDictamen,
   incrementarEstadoResuelto,
   validateEstado,
-} from "@/features/shared/utils/validations";
+} from "@/shared/utils/validations";
 import {
   ExpedienteSchemaType,
   UpdateExpedienteSchemaType,
 } from "../schemas/expediente-schema";
 import { Semana } from "@/features/semanas/types/semana-response";
-import { ActionsResponse } from "@/features/shared/types/actions-response";
+import { ActionsResponse } from "@/shared/types/actions-response";
 
 export async function getExpedientes(semanaId: number): Promise<Semana | null> {
   const session = await auth();

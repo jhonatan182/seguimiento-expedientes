@@ -1,7 +1,7 @@
 import { InferInsertModel } from "drizzle-orm";
 import { db } from "@/lib/drizzle";
 import { PamCabeceraSemanal } from "@/db/schema/PAM_CABECERA_SEMANAL";
-import { chunkArray } from "@/features/shared/utils/chunks";
+import { chunkArray } from "@/shared/utils/chunks";
 
 export type NuevaCabeceraSemanal = InferInsertModel<typeof PamCabeceraSemanal>;
 

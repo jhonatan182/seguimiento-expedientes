@@ -9,7 +9,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/features/shared/components/ui/sidebar";
+} from "@/shared/components/ui/sidebar";
 import { NavMain } from "../navbar/nav-main";
 import { NavUser } from "../navbar/nav-user";
 

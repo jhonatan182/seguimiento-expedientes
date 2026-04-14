@@ -10,20 +10,20 @@ import {
   FieldError,
   FieldGroup,
   FieldLabel,
-} from "../../shared/components/ui/field";
+} from "../../../shared/components/ui/field";
 import { createExpediente } from "@/features/expedientes/actions/expedientes-actions";
-import { disableSelectEstado } from "@/features/shared/utils/validations";
-import { AlertCustom } from "../../shared/components/ui/custom/alert-custom";
-import { useGetEstadosExpedientes } from "@/features/shared/hooks";
-import { Button } from "../../shared/components/ui/button";
-import { Input } from "../../shared/components/ui/input";
+import { disableSelectEstado } from "@/shared/utils/validations";
+import { AlertCustom } from "../../../shared/components/ui/custom/alert-custom";
+import { useGetEstadosExpedientes } from "@/shared/hooks";
+import { Button } from "../../../shared/components/ui/button";
+import { Input } from "../../../shared/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../../shared/components/ui/select";
+} from "../../../shared/components/ui/select";
 import {
   ExpedienteSchema,
   ExpedienteSchemaType,

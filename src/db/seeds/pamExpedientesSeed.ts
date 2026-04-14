@@ -3,7 +3,7 @@ import { InferInsertModel } from "drizzle-orm";
 import { db } from "@/lib/drizzle";
 
 import { PamExpedientes } from "@/db/schema/PAM_EXPEDIENTES";
-import { chunkArray } from "@/features/shared/utils/chunks";
+import { chunkArray } from "@/shared/utils/chunks";
 import { CHUNK_SIZE } from "@/const";
 
 export type NuevoExpediente = InferInsertModel<typeof PamExpedientes>;

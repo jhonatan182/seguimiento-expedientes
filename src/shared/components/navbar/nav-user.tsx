@@ -1,6 +1,6 @@
 import { IconDotsVertical, IconLogout } from "@tabler/icons-react";
 
-import { Avatar, AvatarFallback } from "@/features/shared/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/shared/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,12 +8,12 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/features/shared/components/ui/dropdown-menu";
+} from "@/shared/components/ui/dropdown-menu";
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/features/shared/components/ui/sidebar";
+} from "@/shared/components/ui/sidebar";
 import { signOut } from "@/app/auth.config";
 import { auth } from "@/app/auth.config";
 
