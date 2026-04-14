@@ -14,22 +14,15 @@ export function buildMenu(isJefe: string): IMenuItem[] {
       icon: "IconListDetails",
       path: "/resumen-semanal",
     },
-    {
+  ];
+
+  if (isJefe === "S") {
+    defaultMenu.push({
       title: "Reasignar Expedientes",
       url: "#",
       icon: "IconTransfer",
       path: "/reasignar-expedientes",
-    },
-  ];
-
-  if (isJefe === "S") {
-
-    // defaultMenu.push({
-    //   title: "Reasignar Expedientes",
-    //   url: "#",
-    //   icon: "IconTransfer",
-    //   path: "/reasignar-expedientes",
-    // });
+    });
 
     // defaultMenu.push({
     //   title: "Resumen de Unidad",
