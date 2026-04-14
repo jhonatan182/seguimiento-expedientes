@@ -30,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" suppressHydrationWarning>
+    <html lang="es" suppressHydrationWarning={true}>
       <body className={`${poppins.className} antialiased`}>
         <main>{children}</main>
         <Toaster richColors closeButton />

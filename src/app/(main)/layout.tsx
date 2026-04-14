@@ -39,7 +39,7 @@ export default async function MainLayout({
             </div>
           </div>
         </div>
-        <TourProvider />
+        {/* <TourProvider /> */}
         <AutoTourProvider />
       </SidebarInset>
     </SidebarProvider>

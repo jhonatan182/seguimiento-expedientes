@@ -10,8 +10,6 @@ class ReasignacionesService {
   async getReasignaciones() {
     const { user } = await getSessionUserWithCookies();
 
-    // console.log("user", user);
-
     return this.repository.getReasignaciones(user.modulo, user.oficina);
   }
 }

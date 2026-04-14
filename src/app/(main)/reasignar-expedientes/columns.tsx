@@ -13,11 +13,14 @@ import {
   SelectExpedienteEstado,
 } from "@/features/expedientes/components";
 import { formatDate } from "@/shared/utils/dates";
-import { ProtectedComponentByCookie } from "@/shared/components/security";
-import { disableSelectEstado } from "@/shared/utils/validations";
-import { Badge } from "@/shared/components/ui/badge";
-import { CADUCADO, CON_LUGAR, PARCIAL, SIN_LUGAR } from "@/const";
 import { IReasignacionExpediente } from "@/features/reasignaciones/interfaces/IReasignacionExpediente";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/shared/components/ui/select";
 
 export const columns: ColumnDef<IReasignacionExpediente>[] = [
   {
@@ -46,8 +49,38 @@ export const columns: ColumnDef<IReasignacionExpediente>[] = [
     },
   },
   {
+    accessorKey: "estado",
+    header: "Estado",
+  },
+  {
     accessorKey: "analistaActual.nombre",
     header: "Analista Actual",
+  },
+  {
+    id: "reasignarA",
+    header: "Reasignar a",
+    cell: ({ row }) => {
+      return (
+        <div className="flex items-center gap-2">
+          <Select>
+            <SelectTrigger className="cursor-pointer">
+              <SelectValue placeholder="Seleccionar analista" />
+            </SelectTrigger>
+            <SelectContent position="popper">
+              {row.original.analistasDisponibles.map((analista) => (
+                <SelectItem
+                  className="cursor-pointer"
+                  key={analista.id}
+                  value={analista.id.toString()}
+                >
+                  {analista.nombre}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      );
+    },
   },
   //   {
   //     id: "actions",

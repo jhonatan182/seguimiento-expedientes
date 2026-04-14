@@ -1,6 +1,6 @@
 import { db } from "@/lib/drizzle";
 import { PamAnalista, PamExpedientes } from "@/db/schema";
-import { eq, and } from "drizzle-orm";
+import { eq, and, inArray, notInArray, max, desc } from "drizzle-orm";
 import { IReasignacionesRepository } from "../interfaces/IReasignacionesRepository";
 import { IReasignacionExpediente } from "../interfaces/IReasignacionExpediente";
 
@@ -22,24 +22,37 @@ class ReasignacionesRepository implements IReasignacionesRepository {
       },
     });
 
-    //Obtener expedientes con su analista actual
-    const expedientes = await db.query.PamExpedientes.findMany({
-      with: {
+    //Obtener el último registro de cada expediente con su analista actual
+    const expedientes = await db
+      .select({
+        id: PamExpedientes.id,
+        expediente: PamExpedientes.expediente,
+        estado: PamExpedientes.estado,
+        analistaId: PamExpedientes.analistaId,
         analista: {
-          columns: {
-            id: true,
-            nombre: true,
-            usuario: true,
-            modulo: true,
-            oficina: true,
-          },
+          id: PamAnalista.id,
+          nombre: PamAnalista.nombre,
+          usuario: PamAnalista.usuario,
+          modulo: PamAnalista.modulo,
+          oficina: PamAnalista.oficina,
         },
-      },
-      where: and(
-        eq(PamExpedientes.estado, "PENDIENTE"),
+      })
+      .from(PamExpedientes)
+      .innerJoin(PamAnalista, eq(PamExpedientes.analistaId, PamAnalista.id))
+      .where(
+        and(
+          inArray(
+            PamExpedientes.id,
+            db
+              .select({ maxId: max(PamExpedientes.id) })
+              .from(PamExpedientes)
+              .groupBy(PamExpedientes.expediente)
+          ),
+          // Excluir expedientes con estados resueltos
+          notInArray(PamExpedientes.estado, ["CON_LUGAR", "SIN_LUGAR", "PARCIAL", "CADUCADO"])
+        )
       )
-      
-    });
+      .orderBy(desc(PamExpedientes.id));
 
     //Filtrar expedientes que se pueden reasignar y mapearlos
     const expedientesReasignables = expedientes
@@ -56,6 +69,7 @@ class ReasignacionesRepository implements IReasignacionesRepository {
         return {
           id: expediente.id,
           expediente: expediente.expediente,
+          estado: expediente.estado,
           analistaActual: expediente.analista,
           analistasDisponibles: analistasParaReasignar,
         };

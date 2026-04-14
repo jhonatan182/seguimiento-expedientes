@@ -5,9 +5,6 @@ import { getReasignaciones } from "@/features/reasignaciones/actions/reasignacio
 export default async function ReasignarExpedientesPage() {
   const reasignaciones = await getReasignaciones();
 
-
-
-
-  return <ReasignarExpedientesDataTable columns={columns} data={[]} />;
+  return <ReasignarExpedientesDataTable columns={columns} data={reasignaciones} />;
   // return <div>Reasignar Expedientes {JSON.stringify(reasignaciones[0], null, 2)}</div>;
 }
