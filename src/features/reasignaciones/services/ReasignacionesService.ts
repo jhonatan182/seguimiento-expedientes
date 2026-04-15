@@ -14,7 +14,6 @@ class ReasignacionesService {
   }
 
   async reasignarExpediente(expedienteId: number, nuevoAnalistaId: number) {
-
     return await this.repository.reasignar(expedienteId, nuevoAnalistaId);
   }
 }

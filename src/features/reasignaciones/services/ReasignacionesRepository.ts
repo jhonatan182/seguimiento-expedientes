@@ -1,29 +1,178 @@
 import { db } from "@/lib/drizzle";
-import { PamAnalista, PamExpedientes } from "@/db/schema";
+import {
+  PamAnalista,
+  PamExpedientes,
+  PamSemanas,
+  PamCabeceraSemanal,
+} from "@/db/schema";
 import { eq, and, inArray, notInArray, max, desc } from "drizzle-orm";
 import { IReasignacionesRepository } from "../interfaces/IReasignacionesRepository";
 import { IReasignacionExpediente } from "../interfaces/IReasignacionExpediente";
+import { ActionsResponse } from "@/shared/types/actions-response";
+import { CADUCADO, CON_LUGAR, PARCIAL, PENDIENTE, SIN_LUGAR } from "@/const";
+import { buildWeek, validateEstado } from "@/shared/utils";
+import { mapColumnDb } from "@/shared/utils/mappers";
 
 class ReasignacionesRepository implements IReasignacionesRepository {
   async reasignar(
     expedienteId: number,
     nuevoAnalistaId: number,
-  ): Promise<void> {
+  ): Promise<ActionsResponse> {
     //buscar el nuevo expediente y actualizarlo con el nuevo analista
-    const nuevoExpediente = await db.query.PamExpedientes.findFirst({
+    const expediente = await db.query.PamExpedientes.findFirst({
       where: eq(PamExpedientes.id, expedienteId),
     });
 
-    if (!nuevoExpediente) {
-      throw new Error("Expediente no encontrado");
+    if (!expediente) {
+      return {
+        success: false,
+        message: "Expediente no encontrado",
+      };
     }
 
-    await db
-      .update(PamExpedientes)
-      .set({
-        analistaId: nuevoAnalistaId,
-      })
-      .where(eq(PamExpedientes.id, expedienteId));
+    //Verificar que el expediente no esta resuelto
+    if ([CON_LUGAR, SIN_LUGAR, PARCIAL, CADUCADO].includes(expediente.estado)) {
+      return {
+        success: false,
+        message: "Expediente ya está resuelto",
+      };
+    }
+
+    const cantidadExpedientes = await db.query.PamExpedientes.findMany({
+      where: eq(PamExpedientes.expediente, expediente.expediente),
+    });
+
+    // Verificar si el expediente es nuevo (true) o historico (false)
+    const isExpedienteNuevo = cantidadExpedientes.length === 1;
+    const estadoExpedienteColumn = validateEstado(expediente.estado);
+    const semanaString = buildWeek();
+    const semanaActual = await db.query.PamSemanas.findFirst({
+      where: eq(PamSemanas.descripcion, semanaString),
+    });
+
+    console.log("semanaActual", semanaActual);
+
+    if (!semanaActual) {
+      return {
+        success: false,
+        message: "Hubo un error al obtener la semana actual",
+      };
+    }
+
+    const [cabeceraSemanalAnalistaNuevo, cabeceraSemanalAnalistaAnterior] =
+      await Promise.all([
+        db.query.PamCabeceraSemanal.findFirst({
+          where: and(
+            eq(PamCabeceraSemanal.semanaId, semanaActual.id),
+            eq(PamCabeceraSemanal.analistaId, nuevoAnalistaId),
+          ),
+        }),
+        db.query.PamCabeceraSemanal.findFirst({
+          where: and(
+            eq(PamCabeceraSemanal.semanaId, expediente.semanaId),
+            eq(PamCabeceraSemanal.analistaId, expediente.analistaId),
+          ),
+        }),
+      ]);
+
+    if (!cabeceraSemanalAnalistaNuevo) {
+      return {
+        success: false,
+        message: "El nuevo analista no ha creado la semana actual",
+      };
+    }
+
+    if (!cabeceraSemanalAnalistaAnterior) {
+      return {
+        success: false,
+        message: "Hubo un error al obtener las cabeceras semanal",
+      };
+    }
+
+    //acciones para cabecera semana al que se le asigna el expediente
+    cabeceraSemanalAnalistaNuevo.nuevoIngreso += 1;
+    cabeceraSemanalAnalistaNuevo[mapColumnDb[estadoExpedienteColumn]] += 1;
+
+    cabeceraSemanalAnalistaNuevo.dictamen =
+      cabeceraSemanalAnalistaNuevo.dictamen +
+      cabeceraSemanalAnalistaNuevo.dictamenCirculacion +
+      cabeceraSemanalAnalistaNuevo.dictamenCustodia;
+
+    cabeceraSemanalAnalistaNuevo.resuelto =
+      cabeceraSemanalAnalistaNuevo.conLugar +
+      cabeceraSemanalAnalistaNuevo.sinLugar +
+      cabeceraSemanalAnalistaNuevo.parcial +
+      cabeceraSemanalAnalistaNuevo.caducado;
+
+    console.log({isExpedienteNuevo , expediente});
+    
+
+    //acciones para cabecera semanal del analista que pierde el expediente
+    if (isExpedienteNuevo) {
+      if (expediente.isHistorico === "S") {
+        cabeceraSemanalAnalistaAnterior[mapColumnDb[estadoExpedienteColumn]] -=
+          1;
+      } else {
+        cabeceraSemanalAnalistaAnterior.nuevoIngreso -= 1;
+        cabeceraSemanalAnalistaAnterior[mapColumnDb[estadoExpedienteColumn]] -=
+          1;
+      }
+    } else {
+      if (expediente.isHistorico === "S") {
+        //verificar pendientes, requeridos etc
+
+        if (expediente.estado === PENDIENTE) {
+          cabeceraSemanalAnalistaAnterior.saldoAnterior -= 1;
+          cabeceraSemanalAnalistaAnterior.pendiente -= 1;
+        } else {
+          cabeceraSemanalAnalistaAnterior.historicoCirculacion -= 1;
+        }
+      }
+
+      if (expediente.isHistorico === "E") {
+        cabeceraSemanalAnalistaAnterior.circulacion -= 1;
+        cabeceraSemanalAnalistaAnterior[mapColumnDb[estadoExpedienteColumn]] -=
+          1;
+      }
+    }
+
+    cabeceraSemanalAnalistaAnterior.dictamen =
+      cabeceraSemanalAnalistaAnterior.dictamen +
+      cabeceraSemanalAnalistaAnterior.dictamenCirculacion +
+      cabeceraSemanalAnalistaAnterior.dictamenCustodia;
+
+    cabeceraSemanalAnalistaAnterior.resuelto =
+      cabeceraSemanalAnalistaAnterior.conLugar +
+      cabeceraSemanalAnalistaAnterior.sinLugar +
+      cabeceraSemanalAnalistaAnterior.parcial +
+      cabeceraSemanalAnalistaAnterior.caducado;
+
+    await db.transaction(async (tx) => {
+      // actualizar la cabecera del analista anterior
+      await tx
+        .update(PamCabeceraSemanal)
+        .set(cabeceraSemanalAnalistaAnterior)
+        .where(eq(PamCabeceraSemanal.id, cabeceraSemanalAnalistaAnterior.id));
+
+      // actualizar la cabecera del analista nuevo
+      await tx
+        .update(PamCabeceraSemanal)
+        .set(cabeceraSemanalAnalistaNuevo)
+        .where(eq(PamCabeceraSemanal.id, cabeceraSemanalAnalistaNuevo.id));
+
+      // actualizar expediente con el nuevo analista
+      await tx
+        .update(PamExpedientes)
+        .set({
+          analistaId: nuevoAnalistaId,
+        })
+        .where(eq(PamExpedientes.id, expedienteId));
+    });
+
+    return {
+      success: true,
+      message: "Expediente reasignado correctamente",
+    };
   }
 
   async getReasignaciones(

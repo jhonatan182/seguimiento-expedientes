@@ -10,17 +10,17 @@ async function main() {
 
   try {
     // 1. Limpiar la base de datos primero
-    // await cleanDatabase();
+    await cleanDatabase();
 
     // // // 2. Ejecutar los seeds en el orden correcto
     // // // Primero las tablas sin dependencias
     await seedPamSemanas();
-    // await seedPamAnalistas();
-    // await updateAnalistaPassword();
+    await seedPamAnalistas();
+    await updateAnalistaPassword();
 
     // // // Luego las tablas que dependen de las anteriores
-    // await seedPamCabeceraSemanal();
-    // await seedPamExpedientes();
+    await seedPamCabeceraSemanal();
+    await seedPamExpedientes();
 
     console.log("\n✅ Todos los seeds se ejecutaron exitosamente");
   } catch (error) {

@@ -34,7 +34,7 @@ export default function RootLayout({
     <html lang="es" suppressHydrationWarning={true}>
       <body className={`${poppins.className} antialiased`}>
         <main>{children}</main>
-        <Toaster richColors closeButton />
+        <Toaster richColors closeButton position="top-center" />
       </body>
     </html>
   );

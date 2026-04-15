@@ -10,8 +10,10 @@ export async function getReasignaciones() {
 export async function reasignarExpedienteAction(expedienteId: number, nuevoAnalistaId: number) {
   // return reasignacionesService.reasignarExpediente(id, analistaId);
   console.log("Reasignando expediente", { expedienteId, nuevoAnalistaId });
-  await reasignacionesService.reasignarExpediente(expedienteId, nuevoAnalistaId);
+  
+  const resp = await reasignacionesService.reasignarExpediente(expedienteId, nuevoAnalistaId);
 
   revalidatePath("/reasignar-expedientes");
 
+  return resp;
 }
