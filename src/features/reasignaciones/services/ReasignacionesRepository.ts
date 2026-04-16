@@ -104,8 +104,7 @@ class ReasignacionesRepository implements IReasignacionesRepository {
       cabeceraSemanalAnalistaNuevo.parcial +
       cabeceraSemanalAnalistaNuevo.caducado;
 
-    console.log({isExpedienteNuevo , expediente});
-    
+    console.log({ isExpedienteNuevo, expediente });
 
     //acciones para cabecera semanal del analista que pierde el expediente
     if (isExpedienteNuevo) {
@@ -165,6 +164,7 @@ class ReasignacionesRepository implements IReasignacionesRepository {
         .update(PamExpedientes)
         .set({
           analistaId: nuevoAnalistaId,
+          isHistorico: "N",
         })
         .where(eq(PamExpedientes.id, expedienteId));
     });
