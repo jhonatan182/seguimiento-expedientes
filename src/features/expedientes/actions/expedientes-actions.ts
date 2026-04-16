@@ -25,6 +25,8 @@ import {
 } from "../schemas/expediente-schema";
 import { Semana } from "@/features/semanas/types/semana-response";
 import { ActionsResponse } from "@/shared/types/actions-response";
+import { buildSelectOptionsByModuleAndOffice } from "@/shared/utils";
+import { getCookie } from "@/shared/actions/cookies-actions";
 
 export async function getExpedientes(semanaId: number): Promise<Semana | null> {
   const session = await auth();
@@ -32,6 +34,9 @@ export async function getExpedientes(semanaId: number): Promise<Semana | null> {
   if (!session?.user?.id) {
     return redirect("/login");
   }
+
+  const cookie = await getCookie("isCurrentWeek");
+  const isCurrentWeek = cookie === "true";
 
   const userId = Number(session?.user?.id);
 
@@ -48,7 +53,26 @@ export async function getExpedientes(semanaId: number): Promise<Semana | null> {
     },
   });
 
-  return semana || null;
+  const estados = buildSelectOptionsByModuleAndOffice(
+    session.user.modulo,
+    session.user.oficina,
+  );
+
+  if (!semana) {
+    return null;
+  }
+
+  const semanasConEstados = {
+    ...semana,
+    expedientes: semana.expedientes.map((expediente) => ({
+      ...expediente,
+      estados: estados,
+      isCurrentWeek: isCurrentWeek,
+    })),
+    estados: estados,
+  };
+
+  return semanasConEstados;
 }
 
 export async function expedienteExists(

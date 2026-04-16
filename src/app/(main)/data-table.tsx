@@ -35,17 +35,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/components/ui/select";
-import { useGetEstadosExpedientes } from "@/shared/hooks";
 import { Button } from "@/shared/components/ui/button";
+import { ISelectOption } from "@/interfaces";
 
 type DataTableProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  estados: ISelectOption[];
 };
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  estados,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
@@ -59,8 +61,6 @@ export function DataTable<TData, TValue>({
     pageSize: 10,
   });
   const [estadoFilter, setEstadoFilter] = React.useState<string>("");
-
-  const estados = useGetEstadosExpedientes();
 
   const table = useReactTable({
     data,
@@ -122,7 +122,7 @@ export function DataTable<TData, TValue>({
           </SelectTrigger>
           <SelectContent position="popper">
             <SelectItem value="all">Todos</SelectItem>
-            {estados.map((estado) => (
+            {estados?.map((estado) => (
               <SelectItem key={estado.value} value={estado.value}>
                 {estado.label}
               </SelectItem>

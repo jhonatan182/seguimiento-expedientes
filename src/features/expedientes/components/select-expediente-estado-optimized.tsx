@@ -3,10 +3,11 @@
 import { memo, useState } from "react";
 import { toast } from "sonner";
 
+import { DialogConfirmCustom } from "../../../shared/components/ui/custom/dialog-confirm-custom";
 import { toggleExpedienteEstado } from "@/features/expedientes/actions/expedientes-actions";
 import { disableSelectEstado } from "@/shared/utils/validations";
-import { PamExpedienteType } from "@/db/schema";
 import { Label } from "@/shared/components/ui/label";
+import { PamExpedienteType } from "@/db/schema";
 import {
   Select,
   SelectContent,
@@ -14,20 +15,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/components/ui/select";
-import { DialogConfirmCustom } from "../../../shared/components/ui/custom/dialog-confirm-custom";
-import { useGetEstadosExpedientes } from "@/features/expedientes/hooks/use-get-estados-expedientes";
-import { usePermissions } from "@/shared/components/security/permissions-provider";
 
 type SelectExpedienteEstadoProps = {
   row: PamExpedienteType;
 };
 
 function SelectExpedienteEstadoComponent({ row }: SelectExpedienteEstadoProps) {
-  const { isCurrentWeek } = usePermissions();
+
   const [isOpen, setIsOpen] = useState(false);
   const [valueSelect, setValueSelect] = useState(row.estado);
-
-  const estados = useGetEstadosExpedientes();
 
   // Actualizar estado local si el estado de la fila cambia externamente
   if (valueSelect !== row.estado && !isOpen) {
@@ -83,7 +79,7 @@ function SelectExpedienteEstadoComponent({ row }: SelectExpedienteEstadoProps) {
           setValueSelect(value);
           handleOpenDialog(value);
         }}
-        disabled={!isCurrentWeek || disableSelectEstado(valueSelect)}
+        disabled={!row.isCurrentWeek || disableSelectEstado(valueSelect)}
       >
         <SelectTrigger
           className="w-38 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate"
@@ -93,7 +89,7 @@ function SelectExpedienteEstadoComponent({ row }: SelectExpedienteEstadoProps) {
           <SelectValue placeholder="Asignar estado" />
         </SelectTrigger>
         <SelectContent position="popper">
-          {estados.map((estado) => (
+          {row.estados?.map((estado) => (
             <SelectItem key={estado.value} value={estado.value}>
               {estado.label}
             </SelectItem>
@@ -104,4 +100,6 @@ function SelectExpedienteEstadoComponent({ row }: SelectExpedienteEstadoProps) {
   );
 }
 
-export const SelectExpedienteEstadoOptimized = memo(SelectExpedienteEstadoComponent);
+export const SelectExpedienteEstadoOptimized = memo(
+  SelectExpedienteEstadoComponent,
+);

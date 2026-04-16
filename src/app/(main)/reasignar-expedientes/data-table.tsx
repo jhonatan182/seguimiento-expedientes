@@ -28,14 +28,6 @@ import {
   TableRow,
 } from "@/shared/components/ui/table";
 import { Input } from "@/shared/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/shared/components/ui/select";
-import { useGetEstadosExpedientes } from "@/shared/hooks";
 import { Button } from "@/shared/components/ui/button";
 
 type DataTableProps<TData, TValue> = {
@@ -59,8 +51,6 @@ export function ReasignarExpedientesDataTable<TData, TValue>({
     pageSize: 10,
   });
   const [estadoFilter, setEstadoFilter] = React.useState<string>("");
-
-
 
   const table = useReactTable({
     data,

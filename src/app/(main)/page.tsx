@@ -1,22 +1,17 @@
-import { SessionProvider } from "next-auth/react";
 import { cookies } from "next/headers";
 
+import { getExpedientes } from "../../features/expedientes/actions/expedientes-actions";
+import { getSemanas } from "../../features/semanas/actions/semanas-actions";
+import { buildWeek, enableNextWeekButtonByDay } from "@/shared/utils/dates";
+import { CabeceraCards } from "@/features/cabeceras/components";
+import { SelectSemanas } from "@/features/semanas/components";
+import { optimizedColumns } from "./columns-optimized";
+import { DataTable } from "@/app/(main)/data-table";
+import { Badge } from "@/shared/components/ui/badge";
 import {
   DialogExpediente,
   NextWeekButton,
 } from "@/features/expedientes/components";
-import { getExpedientes } from "../../features/expedientes/actions/expedientes-actions";
-import { getSemanas } from "../../features/semanas/actions/semanas-actions";
-import { CabeceraCards } from "@/features/cabeceras/components";
-import { SelectSemanas } from "@/features/semanas/components";
-import { DataTable } from "@/app/(main)/data-table";
-import { Badge } from "@/shared/components/ui/badge";
-import {
-  buildWeek,
-  enableNextWeekButtonByDay,
-} from "@/shared/utils/dates";
-import { optimizedColumns } from "./columns-optimized";
-import { PermissionsProvider } from "@/shared/components/security/permissions-provider";
 
 type PageProps = {
   searchParams: Promise<{ [semana: string]: string | undefined }>;
@@ -66,23 +61,22 @@ export default async function Page({ searchParams }: PageProps) {
         </div>
         {isShowingCurrentWeek || enableNextWeekButtonByDay() ? (
           <NextWeekButton />
-        ) :  <NextWeekButton />}
+        ) : (
+          <NextWeekButton />
+        )}
       </div>
 
       <CabeceraCards cabecera={data.cabeceras[0]} />
 
-      <SessionProvider>
-        <PermissionsProvider>
-          <div className="w-full flex justify-end gap-6 px-4 lg:px-6">
-            <DialogExpediente isCurrentWeek={isShowingCurrentWeek} />
-          </div>
+      <div className="w-full flex justify-end gap-6 px-4 lg:px-6">
+        <DialogExpediente isCurrentWeek={isShowingCurrentWeek} />
+      </div>
 
-          <DataTable
-            data={data?.expedientes || []}
-            columns={optimizedColumns}
-          />
-        </PermissionsProvider>
-      </SessionProvider>
+      <DataTable
+        data={data?.expedientes || []}
+        columns={optimizedColumns}
+        estados={data?.estados || []}
+      />
     </>
   );
 }

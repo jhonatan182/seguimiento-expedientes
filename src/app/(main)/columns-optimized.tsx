@@ -1,19 +1,15 @@
 "use client";
 
-
 import { IconGripVertical } from "@tabler/icons-react";
 import { type ColumnDef } from "@tanstack/react-table";
 
+import { SelectExpedienteEstadoOptimized } from "@/features/expedientes/components/select-expediente-estado-optimized";
+import { TableActionsOptimized } from "@/features/expedientes/components/table-actions-optimized";
 import { Button } from "@/shared/components/ui/button";
 import { PamExpedienteType } from "@/db/schema";
 import { formatDate } from "@/shared/utils/dates";
 import { Badge } from "@/shared/components/ui/badge";
 import { CADUCADO, CON_LUGAR, PARCIAL, SIN_LUGAR } from "@/const";
-
-import { SelectExpedienteEstadoOptimized } from "@/features/expedientes/components/select-expediente-estado-optimized";
-import { TableActionsOptimized } from "@/features/expedientes/components/table-actions-optimized";
-
-
 
 export const optimizedColumns: ColumnDef<PamExpedienteType>[] = [
   {
