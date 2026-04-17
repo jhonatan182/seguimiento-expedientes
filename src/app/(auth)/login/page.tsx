@@ -18,7 +18,7 @@ export default function LoginPage() {
           height={1000}
           priority
           src="/login.jpg"
-          alt="Image"
+          alt="Imagen de login"
           className="absolute inset-0 h-full w-full object-cover"
         />
       </div>
