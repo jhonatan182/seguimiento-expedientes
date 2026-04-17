@@ -27,6 +27,7 @@ import { Semana } from "@/features/semanas/types/semana-response";
 import { ActionsResponse } from "@/shared/types/actions-response";
 import { buildSelectOptionsByModuleAndOffice } from "@/shared/utils";
 import { getCookie } from "@/shared/actions/cookies-actions";
+import { beneficios } from "@/const";
 
 export async function getExpedientes(semanaId: number): Promise<Semana | null> {
   const session = await auth();
@@ -135,6 +136,17 @@ export async function createExpediente(
     };
   }
 
+  const beneficioDescripcion = beneficios.find(
+    (b) => b.value === data.codigoBeneficioSolicitado,
+  );
+
+  if (!beneficioDescripcion) {
+    return {
+      success: false,
+      message: "El beneficio solicitado no es válido",
+    };
+  }
+
   await db.transaction(async (tx) => {
     //Crear expediente
     await tx.insert(PamExpedientes).values({
@@ -145,6 +157,8 @@ export async function createExpediente(
       fechaIngreso: new Date().toISOString().toString(),
       estado: estadoValido,
       fechaUltimaModificacion: "",
+      codigoBeneficioSolicitado: data.codigoBeneficioSolicitado,
+      beneficioSolicitado: beneficioDescripcion.label,
     });
 
     //verficar si existe cabecera en la semana que se esta creando el expediente
@@ -196,12 +210,42 @@ export async function updateExpediente(
   const userId = Number(user.id);
   const semanaId = cookies.semanaId;
 
-  const expediente = await expedienteExists(data.expediente, userId, semanaId);
+  const expediente = await findExpedienteWithPermissions(
+    expedienteId,
+    userId,
+    semanaId,
+  );
 
-  if (expediente) {
+  if (!expediente) {
     return {
       success: false,
-      message: "Ya has agregado este expediente anteriormente",
+      message: "No se encontró el expediente",
+    };
+  }
+
+  if (expediente.expediente.toUpperCase() !== data.expediente.toUpperCase()) {
+    const expedienteExistsResult = await expedienteExists(
+      data.expediente,
+      userId,
+      semanaId,
+    );
+
+    if (expedienteExistsResult) {
+      return {
+        success: false,
+        message: "Ya has agregado este expediente anteriormente",
+      };
+    }
+  }
+
+  const beneficioDescripcion = beneficios.find(
+    (b) => b.value === data.codigoBeneficioSolicitado,
+  );
+
+  if (!beneficioDescripcion) {
+    return {
+      success: false,
+      message: "El beneficio solicitado no es válido",
     };
   }
 
@@ -210,6 +254,8 @@ export async function updateExpediente(
     .update(PamExpedientes)
     .set({
       expediente: data.expediente.toUpperCase(),
+      codigoBeneficioSolicitado: data.codigoBeneficioSolicitado,
+      beneficioSolicitado: beneficioDescripcion.label,
     })
     .where(
       and(

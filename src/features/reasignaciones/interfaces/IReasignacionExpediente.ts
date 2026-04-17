@@ -1,6 +1,7 @@
 export interface IReasignacionExpediente {
   id: number;
   expediente: string;
+  beneficioSolicitado: string;
   analistaActual: {
     id: number;
     nombre: string;

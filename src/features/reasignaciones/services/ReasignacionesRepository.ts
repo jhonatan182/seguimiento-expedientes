@@ -200,6 +200,7 @@ class ReasignacionesRepository implements IReasignacionesRepository {
         expediente: PamExpedientes.expediente,
         estado: PamExpedientes.estado,
         analistaId: PamExpedientes.analistaId,
+        beneficioSolicitado: PamExpedientes.beneficioSolicitado,
         analista: {
           id: PamAnalista.id,
           nombre: PamAnalista.nombre,
@@ -251,6 +252,7 @@ class ReasignacionesRepository implements IReasignacionesRepository {
           estado: expediente.estado,
           analistaActual: expediente.analista,
           analistasDisponibles: analistasParaReasignar,
+          beneficioSolicitado: expediente.beneficioSolicitado,
         };
       })
       .filter((expediente) => expediente.analistasDisponibles.length > 0); //     Solo incluir si hay analistas disponibles

@@ -50,8 +50,6 @@ export function ReasignarExpedientesDataTable<TData, TValue>({
     pageIndex: 0,
     pageSize: 10,
   });
-  const [estadoFilter, setEstadoFilter] = React.useState<string>("");
-
   const table = useReactTable({
     data,
     columns,
@@ -122,7 +120,6 @@ export function ReasignarExpedientesDataTable<TData, TValue>({
 
         <Button
           onClick={() => {
-            setEstadoFilter("");
             table.resetColumnFilters();
             table.resetSorting();
             table.resetPagination();

@@ -16,15 +16,18 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/shared/components/ui/dialog";
+import { ISelectOption } from "@/interfaces";
 
 type DialogExpedienteProps = {
   expediente?: PamExpedienteType;
   isCurrentWeek?: boolean;
+  estadosOptions: ISelectOption[];
 };
 
 export function DialogExpediente({
   expediente,
   isCurrentWeek,
+  estadosOptions,
 }: DialogExpedienteProps) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -54,9 +57,7 @@ export function DialogExpediente({
             <IconPlus />
             <span className="hidden lg:inline">Agregar Expediente</span>
           </Button>
-        ) : (
-          null
-        )}
+        ) : null}
       </DialogTrigger>
       <DialogContent
         onOpenAutoFocus={(e) => {
@@ -72,7 +73,10 @@ export function DialogExpediente({
         {expediente?.id ? (
           <UpdateExpedienteForm expediente={expediente} setIsOpen={setIsOpen} />
         ) : (
-          <CreateExpedienteForm setIsOpen={setIsOpen} />
+          <CreateExpedienteForm
+            setIsOpen={setIsOpen}
+            estadosOptions={estadosOptions}
+          />
         )}
       </DialogContent>
     </Dialog>

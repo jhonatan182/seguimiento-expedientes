@@ -17,7 +17,6 @@ import {
   SelectValue,
 } from "@/shared/components/ui/select";
 import { DialogConfirmCustom } from "../../../shared/components/ui/custom/dialog-confirm-custom";
-import { useGetEstadosExpedientes } from "@/shared/hooks";
 
 type SelectExpedienteEstadoProps = {
   row: PamExpedienteType;
@@ -32,8 +31,6 @@ export function SelectExpedienteEstado({ row }: SelectExpedienteEstadoProps) {
   useEffect(() => {
     setValueSelect(row.estado);
   }, [row]);
-
-  const estados = useGetEstadosExpedientes();
 
   const handleValueChange = async (value: string) => {
     try {
@@ -95,7 +92,6 @@ export function SelectExpedienteEstado({ row }: SelectExpedienteEstadoProps) {
           handleOpenDialog(value);
         }}
         disabled={!isCurrentWeek || disableSelectEstado(valueSelect)}
-
       >
         <SelectTrigger
           className="w-38 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate"
@@ -105,7 +101,7 @@ export function SelectExpedienteEstado({ row }: SelectExpedienteEstadoProps) {
           <SelectValue placeholder="Asignar estado" />
         </SelectTrigger>
         <SelectContent position="popper">
-          {estados.map((estado) => (
+          {row.estados?.map((estado) => (
             <SelectItem key={estado.value} value={estado.value}>
               {estado.label}
             </SelectItem>

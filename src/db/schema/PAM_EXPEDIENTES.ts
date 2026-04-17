@@ -26,6 +26,9 @@ export const PamExpedientes = sqliteTable("PAM_EXPEDIENTES", {
   observaciones: text("observaciones"),
   isHistorico: text("is_historico", { length: 1 }).default("N").notNull(),
   beneficioSolicitado: text("beneficio_solicitado").default("").notNull(),
+  codigoBeneficioSolicitado: text("codigo_beneficio_solicitado")
+    .default("")
+    .notNull(),
 });
 
 export const PamExpedientesRelations = relations(PamExpedientes, ({ one }) => ({

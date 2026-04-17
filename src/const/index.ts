@@ -106,5 +106,59 @@ export const MESES = [
   "Diciembre",
 ];
 
+export const beneficios: ISelectOption[] = [
+  {
+    value: "1",
+    label: "ISV",
+  },
+  {
+    value: "2",
+    label: "ISR",
+  },
+  {
+    value: "3",
+    label: "ACTIVO NETO",
+  },
+  {
+    value: "4",
+    label: "AS",
+  },
+  {
+    value: "5",
+    label: "DAI",
+  },
+  {
+    value: "6",
+    label: "ACPV",
+  },
+  {
+    value: "7",
+    label: "TST",
+  },
+  {
+    value: "8",
+    label: "IA",
+  },
+  {
+    value: "9",
+    label: "TASA",
+  },
+  {
+    value: "10",
+    label: "ICBASF",
+  },
+  {
+    value: "11",
+    label: "ISR,ACN,AST",
+  },
+  {
+    value: "12",
+    label: "ACTIVO NETO, AS",
+  },
+  {
+    value: "00",
+    label: "OTRO",
+  },
+];
 
 export const CHUNK_SIZE = Math.floor(999 / 9);

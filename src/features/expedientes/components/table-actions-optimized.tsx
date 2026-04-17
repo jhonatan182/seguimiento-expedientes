@@ -3,7 +3,6 @@
 import { memo } from "react";
 import { PamExpedienteType } from "@/db/schema";
 import { disableSelectEstado } from "@/shared/utils/validations";
-import { usePermissions } from "@/shared/components/security/permissions-provider";
 import { DialogExpediente } from "./dialog-expediente";
 import { AlertExpediente } from "./alert-expediente";
 
@@ -12,24 +11,19 @@ type TableActionsProps = {
 };
 
 function TableActionsComponent({ row }: TableActionsProps) {
-  const { isCurrentWeek } = usePermissions();
-
-  if (
-    row.isHistorico === "S" ||
-    row.isHistorico === "E"
-  ) {
+  if (row.isHistorico === "S" || row.isHistorico === "E") {
     return null;
   }
 
   const disabled = disableSelectEstado(row.estado);
 
-  if (disabled || !isCurrentWeek) {
+  if (disabled || !row.isCurrentWeek) {
     return null;
   }
 
   return (
     <div className="flex items-center gap-2">
-      <DialogExpediente expediente={row} />
+      <DialogExpediente expediente={row} estadosOptions={[]} />
       <AlertExpediente expedienteId={row.id} />
     </div>
   );

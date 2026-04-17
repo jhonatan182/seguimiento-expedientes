@@ -69,7 +69,10 @@ export default async function Page({ searchParams }: PageProps) {
       <CabeceraCards cabecera={data.cabeceras[0]} />
 
       <div className="w-full flex justify-end gap-6 px-4 lg:px-6">
-        <DialogExpediente isCurrentWeek={isShowingCurrentWeek} />
+        <DialogExpediente
+          isCurrentWeek={isShowingCurrentWeek}
+          estadosOptions={data.estados || []}
+        />
       </div>
 
       <DataTable

@@ -65,6 +65,13 @@ export const optimizedColumns: ColumnDef<PamExpedienteType>[] = [
     },
   },
   {
+    accessorKey: "beneficioSolicitado",
+    header: "Beneficio Solicitado",
+    cell: ({ row }) => {
+      return row.original.beneficioSolicitado || "-";
+    },
+  },
+  {
     accessorKey: "fechaIngreso",
     header: "Fecha Ingreso",
     cell: ({ row }) => {
@@ -75,7 +82,7 @@ export const optimizedColumns: ColumnDef<PamExpedienteType>[] = [
     accessorKey: "fechaUltimaModificacion",
     header: "Fecha Movimiento",
     cell: ({ row }) => {
-      return formatDate(row.original.fechaUltimaModificacion);
+      return formatDate(row.original.fechaUltimaModificacion) || "-";
     },
   },
   {

@@ -2,17 +2,10 @@
 
 import { IconGripVertical } from "@tabler/icons-react";
 import { type ColumnDef } from "@tanstack/react-table";
+import { toast } from "sonner";
 
 import { Button } from "@/shared/components/ui/button";
 
-import { PamExpedienteType } from "@/db/schema";
-
-import {
-  DialogExpediente,
-  AlertExpediente,
-  SelectExpedienteEstado,
-} from "@/features/expedientes/components";
-import { formatDate } from "@/shared/utils/dates";
 import { IReasignacionExpediente } from "@/features/reasignaciones/interfaces/IReasignacionExpediente";
 import {
   Select,
@@ -22,7 +15,6 @@ import {
   SelectValue,
 } from "@/shared/components/ui/select";
 import { reasignarExpedienteAction } from "@/features/reasignaciones/actions/reasignaciones-actions";
-import { toast } from "sonner";
 
 export const columns: ColumnDef<IReasignacionExpediente>[] = [
   {
@@ -55,6 +47,13 @@ export const columns: ColumnDef<IReasignacionExpediente>[] = [
     header: "Estado",
   },
   {
+    accessorKey: "beneficioSolicitado",
+    header: "Beneficio Solicitado",
+    cell: ({ row }) => {
+      return row.original.beneficioSolicitado || "-";
+    },
+  },
+  {
     accessorKey: "analistaActual.nombre",
     header: "Analista Actual",
   },
@@ -62,27 +61,26 @@ export const columns: ColumnDef<IReasignacionExpediente>[] = [
     id: "reasignarA",
     header: "Reasignar a",
     cell: ({ row }) => {
-
       const handleReasignar = async (value: string) => {
         const nuevoAnalistaId = Number(value);
         const expedienteId = row.original.id;
 
-        const response = await reasignarExpedienteAction(expedienteId, nuevoAnalistaId);
+        const response = await reasignarExpedienteAction(
+          expedienteId,
+          nuevoAnalistaId,
+        );
 
-        if( response.success ) {
+        if (response.success) {
           toast.success(response.message);
         } else {
           toast.error(response.message);
         }
-
-
       };
-
 
       return (
         <div className="flex items-center gap-2">
           <Select
-          key={row.original.analistaActual.id}
+            key={row.original.analistaActual.id}
             onValueChange={handleReasignar}
           >
             <SelectTrigger className="cursor-pointer">

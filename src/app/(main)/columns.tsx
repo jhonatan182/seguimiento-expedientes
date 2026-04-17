@@ -1,6 +1,5 @@
 "use client";
 
-
 import { IconGripVertical } from "@tabler/icons-react";
 import { type ColumnDef } from "@tanstack/react-table";
 
@@ -19,21 +18,20 @@ import { disableSelectEstado } from "@/shared/utils/validations";
 import { Badge } from "@/shared/components/ui/badge";
 import { CADUCADO, CON_LUGAR, PARCIAL, SIN_LUGAR } from "@/const";
 
-
 export const columns: ColumnDef<PamExpedienteType>[] = [
   {
     id: "drag",
     header: () => null,
     cell: () => (
-    <Button
-      variant="ghost"
-      size="icon"
-      className="text-muted-foreground size-7 hover:bg-transparent"
-    >
-      <IconGripVertical className="text-muted-foreground size-3" />
-      <span className="sr-only">Drag to reorder</span>
-    </Button>
-  ),
+      <Button
+        variant="ghost"
+        size="icon"
+        className="text-muted-foreground size-7 hover:bg-transparent"
+      >
+        <IconGripVertical className="text-muted-foreground size-3" />
+        <span className="sr-only">Drag to reorder</span>
+      </Button>
+    ),
   },
   {
     accessorKey: "expediente",
@@ -94,6 +92,13 @@ export const columns: ColumnDef<PamExpedienteType>[] = [
     },
   },
   {
+    accessorKey: "beneficioSolicitado",
+    header: "Beneficio Solicitado",
+    cell: ({ row }) => {
+      return row.original.beneficioSolicitado;
+    },
+  },
+  {
     accessorKey: "fechaIngreso",
     header: "Fecha Ingreso",
     cell: ({ row }) => {
@@ -133,7 +138,7 @@ export const columns: ColumnDef<PamExpedienteType>[] = [
       return (
         <ProtectedComponentByCookie keyCookie="isCurrentWeek">
           <div className="flex items-center gap-2 ">
-            <DialogExpediente expediente={row.original} />
+            <DialogExpediente expediente={row.original} estadosOptions={[]} />
 
             <AlertExpediente expedienteId={row.original.id} />
           </div>

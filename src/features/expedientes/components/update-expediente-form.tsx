@@ -5,12 +5,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, SetStateAction } from "react";
 import { toast } from "sonner";
 
-import {
-  Field,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-} from "../../../shared/components/ui/field";
 import { updateExpediente } from "@/features/expedientes/actions/expedientes-actions";
 import { PamExpedienteType } from "@/db/schema";
 import { Input } from "../../../shared/components/ui/input";
@@ -19,6 +13,20 @@ import {
   UpdateExpedienteSchema,
   UpdateExpedienteSchemaType,
 } from "../schemas/expediente-schema";
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/shared/components/ui/field";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/shared/components/ui/select";
+import { beneficios } from "@/const";
 
 type UpdateExpedienteFormProps = {
   expediente: PamExpedienteType;
@@ -69,6 +77,40 @@ export function UpdateExpedienteForm({
                 autoComplete="off"
                 type="text"
               />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+
+        <Controller
+          name="codigoBeneficioSolicitado"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor="form-rhf-complex-billingPeriod">
+                Beneficio Solicitado:
+              </FieldLabel>
+              <Select
+                name={field.name}
+                value={field.value}
+                onValueChange={field.onChange}
+                defaultValue={expediente.codigoBeneficioSolicitado}
+              >
+                <SelectTrigger aria-invalid={fieldState.invalid}>
+                  <SelectValue placeholder="Seleccionar beneficio solicitado" />
+                </SelectTrigger>
+                <SelectContent
+                  position="popper"
+                  aria-describedby={"select-estado-description"}
+                >
+                  {beneficios.map((estado) => (
+                    <SelectItem key={estado.value} value={estado.value}>
+                      {estado.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
