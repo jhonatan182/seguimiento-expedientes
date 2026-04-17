@@ -1,9 +1,9 @@
 import { Poppins } from "next/font/google";
 import type { Metadata } from "next";
 
-import { Toaster } from "@/shared/components/ui/sonner";
-
 import "./globals.css";
+import { Toaster } from "@/shared/components/ui/sonner";
+import { ThemeProvider } from "@/shared/components/ui/theme-provider";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
@@ -33,7 +33,14 @@ export default function RootLayout({
   return (
     <html lang="es" suppressHydrationWarning={true}>
       <body className={`${poppins.className} antialiased`}>
-        <main>{children}</main>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <main>{children}</main>
+        </ThemeProvider>
         <Toaster richColors closeButton />
       </body>
     </html>

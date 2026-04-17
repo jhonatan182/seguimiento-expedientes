@@ -1,5 +1,6 @@
 import { Separator } from "@/shared/components/ui/separator";
 import { SidebarTrigger } from "@/shared/components/ui/sidebar";
+import { ModeToggle } from "../ui/mode-toggle";
 
 export function SiteHeader() {
   return (
@@ -14,6 +15,7 @@ export function SiteHeader() {
           Unidad de Informática y Estadística DGEFFA 💻🧮
         </h1>
       </div>
+      <ModeToggle />
     </header>
   );
 }
