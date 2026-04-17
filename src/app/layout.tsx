@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 
 import { Toaster } from "@/shared/components/ui/sonner";
 
-import './globals.css';
+import "./globals.css";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
@@ -34,7 +34,7 @@ export default function RootLayout({
     <html lang="es" suppressHydrationWarning={true}>
       <body className={`${poppins.className} antialiased`}>
         <main>{children}</main>
-        <Toaster richColors closeButton position="top-center" />
+        <Toaster richColors closeButton />
       </body>
     </html>
   );

@@ -9,7 +9,16 @@ import { eq, and, inArray, notInArray, max, desc } from "drizzle-orm";
 import { IReasignacionesRepository } from "../interfaces/IReasignacionesRepository";
 import { IReasignacionExpediente } from "../interfaces/IReasignacionExpediente";
 import { ActionsResponse } from "@/shared/types/actions-response";
-import { CADUCADO, CON_LUGAR, PARCIAL, PENDIENTE, SIN_LUGAR } from "@/const";
+import {
+  CADUCADO,
+  CON_LUGAR,
+  DICTAMEN,
+  DICTAMEN_CIRCULACION,
+  DICTAMEN_CUSTODIA,
+  PARCIAL,
+  PENDIENTE,
+  SIN_LUGAR,
+} from "@/const";
 import { buildWeek, validateEstado } from "@/shared/utils";
 import { mapColumnDb } from "@/shared/utils/mappers";
 
@@ -93,10 +102,13 @@ class ReasignacionesRepository implements IReasignacionesRepository {
     cabeceraSemanalAnalistaNuevo.nuevoIngreso += 1;
     cabeceraSemanalAnalistaNuevo[mapColumnDb[estadoExpedienteColumn]] += 1;
 
-    cabeceraSemanalAnalistaNuevo.dictamen =
-      cabeceraSemanalAnalistaNuevo.dictamen +
-      cabeceraSemanalAnalistaNuevo.dictamenCirculacion +
-      cabeceraSemanalAnalistaNuevo.dictamenCustodia;
+    if (
+      [DICTAMEN, DICTAMEN_CIRCULACION, DICTAMEN_CUSTODIA].includes(
+        expediente.estado,
+      )
+    ) {
+      cabeceraSemanalAnalistaNuevo.dictamen += 1;
+    }
 
     cabeceraSemanalAnalistaNuevo.resuelto =
       cabeceraSemanalAnalistaNuevo.conLugar +
@@ -133,12 +145,26 @@ class ReasignacionesRepository implements IReasignacionesRepository {
         cabeceraSemanalAnalistaAnterior[mapColumnDb[estadoExpedienteColumn]] -=
           1;
       }
+
+      if (expediente.isHistorico === "N") {
+        cabeceraSemanalAnalistaAnterior.nuevoIngreso -= 1;
+        cabeceraSemanalAnalistaAnterior[mapColumnDb[estadoExpedienteColumn]] -=
+          1;
+
+        if (
+          [DICTAMEN, DICTAMEN_CIRCULACION, DICTAMEN_CUSTODIA].includes(
+            expediente.estado,
+          )
+        ) {
+          cabeceraSemanalAnalistaAnterior.dictamen -= 1;
+        }
+      }
     }
 
-    cabeceraSemanalAnalistaAnterior.dictamen =
-      cabeceraSemanalAnalistaAnterior.dictamen +
-      cabeceraSemanalAnalistaAnterior.dictamenCirculacion +
-      cabeceraSemanalAnalistaAnterior.dictamenCustodia;
+    // cabeceraSemanalAnalistaAnterior.dictamen =
+    //   cabeceraSemanalAnalistaAnterior.dictamen +
+    //   cabeceraSemanalAnalistaAnterior.dictamenCirculacion +
+    //   cabeceraSemanalAnalistaAnterior.dictamenCustodia;
 
     cabeceraSemanalAnalistaAnterior.resuelto =
       cabeceraSemanalAnalistaAnterior.conLugar +
