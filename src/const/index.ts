@@ -109,51 +109,37 @@ export const MESES = [
 export const beneficios: ISelectOption[] = [
   {
     value: "1",
-    label: "ISV",
+    label: "ISV - Impuesto Sobre la Venta",
   },
   {
     value: "2",
-    label: "ISR",
+    label: "ISR - Impuesto Sobre la Renta",
   },
   {
     value: "3",
-    label: "ACTIVO NETO",
-  },
-  {
-    value: "4",
-    label: "AS",
-  },
-  {
-    value: "5",
-    label: "DAI",
+    label: "Activo Neto",
   },
   {
     value: "6",
-    label: "ACPV",
+    label:
+      "ACPV - Aporte Para La Atención A Programas Sociales Y Conservación Del Patrimonio Vial",
   },
   {
-    value: "7",
-    label: "TST",
+    value: "13",
+    label: "No Retencion Socios",
   },
   {
-    value: "8",
-    label: "IA",
+    value: "14",
+    label: "Renta Convenio Bilaterales",
   },
   {
-    value: "9",
-    label: "TASA",
+    value: "15",
+    label: "Retención Personas Extranjeras",
   },
   {
-    value: "10",
-    label: "ICBASF",
-  },
-  {
-    value: "11",
-    label: "ISR,ACN,AST",
-  },
-  {
-    value: "12",
-    label: "ACTIVO NETO, AS",
+    value: "19",
+    label:
+      "RET - No Retencion De  Las Utilidades, Dividendos O Cualquiera Otra Forma De Participacion De Utilidades O Reservase",
   },
   {
     value: "00",

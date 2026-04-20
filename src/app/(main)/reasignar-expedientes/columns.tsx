@@ -50,7 +50,11 @@ export const columns: ColumnDef<IReasignacionExpediente>[] = [
     accessorKey: "beneficioSolicitado",
     header: "Beneficio Solicitado",
     cell: ({ row }) => {
-      return row.original.beneficioSolicitado || "-";
+      return (
+        <p className="whitespace-nowrap overflow-hidden text-ellipsis max-w-[250px]">
+          {row.original.beneficioSolicitado || "-"}
+        </p>
+      );
     },
   },
   {
