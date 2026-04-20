@@ -102,11 +102,7 @@ class ReasignacionesRepository implements IReasignacionesRepository {
     cabeceraSemanalAnalistaNuevo.nuevoIngreso += 1;
     cabeceraSemanalAnalistaNuevo[mapColumnDb[estadoExpedienteColumn]] += 1;
 
-    if (
-      [DICTAMEN, DICTAMEN_CIRCULACION, DICTAMEN_CUSTODIA].includes(
-        expediente.estado,
-      )
-    ) {
+    if ([DICTAMEN_CIRCULACION, DICTAMEN_CUSTODIA].includes(expediente.estado)) {
       cabeceraSemanalAnalistaNuevo.dictamen += 1;
     }
 
@@ -152,9 +148,7 @@ class ReasignacionesRepository implements IReasignacionesRepository {
           1;
 
         if (
-          [DICTAMEN, DICTAMEN_CIRCULACION, DICTAMEN_CUSTODIA].includes(
-            expediente.estado,
-          )
+          [DICTAMEN_CIRCULACION, DICTAMEN_CUSTODIA].includes(expediente.estado)
         ) {
           cabeceraSemanalAnalistaAnterior.dictamen -= 1;
         }
