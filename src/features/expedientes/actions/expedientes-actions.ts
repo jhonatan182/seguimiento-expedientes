@@ -4,7 +4,6 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { and, eq } from "drizzle-orm";
 
-import { getCabeceraSemanal } from "../../cabeceras/actions/cabecera-semanal-actions";
 import { PamExpedientes } from "@/db/schema/PAM_EXPEDIENTES";
 import { PamCabeceraSemanal, PamSemanas } from "@/db/schema";
 import { getSessionUserWithCookies } from "../../auth/actions/auth-actions";
@@ -28,6 +27,7 @@ import { ActionsResponse } from "@/shared/types/actions-response";
 import { buildSelectOptionsByModuleAndOffice } from "@/shared/utils";
 import { getCookie } from "@/shared/actions/cookies-actions";
 import { beneficios } from "@/const";
+import { getCabeceraSemanalAction } from "@/features/cabeceras/actions/cabecera-semanal-actions";
 
 export async function getExpedientes(semanaId: number): Promise<Semana | null> {
   const session = await auth();
@@ -162,7 +162,7 @@ export async function createExpediente(
     });
 
     //verficar si existe cabecera en la semana que se esta creando el expediente
-    const cabecera = await getCabeceraSemanal(userId, semanaId);
+    const cabecera = await getCabeceraSemanalAction(userId, semanaId);
 
     if (!cabecera) {
       await tx.insert(PamCabeceraSemanal).values({
@@ -296,7 +296,7 @@ export async function deleteExpediente(
 
   await db.transaction(async (tx) => {
     // buscar cabecera
-    const cabecera = await getCabeceraSemanal(userId, semanaId);
+    const cabecera = await getCabeceraSemanalAction(userId, semanaId);
 
     if (!cabecera) {
       return {
