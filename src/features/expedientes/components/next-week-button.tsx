@@ -1,11 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { toast } from "sonner";
 
 import { buildNextCabeceraSemanal } from "@/features/cabeceras/actions/cabecera-semanal-actions";
-import { ProtectedComponentByCookie } from "../../../shared/components/security";
 import { Button } from "../../../shared/components/ui/button";
-import { useState } from "react";
 
 export function NextWeekButton() {
   const [loading, setLoading] = useState(false);

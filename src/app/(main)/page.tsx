@@ -1,13 +1,13 @@
 import { cookies } from "next/headers";
 
-import { getExpedientes } from "../../features/expedientes/actions/expedientes-actions";
-import { getSemanas } from "../../features/semanas/actions/semanas-actions";
+import { getExpedientes } from "@/features/expedientes/actions/expedientes-actions";
+import { getSemanasAction } from "@/features/semanas/actions/semanas-actions";
 import { buildWeek, enableNextWeekButtonByDay } from "@/shared/utils/dates";
 import { CabeceraCards } from "@/features/cabeceras/components";
 import { SelectSemanas } from "@/features/semanas/components";
 import { optimizedColumns } from "./columns-optimized";
-import { DataTable } from "@/app/(main)/data-table";
 import { Badge } from "@/shared/components/ui/badge";
+import { DataTable } from "@/app/(main)/data-table";
 import {
   DialogExpediente,
   NextWeekButton,
@@ -20,7 +20,7 @@ type PageProps = {
 export default async function Page({ searchParams }: PageProps) {
   const { semana } = await searchParams;
 
-  const semanas = await getSemanas();
+  const semanas = await getSemanasAction();
   const semanaDescripcion = buildWeek();
 
   // Encuentra la semana actual (la de esta semana)

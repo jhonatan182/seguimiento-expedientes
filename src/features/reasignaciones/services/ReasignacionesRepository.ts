@@ -12,7 +12,6 @@ import { ActionsResponse } from "@/shared/types/actions-response";
 import {
   CADUCADO,
   CON_LUGAR,
-  DICTAMEN,
   DICTAMEN_CIRCULACION,
   DICTAMEN_CUSTODIA,
   PARCIAL,
