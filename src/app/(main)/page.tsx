@@ -61,9 +61,7 @@ export default async function Page({ searchParams }: PageProps) {
         </div>
         {isShowingCurrentWeek || enableNextWeekButtonByDay() ? (
           <NextWeekButton />
-        ) : (
-          <NextWeekButton />
-        )}
+        ) : null}
       </div>
 
       <CabeceraCards cabecera={data.cabeceras[0]} />
