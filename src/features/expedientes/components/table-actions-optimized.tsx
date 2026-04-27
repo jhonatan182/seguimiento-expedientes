@@ -5,6 +5,7 @@ import { PamExpedienteType } from "@/db/schema";
 import { disableSelectEstado } from "@/shared/utils/validations";
 import { DialogExpediente } from "./dialog-expediente";
 import { AlertExpediente } from "./alert-expediente";
+import { DialogBeneficio } from "./dialog-beneficio";
 
 type TableActionsProps = {
   row: PamExpedienteType;
@@ -12,13 +13,13 @@ type TableActionsProps = {
 
 function TableActionsComponent({ row }: TableActionsProps) {
   if (row.isHistorico === "S" || row.isHistorico === "E") {
-    return null;
+    return <DialogBeneficio expediente={row} />;
   }
 
   const disabled = disableSelectEstado(row.estado);
 
   if (disabled || !row.isCurrentWeek) {
-    return null;
+    return <DialogBeneficio expediente={row} />;
   }
 
   return (

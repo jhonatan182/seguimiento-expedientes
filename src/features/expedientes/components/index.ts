@@ -4,3 +4,4 @@ export { UpdateExpedienteForm } from "./update-expediente-form";
 export { CreateExpedienteForm } from "./create-expediente-form";
 export { SelectExpedienteEstado } from "./select-expediente-estado";
 export { NextWeekButton } from "./next-week-button";
+export { DialogBeneficio } from "./dialog-beneficio";

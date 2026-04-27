@@ -22,3 +22,9 @@ export const UpdateExpedienteSchema = ExpedienteSchema.pick({
   codigoBeneficioSolicitado: true,
 });
 export type UpdateExpedienteSchemaType = z.infer<typeof UpdateExpedienteSchema>;
+
+//beneficio only
+export const BeneficioSchema = UpdateExpedienteSchema.pick({
+  codigoBeneficioSolicitado: true,
+});
+export type BeneficioSchemaType = z.infer<typeof BeneficioSchema>;

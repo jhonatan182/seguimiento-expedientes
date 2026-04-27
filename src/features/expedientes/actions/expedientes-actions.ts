@@ -19,6 +19,7 @@ import {
   validateEstado,
 } from "@/shared/utils/validations";
 import {
+  BeneficioSchemaType,
   ExpedienteSchemaType,
   UpdateExpedienteSchemaType,
 } from "../schemas/expediente-schema";
@@ -418,6 +419,59 @@ export async function toggleExpedienteEstado(
 
     await context.cambioEstado(dataStrategy);
   }
+
+  revalidatePath("/");
+  return {
+    success: true,
+    message: "Expediente actualizado exitosamente",
+  };
+}
+
+export async function updateBeneficioExpedienteAction(
+  expedienteId: number,
+  data: BeneficioSchemaType,
+): Promise<ActionsResponse> {
+  const { user, cookies } = await getSessionUserWithCookies();
+  const userId = Number(user.id);
+  const semanaId = cookies.semanaId;
+
+  const expediente = await findExpedienteWithPermissions(
+    expedienteId,
+    userId,
+    semanaId,
+  );
+
+  if (!expediente) {
+    return {
+      success: false,
+      message: "No se encontró el expediente",
+    };
+  }
+
+  const beneficioDescripcion = beneficios.find(
+    (b) => b.value === data.codigoBeneficioSolicitado,
+  );
+
+  if (!beneficioDescripcion) {
+    return {
+      success: false,
+      message: "El beneficio solicitado no es válido",
+    };
+  }
+
+  // actualizar
+  await db
+    .update(PamExpedientes)
+    .set({
+      codigoBeneficioSolicitado: data.codigoBeneficioSolicitado,
+      beneficioSolicitado: beneficioDescripcion.label,
+    })
+    .where(
+      and(
+        eq(PamExpedientes.expediente, expediente.expediente),
+        eq(PamExpedientes.analistaId, userId),
+      ),
+    );
 
   revalidatePath("/");
   return {
