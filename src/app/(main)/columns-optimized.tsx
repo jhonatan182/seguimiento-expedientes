@@ -1,42 +1,30 @@
 "use client";
 
-import { useSortable } from "@dnd-kit/sortable";
 import { IconGripVertical } from "@tabler/icons-react";
 import { type ColumnDef } from "@tanstack/react-table";
 
-import { Button } from "@/features/shared/components/ui/button";
-import { PamExpedienteType } from "@/db/schema";
-import { formatDate } from "@/features/shared/utils/dates";
-import { Badge } from "@/features/shared/components/ui/badge";
-import { CADUCADO, CON_LUGAR, PARCIAL, SIN_LUGAR } from "@/const";
-
 import { SelectExpedienteEstadoOptimized } from "@/features/expedientes/components/select-expediente-estado-optimized";
 import { TableActionsOptimized } from "@/features/expedientes/components/table-actions-optimized";
-
-function DragHandle({ id }: { id: number }) {
-  const { attributes, listeners } = useSortable({
-    id,
-  });
-
-  return (
-    <Button
-      {...attributes}
-      {...listeners}
-      variant="ghost"
-      size="icon"
-      className="text-muted-foreground size-7 hover:bg-transparent"
-    >
-      <IconGripVertical className="text-muted-foreground size-3" />
-      <span className="sr-only">Drag to reorder</span>
-    </Button>
-  );
-}
+import { Button } from "@/shared/components/ui/button";
+import { PamExpedienteType } from "@/db/schema";
+import { formatDate } from "@/shared/utils/dates";
+import { Badge } from "@/shared/components/ui/badge";
+import { CADUCADO, CON_LUGAR, PARCIAL, SIN_LUGAR } from "@/const";
 
 export const optimizedColumns: ColumnDef<PamExpedienteType>[] = [
   {
     id: "drag",
     header: () => null,
-    cell: ({ row }) => <DragHandle id={row.original.id} />,
+    cell: () => (
+      <Button
+        variant="ghost"
+        size="icon"
+        className="text-muted-foreground size-7 hover:bg-transparent"
+      >
+        <IconGripVertical className="text-muted-foreground size-3" />
+        <span className="sr-only">Drag to reorder</span>
+      </Button>
+    ),
   },
   {
     accessorKey: "expediente",
@@ -77,6 +65,17 @@ export const optimizedColumns: ColumnDef<PamExpedienteType>[] = [
     },
   },
   {
+    accessorKey: "beneficioSolicitado",
+    header: "Beneficio Solicitado",
+    cell: ({ row }) => {
+      return (
+        <p className="whitespace-nowrap overflow-hidden text-ellipsis max-w-[250px]">
+          {row.original.beneficioSolicitado || "-"}
+        </p>
+      );
+    },
+  },
+  {
     accessorKey: "fechaIngreso",
     header: "Fecha Ingreso",
     cell: ({ row }) => {
@@ -87,7 +86,7 @@ export const optimizedColumns: ColumnDef<PamExpedienteType>[] = [
     accessorKey: "fechaUltimaModificacion",
     header: "Fecha Movimiento",
     cell: ({ row }) => {
-      return formatDate(row.original.fechaUltimaModificacion);
+      return formatDate(row.original.fechaUltimaModificacion) || "-";
     },
   },
   {

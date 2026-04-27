@@ -4,21 +4,21 @@ import { redirect } from "next/navigation";
 
 import { PamSemanaType } from "@/db/schema";
 import { auth } from "../../../app/auth.config";
-import { db } from "@/lib/drizzle";
+import { semanasService } from "../services/SemanasService";
 
-export async function getSemanas(): Promise<PamSemanaType[]> {
+export async function getSemanasAction() {
   const usuario = await auth();
 
   if (!usuario?.user) {
     redirect("/login");
   }
 
-  const semanas = await db.query.PamSemanas.findMany();
+  const semanas = await semanasService.getSemanas();
 
-  return semanas || [];
+  return semanas;
 }
 
-export async function getSemanasByDescripcion(
+export async function getSemanasByDescripcionAction(
   descripcion: string,
 ): Promise<PamSemanaType | undefined> {
   const usuario = await auth();
@@ -27,9 +27,7 @@ export async function getSemanasByDescripcion(
     redirect("/login");
   }
 
-  const semana = await db.query.PamSemanas.findFirst({
-    where: (semanas, { eq }) => eq(semanas.descripcion, descripcion),
-  });
+  const semana = await semanasService.getSemanasByDescripcion(descripcion);
 
   return semana;
 }

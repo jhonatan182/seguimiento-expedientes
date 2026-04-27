@@ -8,10 +8,10 @@ import {
   FieldError,
   FieldGroup,
   FieldLabel,
-} from "@/features/shared/components/ui/field";
+} from "@/shared/components/ui/field";
 import { authenticate } from "../actions/auth-actions";
-import { Button } from "@/features/shared/components/ui/button";
-import { Input } from "@/features/shared/components/ui/input";
+import { Button } from "@/shared/components/ui/button";
+import { Input } from "@/shared/components/ui/input";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";

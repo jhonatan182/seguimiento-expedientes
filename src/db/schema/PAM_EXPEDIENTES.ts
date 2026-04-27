@@ -3,6 +3,7 @@ import { relations } from "drizzle-orm";
 
 import { PamAnalista } from "./PAM_ANALISTA";
 import { PamSemanas } from "./PAM_SEMANAS";
+import { ISelectOption } from "@/interfaces";
 
 export const PamExpedientes = sqliteTable("PAM_EXPEDIENTES", {
   id: int().primaryKey({ autoIncrement: true }),
@@ -24,6 +25,10 @@ export const PamExpedientes = sqliteTable("PAM_EXPEDIENTES", {
   fechaUltimaModificacion: text("fecha_ultima_modificacion").notNull(),
   observaciones: text("observaciones"),
   isHistorico: text("is_historico", { length: 1 }).default("N").notNull(),
+  beneficioSolicitado: text("beneficio_solicitado").default("").notNull(),
+  codigoBeneficioSolicitado: text("codigo_beneficio_solicitado")
+    .default("")
+    .notNull(),
 });
 
 export const PamExpedientesRelations = relations(PamExpedientes, ({ one }) => ({
@@ -37,5 +42,8 @@ export const PamExpedientesRelations = relations(PamExpedientes, ({ one }) => ({
   }),
 }));
 
-export type PamExpedienteType = typeof PamExpedientes.$inferSelect;
+export type PamExpedienteType = typeof PamExpedientes.$inferSelect & {
+  estados?: ISelectOption[];
+  isCurrentWeek?: boolean;
+};
 export type NewPamExpedienteType = typeof PamExpedientes.$inferInsert;

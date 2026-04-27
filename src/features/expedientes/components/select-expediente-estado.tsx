@@ -5,19 +5,18 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { toggleExpedienteEstado } from "@/features/expedientes/actions/expedientes-actions";
-import { disableSelectEstado } from "@/features/shared/utils/validations";
-import { getCookie } from "@/features/shared/actions/cookies-actions";
+import { disableSelectEstado } from "@/shared/utils/validations";
+import { getCookie } from "@/shared/actions/cookies-actions";
 import { PamExpedienteType } from "@/db/schema";
-import { Label } from "@/features/shared/components/ui/label";
+import { Label } from "@/shared/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/features/shared/components/ui/select";
-import { DialogConfirmCustom } from "../../shared/components/ui/custom/dialog-confirm-custom";
-import { useGetEstadosExpedientes } from "@/features/shared/hooks";
+} from "@/shared/components/ui/select";
+import { DialogConfirmCustom } from "../../../shared/components/ui/custom/dialog-confirm-custom";
 
 type SelectExpedienteEstadoProps = {
   row: PamExpedienteType;
@@ -32,8 +31,6 @@ export function SelectExpedienteEstado({ row }: SelectExpedienteEstadoProps) {
   useEffect(() => {
     setValueSelect(row.estado);
   }, [row]);
-
-  const estados = useGetEstadosExpedientes();
 
   const handleValueChange = async (value: string) => {
     try {
@@ -95,7 +92,6 @@ export function SelectExpedienteEstado({ row }: SelectExpedienteEstadoProps) {
           handleOpenDialog(value);
         }}
         disabled={!isCurrentWeek || disableSelectEstado(valueSelect)}
-
       >
         <SelectTrigger
           className="w-38 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate"
@@ -105,7 +101,7 @@ export function SelectExpedienteEstado({ row }: SelectExpedienteEstadoProps) {
           <SelectValue placeholder="Asignar estado" />
         </SelectTrigger>
         <SelectContent position="popper">
-          {estados.map((estado) => (
+          {row.estados?.map((estado) => (
             <SelectItem key={estado.value} value={estado.value}>
               {estado.label}
             </SelectItem>

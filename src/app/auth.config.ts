@@ -4,7 +4,7 @@ import NextAuth, { AuthError } from "next-auth";
 import bcrypt from "bcryptjs";
 
 import { getUserByUsername } from "../features/auth/actions/auth-actions";
-import { buildMenu } from "@/features/shared/utils";
+import { buildMenu } from "@/shared/utils";
 
 export class InactiveUserError extends AuthError {
   static type = "InactiveUser";

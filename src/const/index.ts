@@ -106,5 +106,45 @@ export const MESES = [
   "Diciembre",
 ];
 
+export const beneficios: ISelectOption[] = [
+  {
+    value: "1",
+    label: "ISV - Impuesto Sobre la Venta",
+  },
+  {
+    value: "2",
+    label: "ISR - Impuesto Sobre la Renta",
+  },
+  {
+    value: "3",
+    label: "Activo Neto",
+  },
+  {
+    value: "6",
+    label:
+      "ACPV - Aporte Para La Atención A Programas Sociales Y Conservación Del Patrimonio Vial",
+  },
+  {
+    value: "13",
+    label: "No Retencion Socios",
+  },
+  {
+    value: "14",
+    label: "Renta Convenio Bilaterales",
+  },
+  {
+    value: "15",
+    label: "Retención Personas Extranjeras",
+  },
+  {
+    value: "19",
+    label:
+      "RET - No Retencion De  Las Utilidades, Dividendos O Cualquiera Otra Forma De Participacion De Utilidades O Reservase",
+  },
+  {
+    value: "00",
+    label: "OTRO",
+  },
+];
 
 export const CHUNK_SIZE = Math.floor(999 / 9);

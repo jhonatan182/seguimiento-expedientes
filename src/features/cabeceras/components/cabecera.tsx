@@ -4,7 +4,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../../shared/components/ui/card";
+} from "../../../shared/components/ui/card";
 
 type CabeceraProps = {
   valor: number;

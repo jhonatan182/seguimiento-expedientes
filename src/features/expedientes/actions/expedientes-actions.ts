@@ -4,13 +4,12 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { and, eq } from "drizzle-orm";
 
-import { getCabeceraSemanal } from "../../cabeceras/actions/cabecera-semanal-actions";
 import { PamExpedientes } from "@/db/schema/PAM_EXPEDIENTES";
 import { PamCabeceraSemanal, PamSemanas } from "@/db/schema";
 import { getSessionUserWithCookies } from "../../auth/actions/auth-actions";
 import { ContextStrategy } from "@/rdn/contextStategy";
 import { stragiesList } from "@/rdn/strategies";
-import { mapColumnDb } from "@/features/shared/utils/mappers";
+import { mapColumnDb } from "@/shared/utils/mappers";
 import { IExecuteData } from "@/interfaces";
 import { auth } from "../../../app/auth.config";
 import { db } from "@/lib/drizzle";
@@ -18,13 +17,18 @@ import {
   incrementarEstadoDictamen,
   incrementarEstadoResuelto,
   validateEstado,
-} from "@/features/shared/utils/validations";
+} from "@/shared/utils/validations";
 import {
+  BeneficioSchemaType,
   ExpedienteSchemaType,
   UpdateExpedienteSchemaType,
 } from "../schemas/expediente-schema";
 import { Semana } from "@/features/semanas/types/semana-response";
-import { ActionsResponse } from "@/features/shared/types/actions-response";
+import { ActionsResponse } from "@/shared/types/actions-response";
+import { buildSelectOptionsByModuleAndOffice } from "@/shared/utils";
+import { getCookie } from "@/shared/actions/cookies-actions";
+import { beneficios } from "@/const";
+import { getCabeceraSemanalAction } from "@/features/cabeceras/actions/cabecera-semanal-actions";
 
 export async function getExpedientes(semanaId: number): Promise<Semana | null> {
   const session = await auth();
@@ -32,6 +36,9 @@ export async function getExpedientes(semanaId: number): Promise<Semana | null> {
   if (!session?.user?.id) {
     return redirect("/login");
   }
+
+  const cookie = await getCookie("isCurrentWeek");
+  const isCurrentWeek = cookie === "true";
 
   const userId = Number(session?.user?.id);
 
@@ -48,7 +55,26 @@ export async function getExpedientes(semanaId: number): Promise<Semana | null> {
     },
   });
 
-  return semana || null;
+  const estados = buildSelectOptionsByModuleAndOffice(
+    session.user.modulo,
+    session.user.oficina,
+  );
+
+  if (!semana) {
+    return null;
+  }
+
+  const semanasConEstados = {
+    ...semana,
+    expedientes: semana.expedientes.map((expediente) => ({
+      ...expediente,
+      estados: estados,
+      isCurrentWeek: isCurrentWeek,
+    })),
+    estados: estados,
+  };
+
+  return semanasConEstados;
 }
 
 export async function expedienteExists(
@@ -111,6 +137,17 @@ export async function createExpediente(
     };
   }
 
+  const beneficioDescripcion = beneficios.find(
+    (b) => b.value === data.codigoBeneficioSolicitado,
+  );
+
+  if (!beneficioDescripcion) {
+    return {
+      success: false,
+      message: "El beneficio solicitado no es válido",
+    };
+  }
+
   await db.transaction(async (tx) => {
     //Crear expediente
     await tx.insert(PamExpedientes).values({
@@ -121,10 +158,12 @@ export async function createExpediente(
       fechaIngreso: new Date().toISOString().toString(),
       estado: estadoValido,
       fechaUltimaModificacion: "",
+      codigoBeneficioSolicitado: data.codigoBeneficioSolicitado,
+      beneficioSolicitado: beneficioDescripcion.label,
     });
 
     //verficar si existe cabecera en la semana que se esta creando el expediente
-    const cabecera = await getCabeceraSemanal(userId, semanaId);
+    const cabecera = await getCabeceraSemanalAction(userId, semanaId);
 
     if (!cabecera) {
       await tx.insert(PamCabeceraSemanal).values({
@@ -172,12 +211,42 @@ export async function updateExpediente(
   const userId = Number(user.id);
   const semanaId = cookies.semanaId;
 
-  const expediente = await expedienteExists(data.expediente, userId, semanaId);
+  const expediente = await findExpedienteWithPermissions(
+    expedienteId,
+    userId,
+    semanaId,
+  );
 
-  if (expediente) {
+  if (!expediente) {
     return {
       success: false,
-      message: "Ya has agregado este expediente anteriormente",
+      message: "No se encontró el expediente",
+    };
+  }
+
+  if (expediente.expediente.toUpperCase() !== data.expediente.toUpperCase()) {
+    const expedienteExistsResult = await expedienteExists(
+      data.expediente,
+      userId,
+      semanaId,
+    );
+
+    if (expedienteExistsResult) {
+      return {
+        success: false,
+        message: "Ya has agregado este expediente anteriormente",
+      };
+    }
+  }
+
+  const beneficioDescripcion = beneficios.find(
+    (b) => b.value === data.codigoBeneficioSolicitado,
+  );
+
+  if (!beneficioDescripcion) {
+    return {
+      success: false,
+      message: "El beneficio solicitado no es válido",
     };
   }
 
@@ -186,6 +255,8 @@ export async function updateExpediente(
     .update(PamExpedientes)
     .set({
       expediente: data.expediente.toUpperCase(),
+      codigoBeneficioSolicitado: data.codigoBeneficioSolicitado,
+      beneficioSolicitado: beneficioDescripcion.label,
     })
     .where(
       and(
@@ -226,7 +297,7 @@ export async function deleteExpediente(
 
   await db.transaction(async (tx) => {
     // buscar cabecera
-    const cabecera = await getCabeceraSemanal(userId, semanaId);
+    const cabecera = await getCabeceraSemanalAction(userId, semanaId);
 
     if (!cabecera) {
       return {
@@ -348,6 +419,59 @@ export async function toggleExpedienteEstado(
 
     await context.cambioEstado(dataStrategy);
   }
+
+  revalidatePath("/");
+  return {
+    success: true,
+    message: "Expediente actualizado exitosamente",
+  };
+}
+
+export async function updateBeneficioExpedienteAction(
+  expedienteId: number,
+  data: BeneficioSchemaType,
+): Promise<ActionsResponse> {
+  const { user, cookies } = await getSessionUserWithCookies();
+  const userId = Number(user.id);
+  const semanaId = cookies.semanaId;
+
+  const expediente = await findExpedienteWithPermissions(
+    expedienteId,
+    userId,
+    semanaId,
+  );
+
+  if (!expediente) {
+    return {
+      success: false,
+      message: "No se encontró el expediente",
+    };
+  }
+
+  const beneficioDescripcion = beneficios.find(
+    (b) => b.value === data.codigoBeneficioSolicitado,
+  );
+
+  if (!beneficioDescripcion) {
+    return {
+      success: false,
+      message: "El beneficio solicitado no es válido",
+    };
+  }
+
+  // actualizar
+  await db
+    .update(PamExpedientes)
+    .set({
+      codigoBeneficioSolicitado: data.codigoBeneficioSolicitado,
+      beneficioSolicitado: beneficioDescripcion.label,
+    })
+    .where(
+      and(
+        eq(PamExpedientes.expediente, expediente.expediente),
+        eq(PamExpedientes.analistaId, userId),
+      ),
+    );
 
   revalidatePath("/");
   return {

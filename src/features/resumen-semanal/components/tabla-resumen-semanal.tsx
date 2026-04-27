@@ -4,14 +4,14 @@ import { useRouter } from "next/navigation";
 import * as XLSX from "xlsx";
 
 import { ResumenSemanalRow } from "@/interfaces/resumen-semanal";
-import { Button } from "@/features/shared/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/features/shared/components/ui/select";
+} from "@/shared/components/ui/select";
 import { MESES } from "@/const";
 import exportToExcel from "@/features/resumen-semanal/actions/resumen-semanal-actions";
 

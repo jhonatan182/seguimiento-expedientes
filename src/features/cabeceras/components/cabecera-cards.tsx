@@ -31,19 +31,19 @@ export async function CabeceraCards({ cabecera }: CabeceraCardsProps) {
         <Cabecera
           valor={cabecera?.saldoAnterior || 0}
           titulo="Saldo Anterior"
-          className="bg-black"
+          className="bg-black dark:bg-[#1E1E1E]"
         />
 
         <Cabecera
           valor={cabecera?.nuevoIngreso || 0}
           titulo="Nuevo Ingreso"
-          className="bg-black"
+          className="bg-black dark:bg-[#1E1E1E]"
         />
 
         <Cabecera
           valor={cabecera?.circulacion || 0}
           titulo="En circulación"
-          className="bg-black"
+          className="bg-black dark:bg-[#1E1E1E]"
         />
 
         <div

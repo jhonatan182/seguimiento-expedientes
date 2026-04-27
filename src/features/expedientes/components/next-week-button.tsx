@@ -1,11 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { toast } from "sonner";
 
-import { buildNextCabeceraSemanal } from "@/features/cabeceras/actions/cabecera-semanal-actions";
-import { ProtectedComponentByCookie } from "../../shared/components/security";
-import { Button } from "../../shared/components/ui/button";
-import { useState } from "react";
+import { buildNextCabeceraSemanalAction } from "@/features/cabeceras/actions/cabecera-semanal-actions";
+import { Button } from "@/shared/components/ui/button";
 
 export function NextWeekButton() {
   const [loading, setLoading] = useState(false);
@@ -13,7 +12,7 @@ export function NextWeekButton() {
   const onClick = async () => {
     try {
       setLoading(true);
-      const resp = await buildNextCabeceraSemanal();
+      const resp = await buildNextCabeceraSemanalAction();
 
       if (!resp.success) {
         toast.error(resp.message);

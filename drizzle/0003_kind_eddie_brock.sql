@@ -1,0 +1,1 @@
+ALTER TABLE `PAM_EXPEDIENTES` ADD `codigo_beneficio_solicitado` text DEFAULT '' NOT NULL;

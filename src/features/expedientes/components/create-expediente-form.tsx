@@ -10,35 +10,41 @@ import {
   FieldError,
   FieldGroup,
   FieldLabel,
-} from "../../shared/components/ui/field";
+} from "../../../shared/components/ui/field";
 import { createExpediente } from "@/features/expedientes/actions/expedientes-actions";
-import { disableSelectEstado } from "@/features/shared/utils/validations";
-import { AlertCustom } from "../../shared/components/ui/custom/alert-custom";
-import { useGetEstadosExpedientes } from "@/features/shared/hooks";
-import { Button } from "../../shared/components/ui/button";
-import { Input } from "../../shared/components/ui/input";
+import { disableSelectEstado } from "@/shared/utils/validations";
+import { AlertCustom } from "../../../shared/components/ui/custom/alert-custom";
+import { Button } from "../../../shared/components/ui/button";
+import { Input } from "../../../shared/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../../shared/components/ui/select";
+} from "../../../shared/components/ui/select";
 import {
   ExpedienteSchema,
   ExpedienteSchemaType,
 } from "../schemas/expediente-schema";
+import { ISelectOption } from "@/interfaces";
+import { beneficios } from "@/const";
 
 type CreateExpedienteFormProps = {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
+  estadosOptions: ISelectOption[];
 };
 
-export function CreateExpedienteForm({ setIsOpen }: CreateExpedienteFormProps) {
+export function CreateExpedienteForm({
+  setIsOpen,
+  estadosOptions,
+}: CreateExpedienteFormProps) {
   const form = useForm<ExpedienteSchemaType>({
     resolver: zodResolver(ExpedienteSchema),
     defaultValues: {
       expediente: "",
       estado: "",
+      codigoBeneficioSolicitado: "",
       // fechaIngreso: new Date().toISOString().split("T")[0],
     },
   });
@@ -47,8 +53,6 @@ export function CreateExpedienteForm({ setIsOpen }: CreateExpedienteFormProps) {
     control: form.control,
     name: "estado",
   });
-
-  const estados = useGetEstadosExpedientes();
 
   async function onSubmit(data: ExpedienteSchemaType) {
     try {
@@ -121,6 +125,41 @@ export function CreateExpedienteForm({ setIsOpen }: CreateExpedienteFormProps) {
           /> */}
 
           <Controller
+            name="codigoBeneficioSolicitado"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel htmlFor="form-rhf-complex-billingPeriod">
+                  Beneficio Solicitado:
+                </FieldLabel>
+                <Select
+                  name={field.name}
+                  value={field.value}
+                  onValueChange={field.onChange}
+                >
+                  <SelectTrigger aria-invalid={fieldState.invalid}>
+                    <SelectValue placeholder="Seleccionar beneficio solicitado" />
+                  </SelectTrigger>
+                  <SelectContent
+                    position="popper"
+                    aria-describedby={"select-estado-description"}
+                  >
+                    {beneficios.map((estado) => (
+                      <SelectItem key={estado.value} value={estado.value}>
+                        {estado.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+
+          <Controller
             name="estado"
             control={form.control}
             render={({ field, fieldState }) => (
@@ -136,8 +175,11 @@ export function CreateExpedienteForm({ setIsOpen }: CreateExpedienteFormProps) {
                   <SelectTrigger aria-invalid={fieldState.invalid}>
                     <SelectValue placeholder="Seleccionar estado" />
                   </SelectTrigger>
-                  <SelectContent aria-describedby={"select-estado-description"}>
-                    {estados.map((estado) => (
+                  <SelectContent
+                    position="popper"
+                    aria-describedby={"select-estado-description"}
+                  >
+                    {estadosOptions.map((estado) => (
                       <SelectItem key={estado.value} value={estado.value}>
                         {estado.label}
                       </SelectItem>

@@ -17,7 +17,7 @@ import {
   type VisibilityState,
 } from "@tanstack/react-table";
 
-import { Pagination } from "@/features/shared/components/ui/pagination";
+import { Pagination } from "@/shared/components/ui/pagination";
 
 import {
   Table,
@@ -26,26 +26,28 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/features/shared/components/ui/table";
-import { Input } from "@/features/shared/components/ui/input";
+} from "@/shared/components/ui/table";
+import { Input } from "@/shared/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/features/shared/components/ui/select";
-import { useGetEstadosExpedientes } from "@/features/shared/hooks";
-import { Button } from "@/features/shared/components/ui/button";
+} from "@/shared/components/ui/select";
+import { Button } from "@/shared/components/ui/button";
+import { ISelectOption } from "@/interfaces";
 
 type DataTableProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  estados: ISelectOption[];
 };
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  estados,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
@@ -59,8 +61,6 @@ export function DataTable<TData, TValue>({
     pageSize: 10,
   });
   const [estadoFilter, setEstadoFilter] = React.useState<string>("");
-
-  const estados = useGetEstadosExpedientes();
 
   const table = useReactTable({
     data,
@@ -122,7 +122,7 @@ export function DataTable<TData, TValue>({
           </SelectTrigger>
           <SelectContent position="popper">
             <SelectItem value="all">Todos</SelectItem>
-            {estados.map((estado) => (
+            {estados?.map((estado) => (
               <SelectItem key={estado.value} value={estado.value}>
                 {estado.label}
               </SelectItem>

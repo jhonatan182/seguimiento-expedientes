@@ -9,7 +9,7 @@ import { auth, InactiveUserError, signIn } from "@/app/auth.config";
 
 import { db } from "@/lib/drizzle";
 import { LoginSchemaType } from "../schemas/login-schema";
-import { getCookie } from "@/features/shared/actions/cookies-actions";
+import { getCookie } from "@/shared/actions/cookies-actions";
 
 export async function authenticate(data: LoginSchemaType) {
   try {
