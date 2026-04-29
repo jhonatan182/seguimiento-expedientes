@@ -62,7 +62,7 @@ export default async function Page({ searchParams }: PageProps) {
         {isShowingCurrentWeek || enableNextWeekButtonByDay() ? (
           <NextWeekButton />
         ) : (
-          <NextWeekButton />
+          null
         )}
       </div>
 
