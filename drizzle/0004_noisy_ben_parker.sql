@@ -1,0 +1,1 @@
+ALTER TABLE `PAM_SEMANAS` ADD `vigente` text(1) DEFAULT 'S' NOT NULL;

@@ -147,4 +147,7 @@ export const beneficios: ISelectOption[] = [
   },
 ];
 
+export const VIGENTE = "S";
+export const NO_VIGENTE = "N";
+
 export const CHUNK_SIZE = Math.floor(999 / 9);
