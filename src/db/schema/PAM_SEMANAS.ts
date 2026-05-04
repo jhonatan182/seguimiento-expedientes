@@ -7,6 +7,7 @@ import { PamExpedientes } from "./PAM_EXPEDIENTES";
 export const PamSemanas = sqliteTable("PAM_SEMANAS", {
   id: int().primaryKey({ autoIncrement: true }),
   descripcion: text().notNull(),
+  vigente: text({ length: 1 }).notNull().default("S"),
 });
 
 export const PamSemanasRelations = relations(PamSemanas, ({ many }) => ({
