@@ -74,10 +74,12 @@ export async function CabeceraCards({ cabecera }: CabeceraCardsProps) {
               descripcion2="Sin lugar: "
               descripcion3="Parcial: "
               descripcion4="Caducado: "
+              descripcion5="Desistimiento: "
               valorDescripcion1={cabecera?.conLugar || 0}
               valorDescripcion2={cabecera?.sinLugar || 0}
               valorDescripcion3={cabecera?.parcial || 0}
               valorDescripcion4={cabecera?.caducado || 0}
+              valorDescripcion5={cabecera?.desistimiento || 0}
             />
           )}
 

@@ -6,6 +6,7 @@ import {
   DICTAMEN_CUSTODIA,
   PARCIAL,
   SIN_LUGAR,
+  DESISTIMIENTO,
 } from "@/const";
 import { ESTADOS_VALIDOS, EstadoValido } from "./mappers";
 
@@ -21,12 +22,19 @@ export function disableSelectEstado(estado: string): boolean {
     estado === "CON_LUGAR" ||
     estado === "SIN_LUGAR" ||
     estado === "PARCIAL" ||
-    estado === "CADUCADO"
+    estado === "CADUCADO" ||
+    estado === "DESISTIMIENTO"
   );
 }
 
 export function incrementarEstadoResuelto(estado: string): boolean {
-  const estadosResueltos = [CON_LUGAR, SIN_LUGAR, PARCIAL, CADUCADO];
+  const estadosResueltos = [
+    CON_LUGAR,
+    SIN_LUGAR,
+    PARCIAL,
+    CADUCADO,
+    DESISTIMIENTO,
+  ];
 
   return estadosResueltos.includes(estado) ? true : false;
 }

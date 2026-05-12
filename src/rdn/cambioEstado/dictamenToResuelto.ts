@@ -6,6 +6,7 @@ import { db } from "@/lib/drizzle";
 import {
   CADUCADO,
   CON_LUGAR,
+  DESISTIMIENTO,
   DICTAMEN,
   DICTAMEN_CIRCULACION,
   DICTAMEN_CUSTODIA,
@@ -24,7 +25,8 @@ export class DictamenToResuelto implements IEstatadosEstrategy {
       (cambioEstado.nuevoEstado === CON_LUGAR ||
         cambioEstado.nuevoEstado === SIN_LUGAR ||
         cambioEstado.nuevoEstado === PARCIAL ||
-        cambioEstado.nuevoEstado === CADUCADO)
+        cambioEstado.nuevoEstado === CADUCADO ||
+        cambioEstado.nuevoEstado === DESISTIMIENTO)
     ) {
       return true;
     }

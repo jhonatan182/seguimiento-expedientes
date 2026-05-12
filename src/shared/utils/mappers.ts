@@ -10,6 +10,7 @@ export const ESTADOS_VALIDOS = [
   "DICTAMEN_CUSTODIA",
   "REQUERIDO",
   "PENDIENTE",
+  "DESISTIMIENTO",
 ] as const;
 
 export type EstadoValido = (typeof ESTADOS_VALIDOS)[number];
@@ -24,4 +25,5 @@ export const mapColumnDb: Record<EstadoValido, keyof PamCabeceraSemanalType> = {
   PENDIENTE: "pendiente",
   REQUERIDO: "requerido",
   SIN_LUGAR: "sinLugar",
+  DESISTIMIENTO: "desistimiento",
 };

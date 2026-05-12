@@ -10,6 +10,7 @@ export const PARCIAL = "PARCIAL";
 export const PENDIENTE = "PENDIENTE";
 export const REQUERIDO = "REQUERIDO";
 export const SIN_LUGAR = "SIN_LUGAR";
+export const DESISTIMIENTO = "DESISTIMIENTO";
 
 //MODULOS
 export const MODULO_EXONERACION = "E";
@@ -46,6 +47,10 @@ export const defaultEstados: ISelectOption[] = [
   {
     value: SIN_LUGAR,
     label: "Sin Lugar",
+  },
+  {
+    value: DESISTIMIENTO,
+    label: "Desistimiento",
   },
 ];
 
@@ -123,6 +128,10 @@ export const beneficios: ISelectOption[] = [
     value: "6",
     label:
       "ACPV - Aporte Para La Atención A Programas Sociales Y Conservación Del Patrimonio Vial",
+  },
+  {
+    value: "9",
+    label: "Tasa",
   },
   {
     value: "13",

@@ -1,0 +1,1 @@
+ALTER TABLE `PAM_CABECERA_SEMANAL` ADD `desistimiento` integer DEFAULT 0 NOT NULL;

@@ -245,6 +245,7 @@ class ReasignacionesRepository implements IReasignacionesRepository {
             "SIN_LUGAR",
             "PARCIAL",
             "CADUCADO",
+            "DESISTIMIENTO",
           ]),
         ),
       )

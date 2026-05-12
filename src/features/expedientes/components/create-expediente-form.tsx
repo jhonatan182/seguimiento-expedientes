@@ -77,7 +77,7 @@ export function CreateExpedienteForm({
           {disableSelectEstado(estadoValue) && (
             <AlertCustom
               title="Advertencia"
-              description="El estado seleccionado luego no se podrá modificar"
+              description="El estado seleccionado luego no se podrá modificar ni cambiar de estado"
               variant="destructive"
             />
           )}

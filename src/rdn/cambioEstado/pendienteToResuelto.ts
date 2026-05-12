@@ -1,7 +1,14 @@
 import { and, eq } from "drizzle-orm";
 
 import { ICambioEstado, IEstatadosEstrategy, IExecuteData } from "@/interfaces";
-import { CADUCADO, CON_LUGAR, PARCIAL, PENDIENTE, SIN_LUGAR } from "@/const";
+import {
+  CADUCADO,
+  CON_LUGAR,
+  DESISTIMIENTO,
+  PARCIAL,
+  PENDIENTE,
+  SIN_LUGAR,
+} from "@/const";
 import { PamCabeceraSemanal, PamExpedientes } from "@/db/schema";
 import { db } from "@/lib/drizzle";
 
@@ -11,7 +18,7 @@ export class PendienteToResuelto implements IEstatadosEstrategy {
 
     return (
       cambioEstado.estadoActual === PENDIENTE &&
-      [CON_LUGAR, SIN_LUGAR, PARCIAL, CADUCADO].includes(
+      [CON_LUGAR, SIN_LUGAR, PARCIAL, CADUCADO, DESISTIMIENTO].includes(
         cambioEstado.nuevoEstado,
       )
     );

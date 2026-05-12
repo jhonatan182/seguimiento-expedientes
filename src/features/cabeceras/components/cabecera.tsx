@@ -13,10 +13,12 @@ type CabeceraProps = {
   descripcion2?: string;
   descripcion3?: string;
   descripcion4?: string;
+  descripcion5?: string;
   valorDescripcion1?: number;
   valorDescripcion2?: number;
   valorDescripcion3?: number;
   valorDescripcion4?: number;
+  valorDescripcion5?: number;
   className?: string;
 };
 
@@ -27,10 +29,12 @@ export function Cabecera({
   descripcion2,
   descripcion3,
   descripcion4,
+  descripcion5,
   valorDescripcion1,
   valorDescripcion2,
   valorDescripcion3,
   valorDescripcion4,
+  valorDescripcion5,
   className,
 }: CabeceraProps) {
   return (
@@ -68,6 +72,12 @@ export function Cabecera({
             <div className="line-clamp-1 flex gap-2 font-medium">
               <p>{descripcion4}</p>
               <span>{valorDescripcion4 || 0}</span>
+            </div>
+          )}
+          {descripcion5 && (
+            <div className="line-clamp-1 flex gap-2 font-medium">
+              <p>{descripcion5}</p>
+              <span>{valorDescripcion5 || 0}</span>
             </div>
           )}
         </CardFooter>
