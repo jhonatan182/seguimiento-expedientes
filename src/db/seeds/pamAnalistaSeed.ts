@@ -10,6 +10,15 @@ export async function seedPamAnalistas() {
   const analistas: NuevoAnalista[] = [
     //EXONERACIONES - TGU
     {
+      nombre: "GABRIELA MEJIA",
+      usuario: "egmejia",
+      password: bcrypt.hashSync("0801198701985", 10),
+      modulo: "E",
+      isJefe: "N",
+      oficina: "TGU",
+      isActivo: "S",
+    },
+    {
       nombre: "DAVID ZELAYA",
       usuario: "dzelaya",
       password: bcrypt.hashSync("0801198209948", 10),
@@ -180,7 +189,6 @@ export async function seedPamAnalistas() {
       isActivo: "S",
     },
   ];
-
 
   try {
     await db.insert(PamAnalista).values(analistas);
