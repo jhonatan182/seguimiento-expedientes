@@ -178,6 +178,7 @@ class ReasignacionesRepository implements IReasignacionesRepository {
         .set({
           analistaId: nuevoAnalistaId,
           isHistorico: "N",
+          semanaId: semanaActual.id,
         })
         .where(eq(PamExpedientes.id, expedienteId));
     });
