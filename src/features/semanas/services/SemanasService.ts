@@ -14,6 +14,11 @@ class SemanasService {
       await this.semanasRespository.getSemanasByDescripcion(descripcion);
     return semana;
   }
+
+  async getUltimaSemana() {
+    const semana = await this.semanasRespository.getUltimaSemana();
+    return semana;
+  }
 }
 
 export const semanasService = new SemanasService(semanasRepository);

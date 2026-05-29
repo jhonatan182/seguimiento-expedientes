@@ -18,6 +18,13 @@ class SemanasRepository implements ISemanasRepository {
     });
     return semana;
   }
+
+  async getUltimaSemana() {
+    const semana = await db.query.PamSemanas.findFirst({
+      orderBy: (semanas, { desc }) => [desc(semanas.id)],
+    });
+    return semana;
+  }
 }
 
 export const semanasRepository = new SemanasRepository();

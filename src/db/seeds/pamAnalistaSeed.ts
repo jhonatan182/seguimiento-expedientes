@@ -9,15 +9,7 @@ export type NuevoAnalista = InferInsertModel<typeof PamAnalista>;
 export async function seedPamAnalistas() {
   const analistas: NuevoAnalista[] = [
     //EXONERACIONES - TGU
-    {
-      nombre: "GABRIELA MEJIA",
-      usuario: "egmejia",
-      password: bcrypt.hashSync("0801198701985", 10),
-      modulo: "E",
-      isJefe: "N",
-      oficina: "TGU",
-      isActivo: "S",
-    },
+
     {
       nombre: "DAVID ZELAYA",
       usuario: "dzelaya",
@@ -185,6 +177,16 @@ export async function seedPamAnalistas() {
       password: bcrypt.hashSync("0201199501082", 10),
       modulo: "R",
       isJefe: "S",
+      oficina: "TGU",
+      isActivo: "S",
+    },
+
+    {
+      nombre: "GABRIELA MEJIA",
+      usuario: "egmejia",
+      password: bcrypt.hashSync("0801198701985", 10),
+      modulo: "E",
+      isJefe: "N",
       oficina: "TGU",
       isActivo: "S",
     },

@@ -31,3 +31,17 @@ export async function getSemanasByDescripcionAction(
 
   return semana;
 }
+
+export async function getUltimaSemanaAction(): Promise<
+  PamSemanaType | undefined
+> {
+  const usuario = await auth();
+
+  if (!usuario?.user) {
+    redirect("/login");
+  }
+
+  const semana = await semanasService.getUltimaSemana();
+
+  return semana;
+}
