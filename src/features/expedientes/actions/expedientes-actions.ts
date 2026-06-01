@@ -84,7 +84,7 @@ export async function expedienteExists(
   excludeId?: number,
 ): Promise<boolean> {
   const conditions = [
-    eq(PamExpedientes.analistaId, userId),
+    // eq(PamExpedientes.analistaId, userId),
     // eq(PamExpedientes.semanaId, semanaId),
     eq(PamExpedientes.expediente, expediente.toUpperCase()),
   ];
@@ -133,7 +133,8 @@ export async function createExpediente(
   if (expediente) {
     return {
       success: false,
-      message: "Ya has agregado este expediente anteriormente",
+      message:
+        "Tú u otro analista ya han agregado este expediente anteriormente",
     };
   }
 
@@ -234,7 +235,8 @@ export async function updateExpediente(
     if (expedienteExistsResult) {
       return {
         success: false,
-        message: "Ya has agregado este expediente anteriormente",
+        message:
+          "Tú u otro analista ya han agregado este expediente anteriormente",
       };
     }
   }
