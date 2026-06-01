@@ -54,7 +54,9 @@ export function LoginForm({
     >
       <FieldGroup>
         <div className="flex flex-col items-center gap-1 text-center">
-          <h1 className="text-2xl font-bold">Seguimiento de Expedientes</h1>
+          <h1 className="text-2xl font-bold text-black">
+            Seguimiento de Expedientes
+          </h1>
           <p className="text-sm text-balance text-slate-500">
             Ingresa tu nombre de usuario y contraseña para iniciar sesión
           </p>
@@ -65,7 +67,9 @@ export function LoginForm({
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor={field.name}>Usuario</FieldLabel>
+              <FieldLabel htmlFor={field.name} className="text-black">
+                Usuario
+              </FieldLabel>
               <Input
                 {...field}
                 id={field.name}
@@ -73,6 +77,7 @@ export function LoginForm({
                 placeholder="Usuario"
                 autoComplete="off"
                 type="text"
+                className="text-black"
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
@@ -84,7 +89,9 @@ export function LoginForm({
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor={field.name}>Contraseña</FieldLabel>
+              <FieldLabel htmlFor={field.name} className="text-black">
+                Contraseña
+              </FieldLabel>
               <Input
                 {...field}
                 id={field.name}
@@ -92,6 +99,7 @@ export function LoginForm({
                 placeholder="********"
                 autoComplete="off"
                 type="password"
+                className="text-black"
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
@@ -99,7 +107,11 @@ export function LoginForm({
         />
 
         <Field>
-          <Button disabled={isLoading} type="submit">
+          <Button
+            className="bg-black text-white hover:bg-black/70 cursor-pointer"
+            disabled={isLoading}
+            type="submit"
+          >
             Iniciar sesión
           </Button>
         </Field>
