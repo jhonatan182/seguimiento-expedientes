@@ -1,11 +1,8 @@
 import { cookies } from "next/headers";
 
 import { getExpedientes } from "@/features/expedientes/actions/expedientes-actions";
-import {
-  getSemanasAction,
-  getUltimaSemanaAction,
-} from "@/features/semanas/actions/semanas-actions";
-import { enableNextWeekButtonByDay } from "@/shared/utils/dates";
+import { getSemanasAction } from "@/features/semanas/actions/semanas-actions";
+import { buildWeek, enableNextWeekButtonByDay } from "@/shared/utils/dates";
 import { CabeceraCards } from "@/features/cabeceras/components";
 import { SelectSemanas } from "@/features/semanas/components";
 import { optimizedColumns } from "./columns-optimized";
@@ -24,10 +21,12 @@ export default async function Page({ searchParams }: PageProps) {
   const { semana } = await searchParams;
 
   const semanas = await getSemanasAction();
-  const ultimaSemana = await getUltimaSemanaAction();
+  const semanaDescripcion = buildWeek();
 
   // Encuentra la semana actual (la de esta semana)
-  const isCurrentWeek = semanas.find((s) => s.id === ultimaSemana?.id);
+  const isCurrentWeek = semanas.find(
+    (s) => s.descripcion === semanaDescripcion,
+  );
 
   // Determina qué semana mostrar
   let semanaActualId: number;

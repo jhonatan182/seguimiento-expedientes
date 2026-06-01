@@ -1,5 +1,10 @@
 import { db } from "@/lib/drizzle";
-import { PamAnalista, PamExpedientes, PamCabeceraSemanal } from "@/db/schema";
+import {
+  PamAnalista,
+  PamExpedientes,
+  PamCabeceraSemanal,
+  PamSemanas,
+} from "@/db/schema";
 import { eq, and, inArray, notInArray, max, desc } from "drizzle-orm";
 import { IReasignacionesRepository } from "../interfaces/IReasignacionesRepository";
 import { IReasignacionExpediente } from "../interfaces/IReasignacionExpediente";
@@ -13,7 +18,7 @@ import {
   PENDIENTE,
   SIN_LUGAR,
 } from "@/const";
-import { validateEstado } from "@/shared/utils";
+import { buildWeek, validateEstado } from "@/shared/utils";
 import { mapColumnDb } from "@/shared/utils/mappers";
 import { getUltimaSemanaAction } from "@/features/semanas/actions/semanas-actions";
 
@@ -50,7 +55,11 @@ class ReasignacionesRepository implements IReasignacionesRepository {
     const isExpedienteNuevo = cantidadExpedientes.length === 1;
     const estadoExpedienteColumn = validateEstado(expediente.estado);
     // La ultima semana seria la actual
-    const semanaActual = await getUltimaSemanaAction();
+    const semanaString = buildWeek();
+
+    const semanaActual = await db.query.PamSemanas.findFirst({
+      where: eq(PamSemanas.descripcion, semanaString),
+    });
 
     console.log("semanaActual", semanaActual);
 
