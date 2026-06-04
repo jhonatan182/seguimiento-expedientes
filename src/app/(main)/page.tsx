@@ -12,7 +12,6 @@ import {
   DialogExpediente,
   NextWeekButton,
 } from "@/features/expedientes/components";
-import { auth } from "../auth.config";
 
 type PageProps = {
   searchParams: Promise<{ [semana: string]: string | undefined }>;
@@ -20,11 +19,6 @@ type PageProps = {
 
 export default async function Page({ searchParams }: PageProps) {
   const { semana } = await searchParams;
-  const session = await auth();
-
-  if (!session?.user) {
-   throw new Error("No autorizado");
-  }
 
 
   const semanas = await getSemanasAction();
@@ -66,7 +60,7 @@ export default async function Page({ searchParams }: PageProps) {
           <SelectSemanas semanas={semanas} selectedSemanaId={semanaActualId} />
           {isShowingCurrentWeek && <Badge variant="green">Semana actual</Badge>}
         </div>
-        {isShowingCurrentWeek || enableNextWeekButtonByDay() || session.user.username === 'mortega' ? (
+        {isShowingCurrentWeek || enableNextWeekButtonByDay() ? (
           <NextWeekButton />
         ) : null}
       </div>
