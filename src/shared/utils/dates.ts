@@ -22,10 +22,20 @@ export function getWeekOfMonth(date: string): number {
   const firstDayOfMonth = new Date(d.getFullYear(), d.getMonth(), 1);
   const firstWeekday = firstDayOfMonth.getDay(); // 0=Dom
 
-  // Ajuste: si la semana empieza el lunes, convertir domingo (0) a 7
-  const startOffset = firstWeekday === 0 ? 6 : firstWeekday - 1;
+    // Calcular en qué día cae el primer LUNES del mes
+  // Si el mes empieza en lunes, daysUntilMonday = 0
+  const daysUntilMonday = (1 - firstWeekday + 7) % 7;
+  const firstMondayDate = 1 + daysUntilMonday;
 
-  const week = Math.ceil((dayOfMonth + startOffset) / 7);
+
+  // Si el día consultado cae ANTES del primer lunes (ej. sáb/dom iniciales),
+  // lo tratamos como parte de la semana 1 (no debería pasar en la práctica
+  // porque esos días no son laborables, pero evita valores negativos/0)
+  if (dayOfMonth < firstMondayDate) {
+    return 1;
+  }
+
+  const week = Math.floor((dayOfMonth - firstMondayDate) / 7) + 1;
 
   return week;
 }
