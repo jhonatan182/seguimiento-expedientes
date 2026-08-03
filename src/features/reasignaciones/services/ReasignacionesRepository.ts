@@ -61,8 +61,6 @@ class ReasignacionesRepository implements IReasignacionesRepository {
       where: eq(PamSemanas.descripcion, semanaString),
     });
 
-    console.log("semanaActual", semanaActual);
-
     if (!semanaActual) {
       return {
         success: false,
@@ -114,7 +112,6 @@ class ReasignacionesRepository implements IReasignacionesRepository {
       cabeceraSemanalAnalistaNuevo.parcial +
       cabeceraSemanalAnalistaNuevo.caducado;
 
-    console.log({ isExpedienteNuevo, expediente });
 
     //acciones para cabecera semanal del analista que pierde el expediente
     if (isExpedienteNuevo) {
