@@ -66,5 +66,5 @@ export function enableNextWeekButtonByDay(): boolean {
   const day = today.getDay();
 
   //retornar true si el dia es lunes o viernes
-  return day === 1 || day === 5;
+  return day === 1 || day === 3 || day === 5;
 }
