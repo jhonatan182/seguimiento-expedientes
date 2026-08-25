@@ -59,7 +59,7 @@ export async function CabeceraCards({ cabecera }: CabeceraCardsProps) {
             <Cabecera
               valor={cabecera?.resuelto || 0}
               titulo="Resuelto"
-              className="bg-blue-700"
+              className="bg-primary text-primary-foreground"
               descripcion1="Con lugar: "
               descripcion2="Sin lugar: "
               valorDescripcion1={cabecera?.conLugar || 0}
@@ -69,7 +69,7 @@ export async function CabeceraCards({ cabecera }: CabeceraCardsProps) {
             <Cabecera
               valor={cabecera?.resuelto || 0}
               titulo="Resuelto"
-              className="bg-blue-700"
+              className="bg-primary text-primary-foreground"
               descripcion1="Con lugar: "
               descripcion2="Sin lugar: "
               descripcion3="Parcial: "
@@ -86,7 +86,7 @@ export async function CabeceraCards({ cabecera }: CabeceraCardsProps) {
             <Cabecera
               valor={cabecera?.dictamen || 0}
               titulo="Dictamen"
-              className="bg-blue-700"
+              className="bg-primary text-primary-foreground"
               descripcion1="Circulación: "
               descripcion2="Custodia: "
               valorDescripcion1={cabecera?.dictamenCirculacion || 0}
@@ -110,7 +110,7 @@ export async function CabeceraCards({ cabecera }: CabeceraCardsProps) {
             <Cabecera
               valor={cabecera?.dictamen || 0}
               titulo="Dictamen"
-              className="bg-blue-700"
+              className="bg-primary text-primary-foreground"
             />
           ) : null}
 
@@ -118,20 +118,20 @@ export async function CabeceraCards({ cabecera }: CabeceraCardsProps) {
             <Cabecera
               valor={cabecera?.dictamen || 0}
               titulo="Dictamen"
-              className="bg-blue-700"
+              className="bg-primary text-primary-foreground"
             />
           ) : null}
 
           <Cabecera
             valor={cabecera?.requerido || 0}
             titulo="Requerido"
-            className="bg-blue-700"
+            className="bg-primary text-primary-foreground"
           />
 
           <Cabecera
             valor={cabecera?.pendiente || 0}
             titulo="Pendiente"
-            className="bg-blue-700"
+            className="bg-primary text-primary-foreground"
           />
         </div>
       </div>
