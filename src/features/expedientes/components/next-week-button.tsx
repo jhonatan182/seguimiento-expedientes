@@ -30,7 +30,7 @@ export function NextWeekButton() {
 
   return (
     <Button
-      className="bg-blue-700 text-white hover:bg-blue-600 cursor-pointer"
+      className="bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer"
       onClick={onClick}
       disabled={loading}
       data-tour="actualizar-semana"

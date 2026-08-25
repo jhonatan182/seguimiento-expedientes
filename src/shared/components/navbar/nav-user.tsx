@@ -35,7 +35,7 @@ export async function NavUser() {
               data-tour="user-menu"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarFallback className="rounded-lg bg-blue-700 text-white font-bold">
+                <AvatarFallback className="rounded-lg bg-primary text-primary-foreground font-bold">
                   {session.user.name?.charAt(0).toUpperCase()}
                 </AvatarFallback>
               </Avatar>

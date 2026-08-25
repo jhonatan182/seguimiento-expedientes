@@ -35,7 +35,7 @@ export function Cabecera({
 }: CabeceraProps) {
   return (
     <Card
-      className={`${className} "@container/card hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer"`}
+      className={`${className} "@container/card cursor-pointer hover:scale-110 transition-all duration-300 ease-in-out "`}
     >
       <CardHeader className="flex flex-col items-center justify-center text-center gap-2 ">
         <CardTitle className="text-4xl text-white font-bold tabular-nums @[250px]/card:text-5xl">
