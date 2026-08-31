@@ -42,19 +42,24 @@ export async function seedPamSemanas() {
     // { descripcion: "Semana 6.3 - Junio 2026" },
     // { descripcion: "Semana 6.4 - Junio 2026" },
     // { descripcion: "Semana 6.5 - Junio 2026" },
-
     //Julio
     // { descripcion: "Semana 7.1 - Julio 2026" },
     // { descripcion: "Semana 7.2 - Julio 2026" },
     // { descripcion: "Semana 7.3 - Julio 2026" },
     // { descripcion: "Semana 7.4 - Julio 2026" },
     // { descripcion: "Semana 7.5 - Julio 2026" },
-
-    { descripcion: "Semana 8.1 - Agosto 2026" },
-    { descripcion: "Semana 8.2 - Agosto 2026" },
-    { descripcion: "Semana 8.3 - Agosto 2026" },
-    { descripcion: "Semana 8.4 - Agosto 2026" },
-    { descripcion: "Semana 8.5 - Agosto 2026" },
+    // Agosto
+    // { descripcion: "Semana 8.1 - Agosto 2026" },
+    // { descripcion: "Semana 8.2 - Agosto 2026" },
+    // { descripcion: "Semana 8.3 - Agosto 2026" },
+    // { descripcion: "Semana 8.4 - Agosto 2026" },
+    // { descripcion: "Semana 8.5 - Agosto 2026" },
+    // Septiembre
+    { descripcion: "Semana 9.1 - Septiembre 2026" },
+    { descripcion: "Semana 9.2 - Septiembre 2026" },
+    { descripcion: "Semana 9.3 - Septiembre 2026" },
+    { descripcion: "Semana 9.4 - Septiembre 2026" },
+    { descripcion: "Semana 9.5 - Septiembre 2026" },
   ];
 
   try {
