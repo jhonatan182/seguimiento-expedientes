@@ -1,4 +1,4 @@
-import { format, getDate, getMonth } from "date-fns";
+import {differenceInCalendarDays, getDay, addDays, subDays , format, getMonth} from "date-fns";
 import { toZonedTime } from "date-fns-tz";
 import { es } from "date-fns/locale";
 
@@ -14,28 +14,29 @@ export function formatDate(date: string): string {
 
 export function getWeekOfMonth(date: string): number {
   const d = toZonedTime(date, TZ);
+  const year = d.getFullYear();
+  const month = d.getMonth();
 
-  // Día del mes (1-31)
-  const dayOfMonth = getDate(d);
+  const firstDayOfMonth = new Date(year, month, 1);
+  const firstWeekday = getDay(firstDayOfMonth); // 0=Dom, 1=Lun, ..., 6=Sáb
 
-  // Día de la semana del primer día del mes (0=Dom, 1=Lun, ..., 6=Sáb)
-  const firstDayOfMonth = new Date(d.getFullYear(), d.getMonth(), 1);
-  const firstWeekday = firstDayOfMonth.getDay(); // 0=Dom
+  let mondayOfWeek1: Date;
 
-    // Calcular en qué día cae el primer LUNES del mes
-  // Si el mes empieza en lunes, daysUntilMonday = 0
-  const daysUntilMonday = (1 - firstWeekday + 7) % 7;
-  const firstMondayDate = 1 + daysUntilMonday;
-
-
-  // Si el día consultado cae ANTES del primer lunes (ej. sáb/dom iniciales),
-  // lo tratamos como parte de la semana 1 (no debería pasar en la práctica
-  // porque esos días no son laborables, pero evita valores negativos/0)
-  if (dayOfMonth < firstMondayDate) {
-    return 1;
+  if (firstWeekday === 0) {
+    // El mes inicia domingo -> la semana 1 empieza el lunes siguiente
+    mondayOfWeek1 = addDays(firstDayOfMonth, 1);
+  } else if (firstWeekday === 6) {
+    // El mes inicia sábado -> la semana 1 empieza el lunes siguiente
+    mondayOfWeek1 = addDays(firstDayOfMonth, 2);
+  } else {
+    // El mes inicia martes a viernes -> retrocedemos al lunes de esa
+    // misma semana (puede caer en el mes anterior), porque esos días
+    // (mar-vie) SÍ son parte de la semana laboral 1
+    mondayOfWeek1 = subDays(firstDayOfMonth, firstWeekday - 1);
   }
 
-  const week = Math.floor((dayOfMonth - firstMondayDate) / 7) + 1;
+  const diffDays = differenceInCalendarDays(d, mondayOfWeek1);
+  const week = Math.floor(diffDays / 7) + 1;
 
   return week;
 }
@@ -49,6 +50,10 @@ export function buildWeek(): string {
   const monthDescription =
     format(today, "MMMM", { locale: es }).charAt(0).toUpperCase() +
     format(today, "MMMM", { locale: es }).slice(1);
+
+
+  console.log({ week, month, year, monthDescription });
+
   return `Semana ${month}.${week} - ${monthDescription} ${year}`;
 }
 

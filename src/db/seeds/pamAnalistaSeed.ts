@@ -199,14 +199,22 @@ export async function seedPamAnalistas() {
     //   oficina: "SPS",
     //   isActivo: "S",
     // },
+    // {
+    //   nombre: "Nolvis Lanza".toUpperCase(),
+    //   usuario: "nlanza",
+    //   password: bcrypt.hashSync("0801198904555", 10),
+    //   modulo: "E",
+    //   isJefe: "N",
+    //   oficina: "SPS",
+    //   isActivo: "S",
+    // },
     {
-      nombre: "Nolvis Lanza".toUpperCase(),
-      usuario: "nlanza",
-      password: bcrypt.hashSync("0801198904555", 10),
-      modulo: "E",
+      nombre: "JOSE COELLO",
+      usuario: "jrcoello",
+      password: bcrypt.hashSync("0801199215850", 10),
+      modulo: "D",
       isJefe: "N",
-      oficina: "SPS",
-      isActivo: "S",
+      oficina: "TGU",
     },
   ];
 
